@@ -86,11 +86,12 @@ declare(strict_types=1);
       <h2 class="section-title mt-2 mb-3">Our Process</h2>
     </div>
     <div class="row g-4">
-      <?php foreach (['Discover', 'Plan', 'Design', 'Develop', 'Test', 'Launch', 'Support'] as $i => $step): ?>
-      <div class="col-6 col-md-3 col-lg">
+      <?php foreach (process_steps() as $i => $step): ?>
+      <div class="col-md-4 col-lg-2">
         <div class="process-step">
           <div class="step-num"><?= $i + 1 ?></div>
-          <h3 class="h6 fw-bold mb-0"><?= e($step) ?></h3>
+          <h3 class="h6 fw-bold mb-2"><?= e($step['title']) ?></h3>
+          <p class="small section-subtitle mb-0"><?= e($step['desc']) ?></p>
         </div>
       </div>
       <?php endforeach; ?>

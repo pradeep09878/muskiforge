@@ -54,45 +54,80 @@ function services_catalog(): array
         'website-development' => [
             'title' => 'Website Development',
             'icon' => 'fa-solid fa-globe',
-            'summary' => 'Fast, responsive, SEO-ready websites built on modern standards.',
+            'summary' => 'Professional, responsive, and SEO-optimized websites built to convert visitors into customers.',
             'description' => 'We design and build custom websites that combine clean UX, semantic HTML5, and Core Web Vitals performance out of the box — from marketing sites to complex web portals.',
         ],
         'software-development' => [
             'title' => 'Software Development',
             'icon' => 'fa-solid fa-code',
-            'summary' => 'Custom software engineered around your business logic, not the other way around.',
+            'summary' => 'Custom software engineered to automate workflows, improve productivity, and support long-term business growth.',
             'description' => 'Our engineering team ships custom web applications, internal tools, and SaaS platforms using PHP, Laravel, and Node.js with an emphasis on maintainability and security.',
         ],
         'mobile-app-development' => [
             'title' => 'Mobile App Development',
             'icon' => 'fa-solid fa-mobile-screen-button',
-            'summary' => 'Native and cross-platform apps for iOS and Android.',
+            'summary' => 'Android, iOS, and cross-platform applications designed with performance, security, and user experience in mind.',
             'description' => 'From Flutter cross-platform builds to native Kotlin and Swift apps, we deliver mobile experiences that perform well and ship on schedule.',
         ],
         'cloud-solutions' => [
             'title' => 'Cloud Solutions',
             'icon' => 'fa-solid fa-cloud',
-            'summary' => 'Cloud architecture, migration, and DevOps on AWS, Azure, and GCP.',
+            'summary' => 'Cloud migration, infrastructure management, security, deployment, and scalable cloud architecture tailored to modern businesses.',
             'description' => 'We design resilient, cost-efficient cloud infrastructure and manage migrations, CI/CD pipelines, and container orchestration for growing businesses.',
-        ],
-        'seo-services' => [
-            'title' => 'SEO Services',
-            'icon' => 'fa-solid fa-magnifying-glass-chart',
-            'summary' => 'Technical, on-page, and AI-search optimization that compounds over time.',
-            'description' => 'Our SEO practice covers technical audits, entity and semantic SEO, structured data, and AI citation optimization for Google, Bing, and AI answer engines.',
         ],
         'digital-marketing' => [
             'title' => 'Digital Marketing',
             'icon' => 'fa-solid fa-bullhorn',
-            'summary' => 'Full-funnel marketing across search, social, and paid channels.',
+            'summary' => 'Data-driven digital marketing strategies that increase visibility, generate qualified leads, and improve return on investment.',
             'description' => 'We plan and run digital marketing programs spanning content strategy, paid media, social, and email to turn traffic into pipeline.',
+        ],
+        'seo-services' => [
+            'title' => 'SEO Services',
+            'icon' => 'fa-solid fa-magnifying-glass-chart',
+            'summary' => 'Search engine optimization focused on sustainable organic growth through technical SEO, content strategy, local SEO, and on-page optimization.',
+            'description' => 'Our SEO practice covers technical audits, entity and semantic SEO, structured data, and AI citation optimization for Google, Bing, and AI answer engines.',
         ],
         'it-consulting' => [
             'title' => 'IT Consulting',
             'icon' => 'fa-solid fa-lightbulb',
-            'summary' => 'Strategic technology guidance for businesses navigating growth.',
+            'summary' => 'Technology consulting that helps businesses choose the right infrastructure, software, cloud strategy, and digital roadmap.',
             'description' => 'Our consultants help leadership teams make sound technology decisions — architecture reviews, vendor selection, security posture, and digital transformation roadmaps.',
         ],
+    ];
+}
+
+/**
+ * The six-stage delivery process, shared by the homepage and every
+ * individual service page so the story stays consistent site-wide.
+ */
+function process_steps(): array
+{
+    return [
+        ['title' => 'Discover', 'desc' => 'Understanding your business objectives and technical requirements.'],
+        ['title' => 'Plan', 'desc' => 'Creating a clear roadmap with timelines and milestones.'],
+        ['title' => 'Design', 'desc' => 'Building intuitive user experiences and modern interfaces.'],
+        ['title' => 'Develop', 'desc' => 'Writing secure, scalable, and maintainable code.'],
+        ['title' => 'Test', 'desc' => 'Ensuring quality through rigorous testing and optimization.'],
+        ['title' => 'Launch & Support', 'desc' => 'Deploying your solution and providing continuous maintenance.'],
+    ];
+}
+
+/**
+ * Industries served, shared by the homepage industries grid.
+ */
+function industries_served(): array
+{
+    return [
+        ['name' => 'Healthcare', 'icon' => 'fa-solid fa-heart-pulse'],
+        ['name' => 'Manufacturing', 'icon' => 'fa-solid fa-industry'],
+        ['name' => 'Logistics & Supply Chain', 'icon' => 'fa-solid fa-truck-fast'],
+        ['name' => 'Retail & E-commerce', 'icon' => 'fa-solid fa-cart-shopping'],
+        ['name' => 'Finance', 'icon' => 'fa-solid fa-chart-line'],
+        ['name' => 'Education', 'icon' => 'fa-solid fa-graduation-cap'],
+        ['name' => 'Real Estate', 'icon' => 'fa-solid fa-building'],
+        ['name' => 'Hospitality', 'icon' => 'fa-solid fa-bell-concierge'],
+        ['name' => 'Startups', 'icon' => 'fa-solid fa-rocket'],
+        ['name' => 'Professional Services', 'icon' => 'fa-solid fa-briefcase'],
     ];
 }
 

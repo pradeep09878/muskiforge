@@ -23,7 +23,7 @@ $faqGroups = [
         ['question' => 'Do you work with WordPress as well as custom code?', 'answer' => 'Yes. For content-heavy sites managed by non-technical teams we often recommend WordPress with a theme like Astra; for complex applications we build custom PHP or Node.js platforms.'],
     ],
     'Process' => [
-        ['question' => 'How is your development process structured?', 'answer' => 'We follow seven stages: Discover, Plan, Design, Develop, Test, Launch, and Support, with checkpoints throughout so you always know project status.'],
+        ['question' => 'How is your development process structured?', 'answer' => 'We follow six stages: Discover, Plan, Design, Develop, Test, and Launch & Support, with checkpoints throughout so you always know project status.'],
         ['question' => 'How long does a typical project take?', 'answer' => 'Marketing websites typically take 3-6 weeks; custom software and mobile apps run 8-16 weeks depending on scope.'],
         ['question' => 'Will I be able to review progress during the build?', 'answer' => 'Yes, we share weekly progress updates and staging links so you can review work in real time, not just at final delivery.'],
     ],
