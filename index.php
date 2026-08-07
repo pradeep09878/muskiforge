@@ -180,8 +180,34 @@ require __DIR__ . '/includes/header.php';
 ?>
 <main id="main-content">
 
-<!-- ============ HERO CAROUSEL ============ -->
-<section class="hero-carousel" id="heroCarousel" data-hero-carousel>
+<!-- ============ MOBILE HERO (small/medium screens only) ============ -->
+<!-- The desktop carousel below (dashboard visuals, floating cards, tilt
+     effects) is built for a wide viewport. Below the lg breakpoint we show
+     this simpler, static hero instead — same brand voice, no JS dependency. -->
+<section class="hero d-lg-none">
+  <div class="container">
+    <div class="text-center mx-auto" style="max-width:640px">
+      <span class="hero-badge mb-3"><i class="fa-solid fa-bolt"></i> Trusted Technology Partner</span>
+      <h1 class="mb-4">End-to-End IT Services That Help Businesses <span class="text-gradient">Build, Scale &amp; Grow</span></h1>
+      <p class="fs-5 section-subtitle mx-auto mb-4">
+        Muskiforge delivers custom software development, website development, mobile app development, cloud
+        solutions, SEO services, digital marketing, and IT consulting to help startups, SMEs, and enterprises
+        accelerate digital transformation.
+      </p>
+      <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 mb-4">
+        <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent btn-lg rounded-pill px-4">Get Started</a>
+        <a href="<?= e(url('portfolio.php')) ?>" class="btn btn-outline-accent btn-lg rounded-pill px-4">View Our Work</a>
+      </div>
+      <div class="hero-proof justify-content-center">
+        <i class="fa-solid fa-circle-check text-accent"></i>
+        <p class="small text-muted mb-0"><strong class="text-dark">150+</strong> projects delivered &middot; <strong class="text-dark">98%</strong> client satisfaction</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESKTOP HERO CAROUSEL (lg and up) ============ -->
+<section class="hero-carousel d-none d-lg-block" id="heroCarousel" data-hero-carousel>
   <?php foreach ($heroSlides as $i => $slide): ?>
   <div class="hc-slide<?= $i === 0 ? ' active' : '' ?>" style="--slide-from:<?= e($slide['gradient'][0]) ?>;--slide-to:<?= e($slide['gradient'][1]) ?>">
     <div class="hc-grid-overlay"></div>
