@@ -39,15 +39,19 @@ require __DIR__ . '/includes/header.php';
     <div class="row align-items-center gy-5">
       <div class="col-lg-6">
         <span class="hero-badge mb-3"><i class="fa-solid fa-bolt"></i> Trusted Technology Partner</span>
-        <h1 class="mb-4">Transforming Businesses Through Innovative Digital Solutions</h1>
+        <h1 class="mb-4">Transforming Businesses Through <span class="text-gradient">Innovative Digital Solutions</span></h1>
         <p class="fs-5 section-subtitle mb-4">
           Muskiforge helps startups, SMEs, and enterprises accelerate growth with custom software development,
           website development, mobile applications, cloud solutions, SEO services, digital marketing, and
           strategic IT consulting.
         </p>
-        <div class="d-flex flex-wrap gap-3">
+        <div class="d-flex flex-wrap gap-3 mb-4">
           <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent btn-lg rounded-pill px-4">Get Started</a>
           <a href="<?= e(url('services.php')) ?>" class="btn btn-outline-accent btn-lg rounded-pill px-4">Explore Services</a>
+        </div>
+        <div class="hero-proof">
+          <div class="testimonial-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p class="small text-muted mb-0"><strong class="text-dark">150+</strong> projects delivered &middot; <strong class="text-dark">98%</strong> client satisfaction</p>
         </div>
       </div>
       <div class="col-lg-6">
@@ -58,7 +62,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ============ TRUSTED BY ============ -->
-<section class="py-4 border-bottom">
+<section class="py-4">
   <div class="container">
     <p class="text-center text-uppercase small fw-bold text-muted mb-4">Trusted by growing teams across industries</p>
     <div class="row trusted-strip justify-content-center align-items-center gy-3">
@@ -119,7 +123,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ============ WHY CHOOSE MUSKIFORGE ============ -->
-<section class="py-5 py-lg-6" id="why-us">
+<section class="py-5 py-lg-6 section-dark" id="why-us">
   <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width:640px">
       <span class="eyebrow">Why Muskiforge</span>
@@ -257,7 +261,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ============ TESTIMONIALS ============ -->
-<section class="py-5 py-lg-6 bg-light" id="testimonials">
+<section class="py-5 py-lg-6 section-dark" id="testimonials">
   <div class="container">
     <div class="text-center mx-auto mb-5" style="max-width:640px">
       <span class="eyebrow">Client Voices</span>

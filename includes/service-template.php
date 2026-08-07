@@ -54,7 +54,7 @@ declare(strict_types=1);
   </div>
 </section>
 
-<section class="py-5 bg-light">
+<section class="py-5 section-dark">
   <div class="container">
     <div class="row align-items-center gy-4">
       <div class="col-lg-6">

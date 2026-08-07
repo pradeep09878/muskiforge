@@ -25,9 +25,9 @@ define('SOCIAL_INSTAGRAM', 'https://instagram.com/muskiforge');
 define('SOCIAL_GITHUB', 'https://github.com/muskiforge');
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'muskiforge');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_NAME', 'xxnllsee_muskiforge');
+define('DB_USER', 'xxnllsee_muskiforge');
+define('DB_PASS', '&YHTiJ7-((qHdEJv');
 define('DB_CHARSET', 'utf8mb4');
 
 // Environment-specific overrides (gitignored). Safe to omit in production
