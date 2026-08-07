@@ -84,8 +84,60 @@
     });
   }
 
+  /* Auto-rotating hero carousel (data-hero-carousel), with manual
+     arrow/dot controls and a pause on hover/focus/reduced-motion. */
+  function initHeroCarousel() {
+    var root = document.querySelector('[data-hero-carousel]');
+    if (!root) return;
+
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.hc-slide'));
+    var dots = Array.prototype.slice.call(root.querySelectorAll('[data-hero-goto]'));
+    var prevBtn = root.querySelector('[data-hero-prev]');
+    var nextBtn = root.querySelector('[data-hero-next]');
+    if (slides.length < 2) return;
+
+    var current = 0;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var intervalMs = 6500;
+    var timer = null;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current] && dots[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current] && dots[current].classList.add('active');
+    }
+
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function start() {
+      if (reduceMotion) return;
+      stop();
+      timer = window.setInterval(next, intervalMs);
+    }
+    function stop() {
+      if (timer) { window.clearInterval(timer); timer = null; }
+    }
+
+    dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); start(); });
+    });
+    prevBtn && prevBtn.addEventListener('click', function () { prev(); start(); });
+    nextBtn && nextBtn.addEventListener('click', function () { next(); start(); });
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    start();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initCounters();
     initAjaxForms();
+    initHeroCarousel();
   });
 })();
