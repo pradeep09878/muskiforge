@@ -187,6 +187,7 @@ require __DIR__ . '/includes/header.php';
     <div class="hc-grid-overlay"></div>
     <div class="hc-blob hc-blob-1"></div>
     <div class="hc-blob hc-blob-2"></div>
+    <i class="hc-watermark <?= e($slide['visual']['icon']) ?>" aria-hidden="true"></i>
     <div class="container hc-inner">
       <div class="hc-content">
         <div class="hc-badge"><span class="hc-dot-pulse"></span> <?= e($slide['badge']) ?></div>
@@ -199,7 +200,11 @@ require __DIR__ . '/includes/header.php';
         <div class="hc-stats">
           <?php foreach ($slide['stats'] as $si => $stat): ?>
           <?php if ($si > 0): ?><div class="hc-stat-div"></div><?php endif; ?>
-          <div class="hc-stat"><span class="hc-stat-num"><?= e($stat['num']) ?><sup><?= e($stat['suffix']) ?></sup></span><span class="hc-stat-label"><?= e($stat['label']) ?></span></div>
+          <?php $isNumeric = (bool) preg_match('/^\d+(\.\d+)?$/', (string) $stat['num']); ?>
+          <div class="hc-stat">
+            <span class="hc-stat-num"><span class="hc-stat-value"<?= $isNumeric ? ' data-hero-count="' . e($stat['num']) . '"' : '' ?>><?= e($stat['num']) ?></span><sup><?= e($stat['suffix']) ?></sup></span>
+            <span class="hc-stat-label"><?= e($stat['label']) ?></span>
+          </div>
           <?php endforeach; ?>
         </div>
       </div>
@@ -263,7 +268,7 @@ require __DIR__ . '/includes/header.php';
   <button type="button" class="hc-arrow hc-arrow-next" data-hero-next aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
   <div class="hc-nav" data-hero-nav>
     <?php foreach ($heroSlides as $i => $slide): ?>
-    <button type="button" class="hc-nav-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-goto="<?= $i ?>" aria-label="Go to slide <?= $i + 1 ?>"></button>
+    <button type="button" class="hc-nav-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-goto="<?= $i ?>" aria-label="Go to slide <?= $i + 1 ?>"><span class="hc-nav-fill"></span></button>
     <?php endforeach; ?>
   </div>
 </section>

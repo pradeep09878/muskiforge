@@ -134,7 +134,7 @@ section { scroll-margin-top: 90px; }
 }
 
 /* ---------- Hero Carousel (homepage) ---------- */
-.hero-carousel { position: relative; overflow: hidden; }
+.hero-carousel { position: relative; overflow: hidden; --hero-interval: 6.5s; }
 
 .hc-slide {
   display: none;
@@ -143,9 +143,12 @@ section { scroll-margin-top: 90px; }
   padding: 6.5rem 0 6rem;
   color: #fff;
   background: linear-gradient(135deg, var(--slide-from) 0%, var(--slide-to) 100%);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .4s ease, transform .4s ease;
 }
-.hc-slide.active { display: block; animation: hcFadeIn .6s ease; }
-@keyframes hcFadeIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+.hc-slide.active { display: block; }
+.hc-slide.hc-leaving { opacity: 0; transform: translateY(-14px); }
 
 .hc-grid-overlay {
   position: absolute;
@@ -158,11 +161,44 @@ section { scroll-margin-top: 90px; }
 }
 
 .hc-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .32; pointer-events: none; }
-.hc-blob-1 { width: 420px; height: 420px; top: -130px; right: -90px; background: rgba(255, 255, 255, .28); }
-.hc-blob-2 { width: 360px; height: 360px; bottom: -150px; left: -70px; background: rgba(255, 255, 255, .16); }
+.hc-blob-1 { width: 420px; height: 420px; top: -130px; right: -90px; background: rgba(255, 255, 255, .28); animation: hcBlobDrift1 11s ease-in-out infinite; }
+.hc-blob-2 { width: 360px; height: 360px; bottom: -150px; left: -70px; background: rgba(255, 255, 255, .16); animation: hcBlobDrift2 13s ease-in-out infinite; }
+@keyframes hcBlobDrift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-22px, 26px); } }
+@keyframes hcBlobDrift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(26px, -20px); } }
+
+.hc-watermark {
+  position: absolute;
+  right: -2.5rem;
+  top: 50%;
+  font-size: 22rem;
+  color: rgba(255, 255, 255, .05);
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: hcWatermarkFloat 9s ease-in-out infinite;
+}
+@keyframes hcWatermarkFloat {
+  0%, 100% { transform: translateY(-50%) rotate(0deg); }
+  50% { transform: translateY(calc(-50% - 16px)) rotate(3deg); }
+}
+@media (max-width: 991.98px) { .hc-watermark { display: none; } }
 
 .hc-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
 @media (max-width: 991.98px) { .hc-inner { grid-template-columns: 1fr; text-align: center; } }
+
+/* Staggered entrance: hidden by default, animated in only while the parent slide is active. */
+@keyframes hcRiseIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hcRiseInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+.hc-badge, .hc-title, .hc-desc, .hc-btns, .hc-stats { opacity: 0; transform: translateY(20px); }
+.hc-visual { opacity: 0; transform: translateX(30px); }
+
+.hc-slide.active .hc-badge { animation: hcRiseIn .6s ease forwards; animation-delay: .05s; }
+.hc-slide.active .hc-title { animation: hcRiseIn .6s ease forwards; animation-delay: .15s; }
+.hc-slide.active .hc-desc { animation: hcRiseIn .6s ease forwards; animation-delay: .25s; }
+.hc-slide.active .hc-btns { animation: hcRiseIn .6s ease forwards; animation-delay: .35s; }
+.hc-slide.active .hc-stats { animation: hcRiseIn .6s ease forwards; animation-delay: .45s; }
+.hc-slide.active .hc-visual { animation: hcRiseInRight .7s ease forwards; animation-delay: .3s; }
 
 .hc-badge {
   display: inline-flex; align-items: center; gap: .55rem;
@@ -223,7 +259,7 @@ section { scroll-margin-top: 90px; }
 .hc-stat-label { font-size: .78rem; color: rgba(255, 255, 255, .65); }
 .hc-stat-div { width: 1px; height: 32px; background: rgba(255, 255, 255, .25); }
 
-.hc-visual { position: relative; }
+.hc-visual { position: relative; perspective: 1000px; }
 .hc-card {
   background: rgba(255, 255, 255, .07);
   border: 1px solid rgba(255, 255, 255, .14);
@@ -231,6 +267,9 @@ section { scroll-margin-top: 90px; }
   padding: 1.25rem;
   backdrop-filter: blur(10px);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .55);
+  transition: transform .15s ease-out;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .hc-card-head { display: flex; align-items: center; gap: .75rem; }
 .hc-card-icon {
@@ -284,16 +323,23 @@ section { scroll-margin-top: 90px; }
 .hc-float-sub { font-size: .7rem; color: rgba(255, 255, 255, .6); }
 @media (max-width: 991.98px) { .hc-float { display: none; } }
 
+/* Instagram-story-style progress bars: the active bar sweeps fill over
+   the autoplay interval, giving a visible countdown to the next slide. */
 .hc-nav {
   position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
   display: flex; gap: .5rem; z-index: 2;
 }
 .hc-nav-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: rgba(255, 255, 255, .35); border: none; padding: 0;
-  transition: all .2s ease; cursor: pointer;
+  width: 34px; height: 4px; border-radius: 99px;
+  background: rgba(255, 255, 255, .28); border: none; padding: 0;
+  position: relative; overflow: hidden; cursor: pointer;
 }
-.hc-nav-dot.active { width: 24px; border-radius: 99px; background: #fff; }
+.hc-nav-fill { position: absolute; inset: 0; width: 0; background: #fff; border-radius: 99px; }
+.hc-nav-dot.active .hc-nav-fill { animation: hcNavFill var(--hero-interval) linear forwards; }
+.hc-nav-dot.hc-nav-filled .hc-nav-fill { width: 100%; }
+@keyframes hcNavFill { from { width: 0; } to { width: 100%; } }
+.hero-carousel:hover .hc-nav-dot.active .hc-nav-fill,
+.hero-carousel:focus-within .hc-nav-dot.active .hc-nav-fill { animation-play-state: paused; }
 
 .hc-arrow {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
@@ -308,7 +354,14 @@ section { scroll-margin-top: 90px; }
 @media (max-width: 767.98px) { .hc-arrow { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .hc-slide, .hc-float, .hc-dot-pulse { animation: none !important; }
+  .hc-slide, .hc-float, .hc-dot-pulse, .hc-blob, .hc-watermark,
+  .hc-badge, .hc-title, .hc-desc, .hc-btns, .hc-stats, .hc-visual,
+  .hc-nav-fill {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hc-card { transition: none !important; }
 }
 
 /* ---------- Trusted by ---------- */

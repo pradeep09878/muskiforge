@@ -84,8 +84,35 @@
     });
   }
 
-  /* Auto-rotating hero carousel (data-hero-carousel), with manual
-     arrow/dot controls and a pause on hover/focus/reduced-motion. */
+  /* Counts a hero stat value up from 0 to its target, preserving the
+     original string's decimal precision (e.g. "99.9" stays one decimal). */
+  function animateHeroCount(el) {
+    var original = el.getAttribute('data-hero-count');
+    var target = parseFloat(original);
+    if (isNaN(target)) return;
+
+    var decimals = (original.split('.')[1] || '').length;
+    var duration = 900;
+    var start = performance.now();
+
+    function tick(now) {
+      var progress = Math.min((now - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = (eased * target).toFixed(decimals);
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = original;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* Auto-rotating hero carousel (data-hero-carousel): crossfades slides,
+     re-triggers each slide's staggered entrance animations and stat
+     counters, drives Instagram-story-style progress dots, and offers a
+     subtle mouse-parallax tilt on the dashboard visual. Respects
+     prefers-reduced-motion and hover-incapable (touch) devices. */
   function initHeroCarousel() {
     var root = document.querySelector('[data-hero-carousel]');
     if (!root) return;
@@ -98,15 +125,52 @@
 
     var current = 0;
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var canHover = window.matchMedia('(hover: hover)').matches;
     var intervalMs = 6500;
+    var transitionMs = 400;
     var timer = null;
+    var transitioning = false;
+
+    function runCounters(slide) {
+      if (reduceMotion) return;
+      var values = slide.querySelectorAll('[data-hero-count]');
+      values.forEach(function (el) { animateHeroCount(el); });
+    }
+
+    function updateDots(newIndex) {
+      dots.forEach(function (dot, i) {
+        dot.classList.toggle('active', i === newIndex);
+        dot.classList.toggle('hc-nav-filled', i < newIndex);
+      });
+    }
 
     function goTo(index) {
-      slides[current].classList.remove('active');
-      dots[current] && dots[current].classList.remove('active');
-      current = (index + slides.length) % slides.length;
-      slides[current].classList.add('active');
-      dots[current] && dots[current].classList.add('active');
+      var newIndex = (index + slides.length) % slides.length;
+      if (transitioning || newIndex === current) return;
+
+      var oldSlide = slides[current];
+      var newSlide = slides[newIndex];
+      transitioning = true;
+
+      if (reduceMotion) {
+        oldSlide.classList.remove('active');
+        newSlide.classList.add('active');
+        current = newIndex;
+        updateDots(current);
+        runCounters(newSlide);
+        transitioning = false;
+        return;
+      }
+
+      oldSlide.classList.add('hc-leaving');
+      window.setTimeout(function () {
+        oldSlide.classList.remove('active', 'hc-leaving');
+        newSlide.classList.add('active');
+        current = newIndex;
+        updateDots(current);
+        runCounters(newSlide);
+        transitioning = false;
+      }, transitionMs);
     }
 
     function next() { goTo(current + 1); }
@@ -132,6 +196,22 @@
     root.addEventListener('focusin', stop);
     root.addEventListener('focusout', start);
 
+    if (canHover && !reduceMotion) {
+      root.addEventListener('mousemove', function (e) {
+        var card = root.querySelector('.hc-slide.active .hc-card');
+        if (!card) return;
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = 'perspective(1000px) rotateX(' + (y * -8).toFixed(2) + 'deg) rotateY(' + (x * 8).toFixed(2) + 'deg)';
+      });
+      root.addEventListener('mouseleave', function () {
+        var card = root.querySelector('.hc-card');
+        if (card) card.style.transform = '';
+      });
+    }
+
+    runCounters(slides[0]);
     start();
   }
 
