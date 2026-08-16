@@ -397,24 +397,6 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- ============ INDUSTRIES ============ -->
-<section class="py-5 py-lg-6 bg-light" id="industries">
-  <div class="container">
-    <div class="text-center mx-auto mb-5" style="max-width:640px">
-      <span class="eyebrow">Industries We Serve</span>
-      <h2 class="section-title mt-2 mb-3">Technology Solutions for Every Industry</h2>
-      <p class="section-subtitle mx-auto">Our IT solutions support businesses across industries including:</p>
-    </div>
-    <div class="row g-3 text-center">
-      <?php foreach (industries_served() as $industry): ?>
-      <div class="col-6 col-md-3">
-        <div class="tech-badge bg-white"><i class="<?= e($industry['icon']) ?>"></i><?= e($industry['name']) ?></div>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-
 <!-- ============ DEVELOPMENT PROCESS ============ -->
 <section class="py-5 py-lg-6" id="process">
   <div class="container">
