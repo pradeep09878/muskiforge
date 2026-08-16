@@ -5,6 +5,9 @@
  */
 
 declare(strict_types=1);
+
+$serviceIndex = array_search($service['slug'], array_keys(services_catalog()), true);
+$serviceAccent = accent_vars($serviceIndex === false ? 0 : (int) $serviceIndex);
 ?>
 <main id="main-content">
 
@@ -28,7 +31,37 @@ declare(strict_types=1);
         </div>
       </div>
       <div class="col-lg-5">
-        <img src="<?= e(asset('images/service-' . $service['slug'] . '.jpg')) ?>" alt="<?= e($service['title']) ?> illustration" class="img-fluid rounded-xl shadow-soft" loading="lazy">
+        <svg class="img-fluid rounded-xl shadow-soft" viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($service['title']) ?> illustration">
+          <defs>
+            <linearGradient id="svcBg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="<?= e($serviceAccent['light']) ?>"/>
+              <stop offset="100%" stop-color="#ffffff"/>
+            </linearGradient>
+          </defs>
+          <rect width="480" height="400" rx="20" fill="url(#svcBg)"/>
+          <circle cx="240" cy="200" r="160" fill="none" stroke="<?= e($serviceAccent['color']) ?>" stroke-width="1.5" opacity=".18"/>
+          <circle cx="240" cy="200" r="120" fill="none" stroke="<?= e($serviceAccent['color']) ?>" stroke-width="1.5" opacity=".3"/>
+
+          <circle cx="240" cy="200" r="76" fill="<?= e($serviceAccent['color']) ?>"/>
+          <foreignObject x="188" y="148" width="104" height="104">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:3.4rem;color:#fff;text-align:center;line-height:104px;">
+              <i class="<?= e($service['icon']) ?>" aria-hidden="true"></i>
+            </div>
+          </foreignObject>
+
+          <g>
+            <circle cx="90" cy="110" r="26" fill="#fff" stroke="<?= e($serviceAccent['light']) ?>" stroke-width="2"/>
+            <path d="M80 110l7 7 13-15" stroke="<?= e($serviceAccent['color']) ?>" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g>
+            <circle cx="400" cy="100" r="26" fill="#fff" stroke="<?= e($serviceAccent['light']) ?>" stroke-width="2"/>
+            <path d="M400 88l4.5 9.2 10.1 1.5-7.3 7.1 1.7 10.1-9-4.8-9 4.8 1.7-10.1-7.3-7.1 10.1-1.5z" fill="<?= e($serviceAccent['color']) ?>"/>
+          </g>
+          <g>
+            <circle cx="410" cy="300" r="26" fill="#fff" stroke="<?= e($serviceAccent['light']) ?>" stroke-width="2"/>
+            <path d="M401 300h18M410 291v18" stroke="<?= e($serviceAccent['color']) ?>" stroke-width="3" stroke-linecap="round"/>
+          </g>
+        </svg>
       </div>
     </div>
   </div>

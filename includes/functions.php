@@ -22,6 +22,26 @@ function accent_class(int $index): string
     return $palette[$index % count($palette)];
 }
 
+/**
+ * Same color cycle as accent_class(), but returns the underlying CSS
+ * variable names — for inline SVG illustrations that need a real `fill`
+ * value rather than a class (inline SVG still resolves page-level
+ * custom properties via var(), so these stay in sync with the palette).
+ */
+function accent_vars(int $index): array
+{
+    $palette = [
+        ['color' => 'var(--mf-accent)', 'light' => 'var(--mf-accent-light)'],
+        ['color' => 'var(--mf-violet)', 'light' => 'var(--mf-violet-light)'],
+        ['color' => 'var(--mf-emerald)', 'light' => 'var(--mf-emerald-light)'],
+        ['color' => 'var(--mf-amber)', 'light' => 'var(--mf-amber-light)'],
+        ['color' => 'var(--mf-rose)', 'light' => 'var(--mf-rose-light)'],
+        ['color' => 'var(--mf-indigo)', 'light' => 'var(--mf-indigo-light)'],
+    ];
+
+    return $palette[$index % count($palette)];
+}
+
 function asset(string $path): string
 {
     return SITE_URL . '/assets/' . ltrim($path, '/');

@@ -18,12 +18,12 @@ $extraSchema = schema_breadcrumb([
 ]);
 
 $posts = [
-    ['Entity SEO in 2026: Building Topical Authority That AI Engines Cite', 'SEO', 'Aug 2, 2026', 'blog-1.jpg'],
-    ['Choosing Between Laravel and Node.js for Your Next Platform', 'Software Development', 'Jul 24, 2026', 'blog-2.jpg'],
-    ['Flutter vs Native: A Practical Guide for Startups', 'Mobile', 'Jul 12, 2026', 'blog-3.jpg'],
-    ['Core Web Vitals: What Actually Moves the Needle in 2026', 'SEO', 'Jun 30, 2026', 'blog-4.jpg'],
-    ['A Founder\'s Guide to Cloud Cost Optimization on AWS', 'Cloud', 'Jun 15, 2026', 'blog-5.jpg'],
-    ['Structured Data 101: Schema Markup for AI Search Visibility', 'SEO', 'May 28, 2026', 'blog-6.jpg'],
+    ['Entity SEO in 2026: Building Topical Authority That AI Engines Cite', 'SEO', 'Aug 2, 2026', 'fa-solid fa-magnifying-glass-chart'],
+    ['Choosing Between Laravel and Node.js for Your Next Platform', 'Software Development', 'Jul 24, 2026', 'fa-solid fa-code'],
+    ['Flutter vs Native: A Practical Guide for Startups', 'Mobile', 'Jul 12, 2026', 'fa-solid fa-mobile-screen-button'],
+    ['Core Web Vitals: What Actually Moves the Needle in 2026', 'SEO', 'Jun 30, 2026', 'fa-solid fa-gauge-high'],
+    ['A Founder\'s Guide to Cloud Cost Optimization on AWS', 'Cloud', 'Jun 15, 2026', 'fa-solid fa-cloud'],
+    ['Structured Data 101: Schema Markup for AI Search Visibility', 'SEO', 'May 28, 2026', 'fa-solid fa-diagram-project'],
 ];
 
 require __DIR__ . '/includes/header.php';
@@ -43,10 +43,25 @@ require __DIR__ . '/includes/header.php';
 <section class="py-5">
   <div class="container">
     <div class="row g-4">
-      <?php foreach ($posts as [$title, $tag, $date, $img]): ?>
+      <?php foreach ($posts as $bi => [$title, $tag, $date, $icon]): $av = accent_vars($bi); ?>
       <div class="col-md-6 col-lg-4">
         <div class="card-service bg-white p-0 overflow-hidden h-100">
-          <img src="<?= e(asset('images/' . $img)) ?>" alt="<?= e($title) ?>" class="img-fluid w-100" loading="lazy">
+          <svg viewBox="0 0 400 200" class="w-100 d-block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($tag) ?> article illustration">
+            <defs>
+              <linearGradient id="blogGrad<?= $bi ?>" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="<?= e($av['color']) ?>"/>
+                <stop offset="100%" stop-color="<?= e($av['light']) ?>"/>
+              </linearGradient>
+            </defs>
+            <rect width="400" height="200" fill="url(#blogGrad<?= $bi ?>)"/>
+            <path d="M0 170 L100 130 L200 160 L300 110 L400 150 L400 200 L0 200 Z" fill="rgba(255,255,255,.18)"/>
+            <circle cx="200" cy="90" r="40" fill="rgba(255,255,255,.22)"/>
+            <foreignObject x="164" y="54" width="72" height="72">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:2.25rem;color:#fff;text-align:center;line-height:72px;">
+                <i class="<?= e($icon) ?>" aria-hidden="true"></i>
+              </div>
+            </foreignObject>
+          </svg>
           <div class="p-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="eyebrow"><?= e($tag) ?></span>

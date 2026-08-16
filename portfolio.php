@@ -18,14 +18,14 @@ $extraSchema = schema_breadcrumb([
 ]);
 
 $projects = [
-    ['NovaHealth Patient Portal', 'Web Apps', 'Healthcare', 'portfolio-1.jpg', 'A HIPAA-conscious patient portal handling appointment scheduling and secure messaging for a multi-clinic healthcare network.'],
-    ['Finlytics Trading Dashboard', 'Enterprise Software', 'Finance', 'portfolio-2.jpg', 'A real-time trading analytics dashboard processing high-frequency market data for institutional clients.'],
-    ['BrightRetail Storefront', 'E-commerce', 'Retail', 'portfolio-3.jpg', 'A headless e-commerce storefront rebuild that cut checkout abandonment and tripled organic traffic.'],
-    ['CargoLine Fleet Tracker', 'Mobile Apps', 'Logistics', 'portfolio-4.jpg', 'A cross-platform Flutter app giving dispatchers live GPS tracking across a 200-vehicle fleet.'],
-    ['EduSphere LMS Migration', 'Cloud Solutions', 'Education', 'portfolio-5.jpg', 'A full migration of a legacy learning management system to AWS with zero downtime during the school term.'],
-    ['UrbanEstate Listings Platform', 'Web Apps', 'Real Estate', 'portfolio-6.jpg', 'A listings and CRM platform for a regional real estate brokerage with map-based search and lead routing.'],
-    ['Manufaco Inventory System', 'Enterprise Software', 'Manufacturing', 'portfolio-7.jpg', 'A custom inventory and production-tracking system replacing spreadsheets across three factory sites.'],
-    ['LaunchPad Startup Suite', 'Web Apps', 'Startups', 'portfolio-8.jpg', 'A full marketing site plus investor-facing dashboard built and shipped in under four weeks for a seed-stage startup.'],
+    ['NovaHealth Patient Portal', 'Web Apps', 'Healthcare', 'fa-solid fa-globe', 'A HIPAA-conscious patient portal handling appointment scheduling and secure messaging for a multi-clinic healthcare network.'],
+    ['Finlytics Trading Dashboard', 'Enterprise Software', 'Finance', 'fa-solid fa-chart-line', 'A real-time trading analytics dashboard processing high-frequency market data for institutional clients.'],
+    ['BrightRetail Storefront', 'E-commerce', 'Retail', 'fa-solid fa-cart-shopping', 'A headless e-commerce storefront rebuild that cut checkout abandonment and tripled organic traffic.'],
+    ['CargoLine Fleet Tracker', 'Mobile Apps', 'Logistics', 'fa-solid fa-mobile-screen-button', 'A cross-platform Flutter app giving dispatchers live GPS tracking across a 200-vehicle fleet.'],
+    ['EduSphere LMS Migration', 'Cloud Solutions', 'Education', 'fa-solid fa-cloud', 'A full migration of a legacy learning management system to AWS with zero downtime during the school term.'],
+    ['UrbanEstate Listings Platform', 'Web Apps', 'Real Estate', 'fa-solid fa-globe', 'A listings and CRM platform for a regional real estate brokerage with map-based search and lead routing.'],
+    ['Manufaco Inventory System', 'Enterprise Software', 'Manufacturing', 'fa-solid fa-boxes-stacked', 'A custom inventory and production-tracking system replacing spreadsheets across three factory sites.'],
+    ['LaunchPad Startup Suite', 'Web Apps', 'Startups', 'fa-solid fa-rocket', 'A full marketing site plus investor-facing dashboard built and shipped in under four weeks for a seed-stage startup.'],
 ];
 
 require __DIR__ . '/includes/header.php';
@@ -45,11 +45,25 @@ require __DIR__ . '/includes/header.php';
 <section class="py-5">
   <div class="container">
     <div class="row g-4">
-      <?php foreach ($projects as [$title, $tag, $industry, $img, $desc]): ?>
+      <?php foreach ($projects as $pi => [$title, $tag, $industry, $icon, $desc]): $av = accent_vars($pi); ?>
       <div class="col-md-6 col-lg-4">
         <div class="portfolio-card position-relative mb-3">
           <span class="portfolio-tag"><?= e($tag) ?></span>
-          <img src="<?= e(asset('images/' . $img)) ?>" alt="<?= e($title) ?> case study" class="img-fluid w-100" loading="lazy">
+          <svg viewBox="0 0 400 260" class="w-100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($title) ?> project mockup">
+            <rect width="400" height="260" fill="<?= e($av['light']) ?>"/>
+            <rect width="400" height="34" fill="<?= e($av['color']) ?>"/>
+            <circle cx="18" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
+            <circle cx="34" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
+            <circle cx="50" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
+            <rect x="30" y="66" width="180" height="12" rx="6" fill="rgba(15,23,41,.18)"/>
+            <rect x="30" y="86" width="120" height="9" rx="4.5" fill="rgba(15,23,41,.1)"/>
+            <rect x="30" y="118" width="340" height="112" rx="10" fill="#fff" opacity=".8"/>
+            <foreignObject x="164" y="146" width="72" height="56">
+              <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:2rem;color:<?= e($av['color']) ?>;text-align:center;line-height:56px;">
+                <i class="<?= e($icon) ?>" aria-hidden="true"></i>
+              </div>
+            </foreignObject>
+          </svg>
         </div>
         <h2 class="h6 fw-bold mb-1"><?= e($title) ?></h2>
         <p class="small text-muted mb-1"><?= e($industry) ?></p>

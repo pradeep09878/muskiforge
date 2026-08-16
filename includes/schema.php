@@ -20,7 +20,7 @@ function schema_organization(): string
         '@type' => 'Organization',
         'name' => SITE_NAME,
         'url' => SITE_URL,
-        'logo' => asset('images/logo.png'),
+        'logo' => asset('images/logo.svg'),
         'description' => 'Muskiforge is an end-to-end IT services company providing website development, software development, mobile app development, cloud solutions, SEO services, digital marketing, and IT consulting.',
         'email' => SITE_EMAIL,
         'telephone' => SITE_PHONE,
