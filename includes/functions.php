@@ -10,6 +10,18 @@ function e(?string $value): string
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * Cycles through the accent color palette for repeating card/icon grids
+ * (services, differentiators, process steps) so they don't all read as one
+ * flat blue. Returns an icon-badge modifier class; empty string = default blue.
+ */
+function accent_class(int $index): string
+{
+    $palette = ['', 'accent-violet', 'accent-emerald', 'accent-amber', 'accent-rose', 'accent-indigo'];
+
+    return $palette[$index % count($palette)];
+}
+
 function asset(string $path): string
 {
     return SITE_URL . '/assets/' . ltrim($path, '/');

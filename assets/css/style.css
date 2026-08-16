@@ -13,6 +13,20 @@
   --mf-text-muted: #5b6474;
   --mf-radius: 14px;
   --mf-glow: 0 20px 45px -18px rgba(21, 94, 239, .45);
+
+  /* Expanded accent palette — used to give repeating card/icon grids
+     (services, differentiators, process steps) visual variety instead of
+     one flat blue everywhere. */
+  --mf-violet: #7c3aed;
+  --mf-violet-light: #f2ecfe;
+  --mf-emerald: #10b981;
+  --mf-emerald-light: #e3f9f1;
+  --mf-amber: #f59e0b;
+  --mf-amber-light: #fef3e2;
+  --mf-rose: #e0349e;
+  --mf-rose-light: #fce8f4;
+  --mf-indigo: #6366f1;
+  --mf-indigo-light: #ecedfe;
 }
 
 body {
@@ -95,7 +109,9 @@ section { scroll-margin-top: 90px; }
 .hero {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, #f4f8ff 0%, #ffffff 62%);
+  background:
+    radial-gradient(circle at 88% 85%, rgba(124, 58, 237, .14) 0%, transparent 42%),
+    linear-gradient(180deg, #f4f8ff 0%, #ffffff 62%);
   padding: 7rem 0 5.5rem;
 }
 .hero::before,
@@ -381,7 +397,7 @@ section { scroll-margin-top: 90px; }
   box-shadow: 0 20px 40px -20px rgba(17, 24, 39, .18);
   border-color: transparent;
 }
-.card-service .icon-badge {
+.icon-badge {
   width: 56px; height: 56px;
   display: inline-flex; align-items: center; justify-content: center;
   border-radius: 12px;
@@ -390,6 +406,20 @@ section { scroll-margin-top: 90px; }
   font-size: 1.4rem;
   margin-bottom: 1.25rem;
 }
+
+/* Color-cycling variants: gives repeating card/icon grids (services,
+   differentiators) visual variety instead of one flat blue everywhere. */
+.icon-badge.accent-violet { background: var(--mf-violet-light); color: var(--mf-violet); }
+.icon-badge.accent-emerald { background: var(--mf-emerald-light); color: var(--mf-emerald); }
+.icon-badge.accent-amber { background: var(--mf-amber-light); color: var(--mf-amber); }
+.icon-badge.accent-rose { background: var(--mf-rose-light); color: var(--mf-rose); }
+.icon-badge.accent-indigo { background: var(--mf-indigo-light); color: var(--mf-indigo); }
+
+.section-dark .icon-badge.accent-violet { background: rgba(124, 58, 237, .18); color: #a78bfa; }
+.section-dark .icon-badge.accent-emerald { background: rgba(16, 185, 129, .18); color: #34d399; }
+.section-dark .icon-badge.accent-amber { background: rgba(245, 158, 11, .18); color: #fbbf24; }
+.section-dark .icon-badge.accent-rose { background: rgba(224, 52, 158, .18); color: #f472b6; }
+.section-dark .icon-badge.accent-indigo { background: rgba(99, 102, 241, .18); color: #818cf8; }
 
 .card-why {
   border-radius: var(--mf-radius);
@@ -414,6 +444,11 @@ section { scroll-margin-top: 90px; }
   font-weight: 700;
   margin: 0 auto 1rem;
 }
+.step-num.accent-violet { background: var(--mf-violet); }
+.step-num.accent-emerald { background: var(--mf-emerald); }
+.step-num.accent-amber { background: var(--mf-amber); }
+.step-num.accent-rose { background: var(--mf-rose); }
+.step-num.accent-indigo { background: var(--mf-indigo); }
 
 /* ---------- Stats ---------- */
 .stats-section { background: var(--mf-dark); color: #fff; }
@@ -453,7 +488,7 @@ section { scroll-margin-top: 90px; }
 
 /* ---------- CTA ---------- */
 .cta-section {
-  background: linear-gradient(135deg, var(--mf-accent) 0%, var(--mf-accent-2) 100%);
+  background: linear-gradient(120deg, var(--mf-accent) 0%, var(--mf-violet) 55%, var(--mf-accent-2) 100%);
   border-radius: var(--mf-radius);
   color: #fff;
 }
@@ -483,7 +518,10 @@ section { scroll-margin-top: 90px; }
 
 /* ---------- Dark section rhythm (alternated between light sections) ---------- */
 .section-dark {
-  background: var(--mf-dark);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(21, 94, 239, .28) 0%, transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(124, 58, 237, .2) 0%, transparent 50%),
+    var(--mf-dark);
   color: rgba(255, 255, 255, .92);
 }
 .section-dark h1, .section-dark h2, .section-dark h3,

@@ -344,16 +344,16 @@ require __DIR__ . '/includes/header.php';
       <h2 class="section-title mt-2 mb-3">Complete IT Services Under One Roof</h2>
     </div>
     <div class="row g-4">
-      <?php foreach (services_catalog() as $slug => $service): ?>
+      <?php $si = 0; foreach (services_catalog() as $slug => $service): ?>
       <div class="col-md-6 col-lg-4">
         <div class="card-service bg-white">
-          <div class="icon-badge"><i class="<?= e($service['icon']) ?>"></i></div>
+          <div class="icon-badge <?= e(accent_class($si)) ?>"><i class="<?= e($service['icon']) ?>"></i></div>
           <h3 class="h5 fw-bold mb-2"><?= e($service['title']) ?></h3>
           <p class="section-subtitle mb-3"><?= e($service['summary']) ?></p>
           <a href="<?= e(url('services/' . $slug . '.php')) ?>" class="fw-semibold text-accent text-decoration-none">Learn More <i class="fa-solid fa-arrow-right ms-1"></i></a>
         </div>
       </div>
-      <?php endforeach; ?>
+      <?php $si++; endforeach; ?>
     </div>
   </div>
 </section>
@@ -384,10 +384,10 @@ require __DIR__ . '/includes/header.php';
           ['icon' => 'fa-solid fa-magnifying-glass-chart', 'title' => 'SEO-Driven Approach', 'text' => 'Every site we ship is engineered for search visibility from day one, not bolted on after.'],
           ['icon' => 'fa-solid fa-headset', 'title' => '24/7 Support', 'text' => 'Round-the-clock monitoring and support so issues get resolved before they cost you.'],
       ];
-      foreach ($whyUs as $item): ?>
+      foreach ($whyUs as $wi => $item): ?>
       <div class="col-md-6 col-lg-4">
         <div class="card-why">
-          <div class="icon-badge"><i class="<?= e($item['icon']) ?>"></i></div>
+          <div class="icon-badge <?= e(accent_class($wi)) ?>"><i class="<?= e($item['icon']) ?>"></i></div>
           <h3 class="h6 fw-bold mb-2"><?= e($item['title']) ?></h3>
           <p class="section-subtitle mb-0"><?= e($item['text']) ?></p>
         </div>
@@ -408,7 +408,7 @@ require __DIR__ . '/includes/header.php';
       <?php foreach (process_steps() as $i => $step): ?>
       <div class="col-md-4 col-lg-2">
         <div class="process-step">
-          <div class="step-num"><?= $i + 1 ?></div>
+          <div class="step-num <?= e(accent_class($i)) ?>"><?= $i + 1 ?></div>
           <h3 class="h6 fw-bold mb-2"><?= e($step['title']) ?></h3>
           <p class="small section-subtitle mb-0"><?= e($step['desc']) ?></p>
         </div>
