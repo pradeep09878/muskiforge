@@ -89,6 +89,26 @@ function schema_service(string $name, string $description, string $slug): string
     ]);
 }
 
+function schema_blog_posting(array $post): string
+{
+    return schema_json([
+        '@context' => 'https://schema.org',
+        '@type' => 'BlogPosting',
+        'headline' => $post['title'],
+        'description' => $post['excerpt'],
+        'image' => $post['cover_image'] ? url($post['cover_image']) : asset('images/logo.svg'),
+        'datePublished' => date('c', strtotime((string) $post['published_at'])),
+        'dateModified' => date('c', strtotime((string) ($post['updated_at'] ?? $post['published_at']))),
+        'author' => ['@type' => 'Organization', 'name' => SITE_NAME],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => SITE_NAME,
+            'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.svg')],
+        ],
+        'mainEntityOfPage' => url('blog-post.php?slug=' . $post['slug']),
+    ]);
+}
+
 /**
  * @param array<int, array{name: string, url: string}> $trail
  */

@@ -5,6 +5,7 @@ Disallow: /api/
 Disallow: /database/
 Disallow: /includes/
 Disallow: /uploads/
+Allow: /uploads/blog/
 Disallow: /config.php
 Disallow: /config.local.php
 

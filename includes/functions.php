@@ -71,6 +71,27 @@ function csrf_token(): string
     return $_SESSION['csrf_token'];
 }
 
+/**
+ * One-shot flash messages for post-redirect confirmations (e.g. "Post
+ * created"). Set before a redirect, read (and cleared) on the next request.
+ */
+function flash_set(string $type, string $message): void
+{
+    $_SESSION['flash'] = ['type' => $type, 'message' => $message];
+}
+
+function flash_get(): ?array
+{
+    if (empty($_SESSION['flash'])) {
+        return null;
+    }
+
+    $flash = $_SESSION['flash'];
+    unset($_SESSION['flash']);
+
+    return $flash;
+}
+
 function csrf_verify(?string $token): bool
 {
     return is_string($token) && !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
@@ -167,6 +188,58 @@ function industries_served(): array
         ['name' => 'Startups', 'icon' => 'fa-solid fa-rocket'],
         ['name' => 'Professional Services', 'icon' => 'fa-solid fa-briefcase'],
     ];
+}
+
+/**
+ * Converts arbitrary text into a URL-safe slug: lowercase, alphanumeric,
+ * words joined with single hyphens. Used for blog post URLs.
+ */
+function slugify(string $text): string
+{
+    $slug = strtolower(trim($text));
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?? '';
+
+    return trim($slug, '-');
+}
+
+/**
+ * Icon shown on a blog post's generated header when no cover image was
+ * uploaded. Falls back to a generic document icon for unrecognized tags.
+ */
+function blog_tag_icon(string $tag): string
+{
+    $icons = [
+        'SEO' => 'fa-solid fa-magnifying-glass-chart',
+        'Software Development' => 'fa-solid fa-code',
+        'Mobile' => 'fa-solid fa-mobile-screen-button',
+        'Cloud' => 'fa-solid fa-cloud',
+        'Digital Marketing' => 'fa-solid fa-bullhorn',
+        'IT Consulting' => 'fa-solid fa-lightbulb',
+        'Web Development' => 'fa-solid fa-globe',
+        'General' => 'fa-solid fa-newspaper',
+    ];
+
+    return $icons[$tag] ?? 'fa-solid fa-newspaper';
+}
+
+/**
+ * Renders plain-text blog content (blank line = new paragraph) as safe,
+ * escaped HTML. No raw HTML is ever trusted from the content field.
+ */
+function render_plain_content(string $content): string
+{
+    $paragraphs = preg_split('/\n\s*\n/', trim($content)) ?: [];
+    $html = '';
+
+    foreach ($paragraphs as $paragraph) {
+        $paragraph = trim($paragraph);
+        if ($paragraph === '') {
+            continue;
+        }
+        $html .= '<p>' . nl2br(e($paragraph)) . "</p>\n";
+    }
+
+    return $html;
 }
 
 function page_meta(string $title, string $description, string $canonicalPath = ''): array

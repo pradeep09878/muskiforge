@@ -17,14 +17,17 @@ $extraSchema = schema_breadcrumb([
     ['name' => 'Blog', 'url' => url('blog.php')],
 ]);
 
-$posts = [
-    ['Entity SEO in 2026: Building Topical Authority That AI Engines Cite', 'SEO', 'Aug 2, 2026', 'fa-solid fa-magnifying-glass-chart'],
-    ['Choosing Between Laravel and Node.js for Your Next Platform', 'Software Development', 'Jul 24, 2026', 'fa-solid fa-code'],
-    ['Flutter vs Native: A Practical Guide for Startups', 'Mobile', 'Jul 12, 2026', 'fa-solid fa-mobile-screen-button'],
-    ['Core Web Vitals: What Actually Moves the Needle in 2026', 'SEO', 'Jun 30, 2026', 'fa-solid fa-gauge-high'],
-    ['A Founder\'s Guide to Cloud Cost Optimization on AWS', 'Cloud', 'Jun 15, 2026', 'fa-solid fa-cloud'],
-    ['Structured Data 101: Schema Markup for AI Search Visibility', 'SEO', 'May 28, 2026', 'fa-solid fa-diagram-project'],
-];
+try {
+    $posts = db()->query(
+        "SELECT title, slug, tag, excerpt, cover_image, published_at
+         FROM blog_posts
+         WHERE status = 'published'
+         ORDER BY published_at DESC"
+    )->fetchAll();
+} catch (PDOException $e) {
+    error_log('[blog] ' . $e->getMessage());
+    $posts = [];
+}
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -42,11 +45,20 @@ require __DIR__ . '/includes/header.php';
 
 <section class="py-5">
   <div class="container">
+    <?php if (!$posts): ?>
+    <div class="text-center mx-auto" style="max-width:480px">
+      <p class="section-subtitle">No articles published yet — check back soon.</p>
+    </div>
+    <?php else: ?>
     <div class="row g-4">
-      <?php foreach ($posts as $bi => [$title, $tag, $date, $icon]): $av = accent_vars($bi); ?>
+      <?php foreach ($posts as $bi => $post): $av = accent_vars($bi); ?>
       <div class="col-md-6 col-lg-4">
         <div class="card-service bg-white p-0 overflow-hidden h-100">
-          <svg viewBox="0 0 400 200" class="w-100 d-block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($tag) ?> article illustration">
+          <a href="<?= e(url('blog-post.php?slug=' . $post['slug'])) ?>" class="text-decoration-none">
+          <?php if ($post['cover_image']): ?>
+          <img src="<?= e(url($post['cover_image'])) ?>" alt="<?= e($post['title']) ?>" class="w-100 d-block" style="height:200px;object-fit:cover" loading="lazy">
+          <?php else: ?>
+          <svg viewBox="0 0 400 200" class="w-100 d-block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($post['tag']) ?> article illustration">
             <defs>
               <linearGradient id="blogGrad<?= $bi ?>" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="<?= e($av['color']) ?>"/>
@@ -58,22 +70,26 @@ require __DIR__ . '/includes/header.php';
             <circle cx="200" cy="90" r="40" fill="rgba(255,255,255,.22)"/>
             <foreignObject x="164" y="54" width="72" height="72">
               <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:2.25rem;color:#fff;text-align:center;line-height:72px;">
-                <i class="<?= e($icon) ?>" aria-hidden="true"></i>
+                <i class="<?= e(blog_tag_icon($post['tag'])) ?>" aria-hidden="true"></i>
               </div>
             </foreignObject>
           </svg>
+          <?php endif; ?>
+          </a>
           <div class="p-4">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <span class="eyebrow"><?= e($tag) ?></span>
-              <span class="small text-muted"><?= e($date) ?></span>
+              <span class="eyebrow"><?= e($post['tag']) ?></span>
+              <span class="small text-muted"><?= e(date('M j, Y', strtotime((string) $post['published_at']))) ?></span>
             </div>
-            <h2 class="h6 fw-bold mb-2"><?= e($title) ?></h2>
-            <a href="<?= e(url('blog.php')) ?>" class="fw-semibold text-accent text-decoration-none">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            <h2 class="h6 fw-bold mb-2"><?= e($post['title']) ?></h2>
+            <p class="small text-muted mb-2"><?= e($post['excerpt']) ?></p>
+            <a href="<?= e(url('blog-post.php?slug=' . $post['slug'])) ?>" class="fw-semibold service-card-link text-decoration-none">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
           </div>
         </div>
       </div>
       <?php endforeach; ?>
     </div>
+    <?php endif; ?>
   </div>
 </section>
 
