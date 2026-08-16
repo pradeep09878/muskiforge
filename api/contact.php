@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../config.php';
 require __DIR__ . '/../includes/functions.php';
+require __DIR__ . '/../includes/crm.php';
 
 header('Content-Type: application/json');
 
@@ -73,5 +74,14 @@ try {
 $notifyHeaders = "From: " . SITE_NAME . " Website <no-reply@muskiforge.com>\r\nReply-To: {$email}\r\nContent-Type: text/plain; charset=UTF-8";
 $notifyBody = "New contact form submission:\n\nName: {$name}\nEmail: {$email}\nPhone: {$phone}\nService: {$service}\n\nMessage:\n{$message}";
 @mail(SITE_EMAIL, 'New Contact Form Submission - ' . SITE_NAME, $notifyBody, $notifyHeaders);
+
+// Best effort: the lead is already safely stored above, so a slow/down
+// CRM never blocks or fails the visitor's confirmation.
+push_lead_to_crm([
+    'name' => $name,
+    'email' => $email,
+    'phone' => $phone,
+    'message' => $message,
+]);
 
 respond(true, 'Thank you! Your message has been sent — we will respond within one business day.');

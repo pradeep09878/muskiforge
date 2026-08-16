@@ -30,6 +30,10 @@ define('DB_USER', 'xxnllsee_muskiforge');
 define('DB_PASS', '&YHTiJ7-((qHdEJv');
 define('DB_CHARSET', 'utf8mb4');
 
+// On-premise CRM lead capture (see includes/crm.php).
+define('CRM_API_URL', 'https://crmapi.muskiforge.com/api/v1/capture/leads');
+define('CRM_API_KEY', 'HRmJhE7zspm899YC59E4ZKVYjhyWtNafifUCKfrr');
+
 // Environment-specific overrides (gitignored). Safe to omit in production
 // as long as the constants above are correct for that environment.
 $localConfig = __DIR__ . '/config.local.php';
