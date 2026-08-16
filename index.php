@@ -344,13 +344,13 @@ require __DIR__ . '/includes/header.php';
       <h2 class="section-title mt-2 mb-3">Complete IT Services Under One Roof</h2>
     </div>
     <div class="row g-4">
-      <?php $si = 0; foreach (services_catalog() as $slug => $service): ?>
+      <?php $si = 0; foreach (services_catalog() as $slug => $service): $accent = accent_class($si); ?>
       <div class="col-md-6 col-lg-4">
-        <div class="card-service bg-white">
-          <div class="icon-badge <?= e(accent_class($si)) ?>"><i class="<?= e($service['icon']) ?>"></i></div>
+        <div class="card-service <?= e($accent) ?>">
+          <div class="icon-badge <?= e($accent) ?>"><i class="<?= e($service['icon']) ?>"></i></div>
           <h3 class="h5 fw-bold mb-2"><?= e($service['title']) ?></h3>
           <p class="section-subtitle mb-3"><?= e($service['summary']) ?></p>
-          <a href="<?= e(url('services/' . $slug . '.php')) ?>" class="fw-semibold text-accent text-decoration-none">Learn More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+          <a href="<?= e(url('services/' . $slug . '.php')) ?>" class="fw-semibold service-card-link text-decoration-none">Learn More <i class="fa-solid fa-arrow-right ms-1"></i></a>
         </div>
       </div>
       <?php $si++; endforeach; ?>

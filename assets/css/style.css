@@ -386,17 +386,49 @@ section { scroll-margin-top: 90px; }
 
 /* ---------- Cards ---------- */
 .card-service {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
   border: 1px solid #eef0f4;
   border-radius: var(--mf-radius);
   padding: 2rem 1.75rem;
   height: 100%;
-  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
+}
+.card-service::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--mf-accent);
 }
 .card-service:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -20px rgba(17, 24, 39, .18);
   border-color: transparent;
 }
+.card-service .service-card-link { color: var(--mf-accent); }
+
+/* Color-cycling variants: pairs the card's top accent bar, hover tint,
+   and "Learn More" link with the icon-badge color already applied above. */
+.card-service.accent-violet::before { background: var(--mf-violet); }
+.card-service.accent-emerald::before { background: var(--mf-emerald); }
+.card-service.accent-amber::before { background: var(--mf-amber); }
+.card-service.accent-rose::before { background: var(--mf-rose); }
+.card-service.accent-indigo::before { background: var(--mf-indigo); }
+
+.card-service.accent-violet .service-card-link { color: var(--mf-violet); }
+.card-service.accent-emerald .service-card-link { color: var(--mf-emerald); }
+.card-service.accent-amber .service-card-link { color: var(--mf-amber); }
+.card-service.accent-rose .service-card-link { color: var(--mf-rose); }
+.card-service.accent-indigo .service-card-link { color: var(--mf-indigo); }
+
+.card-service.accent-violet:hover { background: var(--mf-violet-light); }
+.card-service.accent-emerald:hover { background: var(--mf-emerald-light); }
+.card-service.accent-amber:hover { background: var(--mf-amber-light); }
+.card-service.accent-rose:hover { background: var(--mf-rose-light); }
+.card-service.accent-indigo:hover { background: var(--mf-indigo-light); }
+.card-service:hover { background: var(--mf-accent-light); }
 .icon-badge {
   width: 56px; height: 56px;
   display: inline-flex; align-items: center; justify-content: center;

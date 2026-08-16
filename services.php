@@ -34,16 +34,16 @@ require __DIR__ . '/includes/header.php';
 <section class="py-5">
   <div class="container">
     <div class="row g-4">
-      <?php foreach (services_catalog() as $slug => $service): ?>
+      <?php $si = 0; foreach (services_catalog() as $slug => $service): $accent = accent_class($si); ?>
       <div class="col-md-6 col-lg-4">
-        <div class="card-service h-100">
-          <div class="icon-badge"><i class="<?= e($service['icon']) ?>"></i></div>
+        <div class="card-service h-100 <?= e($accent) ?>">
+          <div class="icon-badge <?= e($accent) ?>"><i class="<?= e($service['icon']) ?>"></i></div>
           <h2 class="h5 fw-bold mb-2"><?= e($service['title']) ?></h2>
           <p class="section-subtitle mb-3"><?= e($service['description']) ?></p>
-          <a href="<?= e(url('services/' . $slug . '.php')) ?>" class="fw-semibold text-accent text-decoration-none">Learn More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+          <a href="<?= e(url('services/' . $slug . '.php')) ?>" class="fw-semibold service-card-link text-decoration-none">Learn More <i class="fa-solid fa-arrow-right ms-1"></i></a>
         </div>
       </div>
-      <?php endforeach; ?>
+      <?php $si++; endforeach; ?>
     </div>
   </div>
 </section>

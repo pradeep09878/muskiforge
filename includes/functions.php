@@ -99,6 +99,12 @@ function services_catalog(): array
             'summary' => 'Search engine optimization focused on sustainable organic growth through technical SEO, content strategy, local SEO, and on-page optimization.',
             'description' => 'Our SEO practice covers technical audits, entity and semantic SEO, structured data, and AI citation optimization for Google, Bing, and AI answer engines.',
         ],
+        'content-writing' => [
+            'title' => 'Content Writing',
+            'icon' => 'fa-solid fa-pen-nib',
+            'summary' => 'Clear, conversion-focused website copy, blog articles, and product content written to engage readers and rank in search.',
+            'description' => 'Our writers produce website copy, blog articles, case studies, and product content that reads naturally for people while giving search engines and AI answer engines the structured, well-researched material they need to rank and cite.',
+        ],
         'it-consulting' => [
             'title' => 'IT Consulting',
             'icon' => 'fa-solid fa-lightbulb',
