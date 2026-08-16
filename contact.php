@@ -38,19 +38,19 @@ require __DIR__ . '/includes/header.php';
         <h2 class="h4 fw-bold mb-4">Contact Information</h2>
         <ul class="list-unstyled d-flex flex-column gap-3">
           <li class="d-flex gap-3">
-            <span class="icon-badge flex-shrink-0"><i class="fa-solid fa-envelope"></i></span>
+            <span class="icon-badge flex-shrink-0 <?= e(accent_class(0)) ?>"><i class="fa-solid fa-envelope"></i></span>
             <div><strong>Email</strong><br><a href="mailto:<?= e(SITE_EMAIL) ?>" class="text-decoration-none"><?= e(SITE_EMAIL) ?></a></div>
           </li>
           <li class="d-flex gap-3">
-            <span class="icon-badge flex-shrink-0"><i class="fa-solid fa-phone"></i></span>
+            <span class="icon-badge flex-shrink-0 <?= e(accent_class(1)) ?>"><i class="fa-solid fa-phone"></i></span>
             <div><strong>Phone</strong><br><a href="tel:<?= e(SITE_PHONE) ?>" class="text-decoration-none"><?= e(SITE_PHONE) ?></a></div>
           </li>
           <li class="d-flex gap-3">
-            <span class="icon-badge flex-shrink-0"><i class="fa-solid fa-location-dot"></i></span>
+            <span class="icon-badge flex-shrink-0 <?= e(accent_class(2)) ?>"><i class="fa-solid fa-location-dot"></i></span>
             <div><strong>Office</strong><br><?= e(SITE_ADDRESS) ?></div>
           </li>
           <li class="d-flex gap-3">
-            <span class="icon-badge flex-shrink-0"><i class="fa-solid fa-clock"></i></span>
+            <span class="icon-badge flex-shrink-0 <?= e(accent_class(3)) ?>"><i class="fa-solid fa-clock"></i></span>
             <div><strong>Support</strong><br>Available 24/7</div>
           </li>
         </ul>

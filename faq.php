@@ -37,6 +37,14 @@ $faqGroups = [
     ],
 ];
 
+$faqGroupIcons = [
+    'Services' => 'fa-solid fa-toolbox',
+    'Technologies' => 'fa-solid fa-code',
+    'Process' => 'fa-solid fa-route',
+    'Support' => 'fa-solid fa-headset',
+    'Pricing' => 'fa-solid fa-tag',
+];
+
 $allFaqs = array_merge(...array_values($faqGroups));
 $extraSchema = schema_faq($allFaqs) . schema_breadcrumb([
     ['name' => 'Home', 'url' => url('index.php')],
@@ -59,7 +67,10 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <?php $groupIndex = 0; foreach ($faqGroups as $group => $items): ?>
     <div class="mb-5">
-      <h2 class="h5 fw-bold text-uppercase text-muted mb-3"><?= e($group) ?></h2>
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <span class="icon-badge mb-0 <?= e(accent_class($groupIndex)) ?>" style="width:44px;height:44px;font-size:1.1rem"><i class="<?= e($faqGroupIcons[$group] ?? 'fa-solid fa-circle-question') ?>"></i></span>
+        <h2 class="h5 fw-bold text-uppercase text-muted mb-0"><?= e($group) ?></h2>
+      </div>
       <div class="accordion" id="faqAccordion<?= $groupIndex ?>">
         <?php foreach ($items as $i => $faq): ?>
         <div class="accordion-item">
