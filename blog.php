@@ -51,29 +51,17 @@ require __DIR__ . '/includes/header.php';
     </div>
     <?php else: ?>
     <div class="row g-4">
-      <?php foreach ($posts as $bi => $post): $av = accent_vars($bi); ?>
+      <?php foreach ($posts as $bi => $post): $tv = tonal_vars($bi); ?>
       <div class="col-md-6 col-lg-4">
         <div class="card-service bg-white p-0 overflow-hidden h-100">
           <a href="<?= e(url('blog-post.php?slug=' . $post['slug'])) ?>" class="text-decoration-none">
           <?php if ($post['cover_image']): ?>
           <img src="<?= e(url($post['cover_image'])) ?>" alt="<?= e($post['title']) ?>" class="w-100 d-block" style="height:200px;object-fit:cover" loading="lazy">
           <?php else: ?>
-          <svg viewBox="0 0 400 200" class="w-100 d-block" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($post['tag']) ?> article illustration">
-            <defs>
-              <linearGradient id="blogGrad<?= $bi ?>" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="<?= e($av['color']) ?>"/>
-                <stop offset="100%" stop-color="<?= e($av['light']) ?>"/>
-              </linearGradient>
-            </defs>
-            <rect width="400" height="200" fill="url(#blogGrad<?= $bi ?>)"/>
-            <path d="M0 170 L100 130 L200 160 L300 110 L400 150 L400 200 L0 200 Z" fill="rgba(255,255,255,.18)"/>
-            <circle cx="200" cy="90" r="40" fill="rgba(255,255,255,.22)"/>
-            <foreignObject x="164" y="54" width="72" height="72">
-              <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:2.25rem;color:#fff;text-align:center;line-height:72px;">
-                <i class="<?= e(blog_tag_icon($post['tag'])) ?>" aria-hidden="true"></i>
-              </div>
-            </foreignObject>
-          </svg>
+          <div class="blog-block" style="background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
+            <i class="<?= e(blog_tag_icon($post['tag'])) ?> blog-block-icon" aria-hidden="true"></i>
+            <span class="blog-block-tag"><?= e($post['tag']) ?></span>
+          </div>
           <?php endif; ?>
           </a>
           <div class="p-4">

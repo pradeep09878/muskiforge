@@ -316,49 +316,26 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="row align-items-center gy-5">
       <div class="col-lg-6">
-        <svg class="img-fluid rounded-xl shadow-soft" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutIllustrationTitle">
-          <title id="aboutIllustrationTitle">Abstract illustration of a target with an arrow on course, surrounded by connected service icons</title>
-          <defs>
-            <linearGradient id="aboutBg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#eaf1ff"/>
-              <stop offset="100%" stop-color="#f2ecfe"/>
-            </linearGradient>
-            <linearGradient id="aboutRing" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#155eef"/>
-              <stop offset="100%" stop-color="#00b8d9"/>
-            </linearGradient>
-          </defs>
-          <rect width="560" height="420" rx="20" fill="url(#aboutBg)"/>
-          <line x1="280" y1="210" x2="100" y2="110" stroke="#c7d3f5" stroke-width="1.5"/>
-          <line x1="280" y1="210" x2="460" y2="100" stroke="#c7d3f5" stroke-width="1.5"/>
-          <line x1="280" y1="210" x2="110" y2="320" stroke="#c7d3f5" stroke-width="1.5"/>
-          <line x1="280" y1="210" x2="450" y2="330" stroke="#c7d3f5" stroke-width="1.5"/>
-
-          <circle cx="280" cy="210" r="90" fill="#fff" stroke="#dbe3fb" stroke-width="2"/>
-          <circle cx="280" cy="210" r="62" fill="none" stroke="url(#aboutRing)" stroke-width="2" opacity=".5"/>
-          <circle cx="280" cy="210" r="36" fill="none" stroke="url(#aboutRing)" stroke-width="2" opacity=".75"/>
-          <circle cx="280" cy="210" r="12" fill="url(#aboutRing)"/>
-          <path d="M120 340 L262 218" stroke="#0f1729" stroke-width="4" stroke-linecap="round"/>
-          <path d="M120 340l10-34 24 10z" fill="#0f1729"/>
-
-          <g>
-            <circle cx="100" cy="110" r="30" fill="#fff" stroke="#eaf1ff" stroke-width="2"/>
-            <path d="M90 110l-8 8 8 8M110 102l8 8-8 8" stroke="#155eef" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-          <g>
-            <circle cx="460" cy="100" r="30" fill="#fff" stroke="#f2ecfe" stroke-width="2"/>
-            <path d="M448 104a10 10 0 0 1 9-15 11 11 0 0 1 21 3 8 8 0 0 1-2 16h-26a7 7 0 0 1-2-4z" fill="#7c3aed"/>
-          </g>
-          <g>
-            <circle cx="110" cy="320" r="30" fill="#fff" stroke="#e3f9f1" stroke-width="2"/>
-            <rect x="102" y="308" width="16" height="24" rx="3" fill="#10b981"/>
-            <circle cx="110" cy="314" r="1.6" fill="#fff"/>
-          </g>
-          <g>
-            <circle cx="450" cy="330" r="30" fill="#fff" stroke="#fef3e2" stroke-width="2"/>
-            <path d="M438 338l8-18 6 10 5-6 6 14z" fill="#f59e0b"/>
-          </g>
-        </svg>
+        <div class="stat-panel h-100 d-flex flex-column justify-content-center">
+          <div class="row g-4">
+            <div class="col-6">
+              <div class="stat-panel-num">150+</div>
+              <div class="stat-panel-label">Projects Delivered</div>
+            </div>
+            <div class="col-6">
+              <div class="stat-panel-num">98%</div>
+              <div class="stat-panel-label">Client Satisfaction</div>
+            </div>
+            <div class="col-6">
+              <div class="stat-panel-num">50+</div>
+              <div class="stat-panel-label">Businesses Served</div>
+            </div>
+            <div class="col-6">
+              <div class="stat-panel-num">24/7</div>
+              <div class="stat-panel-label">Support Available</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-lg-6">
         <span class="eyebrow">Trusted Technology Partner</span>

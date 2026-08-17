@@ -11,32 +11,25 @@ function e(?string $value): string
 }
 
 /**
- * Cycles through the accent color palette for repeating card/icon grids
- * (services, differentiators, process steps) so they don't all read as one
- * flat blue. Returns an icon-badge modifier class; empty string = default blue.
+ * One confident brand color, not a rainbow — kept as a function (rather
+ * than inlining "") so call sites don't need touching if this changes again.
  */
 function accent_class(int $index): string
 {
-    $palette = ['', 'accent-violet', 'accent-emerald', 'accent-amber', 'accent-rose', 'accent-indigo'];
-
-    return $palette[$index % count($palette)];
+    return '';
 }
 
 /**
- * Same color cycle as accent_class(), but returns the underlying CSS
- * variable names — for inline SVG illustrations that need a real `fill`
- * value rather than a class (inline SVG still resolves page-level
- * custom properties via var(), so these stay in sync with the palette).
+ * Tonal cycle within the single brand color (light tint / solid / dark navy)
+ * for repeating color-block treatments (portfolio, blog) — variety through
+ * value, not hue, so it stays premium rather than a rainbow of accents.
  */
-function accent_vars(int $index): array
+function tonal_vars(int $index): array
 {
     $palette = [
-        ['color' => 'var(--mf-accent)', 'light' => 'var(--mf-accent-light)'],
-        ['color' => 'var(--mf-violet)', 'light' => 'var(--mf-violet-light)'],
-        ['color' => 'var(--mf-emerald)', 'light' => 'var(--mf-emerald-light)'],
-        ['color' => 'var(--mf-amber)', 'light' => 'var(--mf-amber-light)'],
-        ['color' => 'var(--mf-rose)', 'light' => 'var(--mf-rose-light)'],
-        ['color' => 'var(--mf-indigo)', 'light' => 'var(--mf-indigo-light)'],
+        ['bg' => 'var(--mf-accent)', 'fg' => '#ffffff'],
+        ['bg' => 'var(--mf-dark)', 'fg' => '#ffffff'],
+        ['bg' => 'var(--mf-accent-light)', 'fg' => 'var(--mf-navy)'],
     ];
 
     return $palette[$index % count($palette)];

@@ -50,7 +50,7 @@ $extraSchema = schema_blog_posting($post) . schema_breadcrumb([
     ['name' => $post['title'], 'url' => url('blog-post.php?slug=' . $post['slug'])],
 ]);
 
-$av = accent_vars((int) crc32($post['slug']));
+$tv = tonal_vars((int) crc32($post['slug']));
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -72,22 +72,10 @@ require __DIR__ . '/includes/header.php';
       <?php if ($post['cover_image']): ?>
       <img src="<?= e(url($post['cover_image'])) ?>" alt="<?= e($post['title']) ?>" class="img-fluid rounded-xl shadow-soft w-100 mb-4" style="max-height:420px;object-fit:cover">
       <?php else: ?>
-      <svg viewBox="0 0 800 320" class="img-fluid rounded-xl shadow-soft w-100 mb-4" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($post['tag']) ?> article illustration">
-        <defs>
-          <linearGradient id="postGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="<?= e($av['color']) ?>"/>
-            <stop offset="100%" stop-color="<?= e($av['light']) ?>"/>
-          </linearGradient>
-        </defs>
-        <rect width="800" height="320" fill="url(#postGrad)"/>
-        <path d="M0 270 L200 210 L400 250 L600 180 L800 240 L800 320 L0 320 Z" fill="rgba(255,255,255,.18)"/>
-        <circle cx="400" cy="140" r="60" fill="rgba(255,255,255,.22)"/>
-        <foreignObject x="352" y="92" width="96" height="96">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:3rem;color:#fff;text-align:center;line-height:96px;">
-            <i class="<?= e(blog_tag_icon($post['tag'])) ?>" aria-hidden="true"></i>
-          </div>
-        </foreignObject>
-      </svg>
+      <div class="blog-block rounded-xl shadow-soft w-100 mb-4" style="height:280px;background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
+        <i class="<?= e(blog_tag_icon($post['tag'])) ?> blog-block-icon" style="font-size:3rem" aria-hidden="true"></i>
+        <span class="blog-block-tag"><?= e($post['tag']) ?></span>
+      </div>
       <?php endif; ?>
 
       <div class="fs-5" style="color:var(--mf-text-muted);line-height:1.8">

@@ -14,24 +14,19 @@
   --mf-radius: 14px;
   --mf-glow: 0 20px 45px -18px rgba(21, 94, 239, .45);
 
-  /* Expanded accent palette — used to give repeating card/icon grids
-     (services, differentiators, process steps) visual variety instead of
-     one flat blue everywhere. */
+  /* Reserved for deliberate gradient moments (hero text, CTA band) —
+     not for repeating cards/badges, which stay one confident accent. */
   --mf-violet: #7c3aed;
-  --mf-violet-light: #f2ecfe;
-  --mf-emerald: #10b981;
-  --mf-emerald-light: #e3f9f1;
-  --mf-amber: #f59e0b;
-  --mf-amber-light: #fef3e2;
-  --mf-rose: #e0349e;
-  --mf-rose-light: #fce8f4;
-  --mf-indigo: #6366f1;
-  --mf-indigo-light: #ecedfe;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--mf-navy);
+}
+
+h1, h2, h3, h4, h5, h6,
+.section-title, .display-font {
+  font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .skip-link {
@@ -95,7 +90,7 @@ section { scroll-margin-top: 90px; }
   color: var(--mf-accent);
 }
 
-.section-title { font-weight: 800; letter-spacing: -.02em; }
+.section-title { font-weight: 800; letter-spacing: -.025em; font-size: clamp(1.9rem, 3vw, 2.75rem); line-height: 1.15; }
 .section-subtitle { color: var(--mf-text-muted); max-width: 640px; }
 
 /* ---------- Navbar ---------- */
@@ -129,8 +124,9 @@ section { scroll-margin-top: 90px; }
 .hero .container { position: relative; z-index: 1; }
 .hero h1 {
   font-weight: 800;
-  letter-spacing: -.03em;
-  font-size: clamp(2.4rem, 4.2vw, 3.75rem);
+  letter-spacing: -.04em;
+  line-height: 1.08;
+  font-size: clamp(2.6rem, 5vw, 4.25rem);
 }
 .hero-badge {
   display: inline-flex;
@@ -408,27 +404,8 @@ section { scroll-margin-top: 90px; }
   border-color: transparent;
 }
 .card-service .service-card-link { color: var(--mf-accent); }
-
-/* Color-cycling variants: pairs the card's top accent bar, hover tint,
-   and "Learn More" link with the icon-badge color already applied above. */
-.card-service.accent-violet::before { background: var(--mf-violet); }
-.card-service.accent-emerald::before { background: var(--mf-emerald); }
-.card-service.accent-amber::before { background: var(--mf-amber); }
-.card-service.accent-rose::before { background: var(--mf-rose); }
-.card-service.accent-indigo::before { background: var(--mf-indigo); }
-
-.card-service.accent-violet .service-card-link { color: var(--mf-violet); }
-.card-service.accent-emerald .service-card-link { color: var(--mf-emerald); }
-.card-service.accent-amber .service-card-link { color: var(--mf-amber); }
-.card-service.accent-rose .service-card-link { color: var(--mf-rose); }
-.card-service.accent-indigo .service-card-link { color: var(--mf-indigo); }
-
-.card-service.accent-violet:hover { background: var(--mf-violet-light); }
-.card-service.accent-emerald:hover { background: var(--mf-emerald-light); }
-.card-service.accent-amber:hover { background: var(--mf-amber-light); }
-.card-service.accent-rose:hover { background: var(--mf-rose-light); }
-.card-service.accent-indigo:hover { background: var(--mf-indigo-light); }
 .card-service:hover { background: var(--mf-accent-light); }
+
 .icon-badge {
   width: 56px; height: 56px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -438,20 +415,6 @@ section { scroll-margin-top: 90px; }
   font-size: 1.4rem;
   margin-bottom: 1.25rem;
 }
-
-/* Color-cycling variants: gives repeating card/icon grids (services,
-   differentiators) visual variety instead of one flat blue everywhere. */
-.icon-badge.accent-violet { background: var(--mf-violet-light); color: var(--mf-violet); }
-.icon-badge.accent-emerald { background: var(--mf-emerald-light); color: var(--mf-emerald); }
-.icon-badge.accent-amber { background: var(--mf-amber-light); color: var(--mf-amber); }
-.icon-badge.accent-rose { background: var(--mf-rose-light); color: var(--mf-rose); }
-.icon-badge.accent-indigo { background: var(--mf-indigo-light); color: var(--mf-indigo); }
-
-.section-dark .icon-badge.accent-violet { background: rgba(124, 58, 237, .18); color: #a78bfa; }
-.section-dark .icon-badge.accent-emerald { background: rgba(16, 185, 129, .18); color: #34d399; }
-.section-dark .icon-badge.accent-amber { background: rgba(245, 158, 11, .18); color: #fbbf24; }
-.section-dark .icon-badge.accent-rose { background: rgba(224, 52, 158, .18); color: #f472b6; }
-.section-dark .icon-badge.accent-indigo { background: rgba(99, 102, 241, .18); color: #818cf8; }
 
 .card-why {
   border-radius: var(--mf-radius);
@@ -476,11 +439,6 @@ section { scroll-margin-top: 90px; }
   font-weight: 700;
   margin: 0 auto 1rem;
 }
-.step-num.accent-violet { background: var(--mf-violet); }
-.step-num.accent-emerald { background: var(--mf-emerald); }
-.step-num.accent-amber { background: var(--mf-amber); }
-.step-num.accent-rose { background: var(--mf-rose); }
-.step-num.accent-indigo { background: var(--mf-indigo); }
 
 /* ---------- Stats ---------- */
 .stats-section { background: var(--mf-dark); color: #fff; }
@@ -508,6 +466,53 @@ section { scroll-margin-top: 90px; }
   padding: .3rem .8rem;
   font-size: .75rem;
   font-weight: 700;
+  color: var(--mf-navy);
+  z-index: 1;
+}
+.portfolio-block {
+  aspect-ratio: 16 / 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease;
+}
+.portfolio-block:hover { transform: translateY(-4px); }
+.portfolio-block-icon { font-size: 3.5rem; opacity: .9; }
+
+.blog-block {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+}
+.blog-block-icon { font-size: 2.25rem; opacity: .9; }
+.blog-block-tag {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-size: .8rem;
+  opacity: .85;
+}
+
+.service-panel {
+  aspect-ratio: 4 / 3.4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  text-align: center;
+}
+.service-panel-icon { font-size: 4rem; opacity: .95; }
+.service-panel-title {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  font-size: 1.4rem;
 }
 
 /* ---------- FAQ ---------- */
@@ -581,6 +586,45 @@ section { scroll-margin-top: 90px; }
   background: rgba(255, 255, 255, .08) !important;
   color: #fff !important;
   border-color: rgba(255, 255, 255, .15) !important;
+}
+
+/* ---------- Bold color-block stat panels (replaces small decorative
+   illustrations with a confident, content-driven visual moment) ---------- */
+.stat-panel {
+  background: var(--mf-dark);
+  color: #fff;
+  border-radius: var(--mf-radius);
+  padding: clamp(2rem, 4vw, 3.25rem);
+}
+.stat-panel-num {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: 1;
+  color: var(--mf-accent-2);
+  margin-bottom: .4rem;
+}
+.stat-panel-label { color: rgba(255, 255, 255, .68); font-size: .95rem; }
+
+.quote-panel {
+  background: var(--mf-accent);
+  color: #fff;
+  border-radius: var(--mf-radius);
+  padding: clamp(2rem, 4vw, 3.25rem);
+}
+.quote-panel-text {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+}
+.quote-panel-footer {
+  font-size: .9rem;
+  color: rgba(255, 255, 255, .75);
+  font-style: normal;
 }
 
 /* ---------- Utility ---------- */

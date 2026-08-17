@@ -45,25 +45,11 @@ require __DIR__ . '/includes/header.php';
 <section class="py-5">
   <div class="container">
     <div class="row g-4">
-      <?php foreach ($projects as $pi => [$title, $tag, $industry, $icon, $desc]): $av = accent_vars($pi); ?>
+      <?php foreach ($projects as $pi => [$title, $tag, $industry, $icon, $desc]): $tv = tonal_vars($pi); ?>
       <div class="col-md-6 col-lg-4">
-        <div class="portfolio-card position-relative mb-3">
+        <div class="portfolio-card portfolio-block position-relative mb-3" style="background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
           <span class="portfolio-tag"><?= e($tag) ?></span>
-          <svg viewBox="0 0 400 260" class="w-100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="<?= e($title) ?> project mockup">
-            <rect width="400" height="260" fill="<?= e($av['light']) ?>"/>
-            <rect width="400" height="34" fill="<?= e($av['color']) ?>"/>
-            <circle cx="18" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
-            <circle cx="34" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
-            <circle cx="50" cy="17" r="5" fill="rgba(255,255,255,.65)"/>
-            <rect x="30" y="66" width="180" height="12" rx="6" fill="rgba(15,23,41,.18)"/>
-            <rect x="30" y="86" width="120" height="9" rx="4.5" fill="rgba(15,23,41,.1)"/>
-            <rect x="30" y="118" width="340" height="112" rx="10" fill="#fff" opacity=".8"/>
-            <foreignObject x="164" y="146" width="72" height="56">
-              <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:2rem;color:<?= e($av['color']) ?>;text-align:center;line-height:56px;">
-                <i class="<?= e($icon) ?>" aria-hidden="true"></i>
-              </div>
-            </foreignObject>
-          </svg>
+          <i class="<?= e($icon) ?> portfolio-block-icon" aria-hidden="true"></i>
         </div>
         <h2 class="h6 fw-bold mb-1"><?= e($title) ?></h2>
         <p class="small text-muted mb-1"><?= e($industry) ?></p>

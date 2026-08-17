@@ -51,42 +51,10 @@ require __DIR__ . '/includes/header.php';
         </p>
       </div>
       <div class="col-lg-6">
-        <svg class="img-fluid rounded-xl shadow-soft" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="storyIllustrationTitle">
-          <title id="storyIllustrationTitle">Abstract illustration of a winding path with milestone markers representing Muskiforge's growth story</title>
-          <defs>
-            <linearGradient id="storyBg" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#e3f9f1"/>
-              <stop offset="100%" stop-color="#eaf1ff"/>
-            </linearGradient>
-          </defs>
-          <rect width="560" height="420" rx="20" fill="url(#storyBg)"/>
-          <path d="M60 360 C 160 360, 160 260, 260 260 S 360 160, 460 160 S 500 90, 500 60"
-                fill="none" stroke="#c7d3f5" stroke-width="4" stroke-dasharray="2 14" stroke-linecap="round"/>
-
-          <g>
-            <circle cx="60" cy="360" r="22" fill="#155eef"/>
-            <path d="M60 351v18M52 360h16" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <text x="94" y="366" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#0f1729">Founded</text>
-
-          <g>
-            <circle cx="260" cy="260" r="22" fill="#7c3aed"/>
-            <path d="M251 260h18M260 251v18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <text x="294" y="266" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#0f1729">First Clients</text>
-
-          <g>
-            <circle cx="460" cy="160" r="22" fill="#10b981"/>
-            <path d="M451 160h18M460 151v18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <text x="330" y="145" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#0f1729">Team Growth</text>
-
-          <g>
-            <circle cx="500" cy="60" r="26" fill="#f59e0b"/>
-            <path d="M500 46l4.5 9.2 10.1 1.5-7.3 7.1 1.7 10.1-9-4.8-9 4.8 1.7-10.1-7.3-7.1 10.1-1.5z" fill="#fff"/>
-          </g>
-          <text x="392" y="45" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="700" fill="#0f1729">Today</text>
-        </svg>
+        <blockquote class="quote-panel h-100 d-flex flex-column justify-content-center m-0">
+          <p class="quote-panel-text">"Technology should solve problems — not create them. That's the whole reason Muskiforge exists."</p>
+          <footer class="quote-panel-footer">The founding principle behind every project we ship</footer>
+        </blockquote>
       </div>
     </div>
   </div>
