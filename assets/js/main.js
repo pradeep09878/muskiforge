@@ -52,7 +52,47 @@
     });
   }
 
+  /* Scroll-reveal: tags common content blocks with .reveal (see style.css)
+     and flips them to .is-visible as they enter the viewport. Skipped
+     entirely for prefers-reduced-motion so nothing is ever hidden from
+     users who've asked for reduced motion. */
+  function initScrollReveal() {
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced || !('IntersectionObserver' in window)) return;
+
+    var selector = [
+      '.card-service', '.card-why', '.testimonial-card',
+      '.stat-panel', '.quote-panel', '.portfolio-block', '.portfolio-card',
+      '.blog-block', '.service-panel', '.process-step',
+      '.tech-badge', '.accordion-item'
+    ].join(',');
+
+    var groups = {};
+    document.querySelectorAll(selector).forEach(function (el) {
+      var parent = el.parentElement;
+      var key = parent ? Array.prototype.indexOf.call(document.querySelectorAll('section'), el.closest('section')) : 0;
+      groups[key] = groups[key] || 0;
+      el.classList.add('reveal');
+      el.style.setProperty('--reveal-i', Math.min(groups[key], 6));
+      groups[key]++;
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      observer.observe(el);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
+    initScrollReveal();
   });
 })();
