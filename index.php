@@ -41,19 +41,29 @@ require __DIR__ . '/includes/header.php';
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-9 text-center">
-        <span class="hero-trust-badge"><span class="stars">★★★★★</span> 98% Client Satisfaction Rating</span>
-        <h1>End-to-End IT Services That Help Businesses Build, Scale &amp; Grow</h1>
-        <p class="section-subtitle mx-auto mb-4" style="max-width:640px">
+        <span class="hero-trust-badge hero-anim hero-anim-1"><span class="stars">★★★★★</span> 98% Client Satisfaction Rating</span>
+        <h1 class="hero-anim hero-anim-2">End-to-End IT Services That Help Businesses Build, Scale &amp; Grow</h1>
+        <p class="section-subtitle mx-auto mb-4 hero-anim hero-anim-3" style="max-width:640px">
           Muskiforge delivers custom software development, website development, mobile app development, cloud
           solutions, SEO services, digital marketing, and IT consulting for startups, SMEs, and enterprises.
         </p>
-        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 hero-anim hero-anim-4">
           <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent btn-lg rounded-pill px-4">Get Started</a>
           <a href="<?= e(url('portfolio.php')) ?>" class="btn btn-outline-light-2 btn-lg rounded-pill px-4">See Our Work</a>
+        </div>
+        <div class="hero-mini-stats hero-anim hero-anim-5">
+          <div class="hero-mini-stat"><span class="hero-mini-stat-num">150+</span><span class="hero-mini-stat-label">Projects Delivered</span></div>
+          <div class="hero-mini-stat-divider" aria-hidden="true"></div>
+          <div class="hero-mini-stat"><span class="hero-mini-stat-num">98%</span><span class="hero-mini-stat-label">Client Satisfaction</span></div>
+          <div class="hero-mini-stat-divider" aria-hidden="true"></div>
+          <div class="hero-mini-stat"><span class="hero-mini-stat-num">24/7</span><span class="hero-mini-stat-label">Support</span></div>
         </div>
       </div>
     </div>
   </div>
+  <a href="#about" class="hero-scroll-cue" aria-label="Scroll to learn more">
+    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+  </a>
 </section>
 
 <!-- ============ TRUSTED BY ============ -->

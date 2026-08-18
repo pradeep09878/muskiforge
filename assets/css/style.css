@@ -247,6 +247,80 @@ body { overflow-x: hidden; }
   .hero-main { text-align: center; }
 }
 
+/* Hero entrance stagger — plays once on load, not scroll-triggered
+   (the hero is always above the fold, so IntersectionObserver would fire
+   immediately anyway). Disabled globally under prefers-reduced-motion. */
+.hero-anim {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroFadeUp .7s cubic-bezier(.16,.8,.3,1) forwards;
+}
+.hero-anim-1 { animation-delay: .05s; }
+.hero-anim-2 { animation-delay: .16s; }
+.hero-anim-3 { animation-delay: .3s; }
+.hero-anim-4 { animation-delay: .42s; }
+.hero-anim-5 { animation-delay: .54s; }
+@keyframes heroFadeUp {
+  to { opacity: 1; transform: none; }
+}
+
+.hero-mini-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  margin-top: 2.25rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+.hero-mini-stat { display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+.hero-mini-stat-num {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+.hero-mini-stat-label {
+  font-size: .68rem;
+  color: rgba(255, 255, 255, .58);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  white-space: nowrap;
+}
+.hero-mini-stat-divider { width: 1px; height: 26px; background: rgba(255, 255, 255, .16); }
+
+@media (max-width: 575.98px) {
+  .hero-main { padding-bottom: clamp(2.25rem, 6vw, 4rem); }
+  .hero-mini-stats { gap: .65rem; margin-top: 1.6rem; padding-top: 1rem; }
+  .hero-mini-stat-num { font-size: .95rem; }
+  .hero-mini-stat-label { font-size: .58rem; letter-spacing: .03em; }
+  .hero-mini-stat-divider { height: 20px; }
+}
+
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255, 255, 255, .7);
+  z-index: 2;
+  animation: heroScrollBounce 2s ease-in-out infinite;
+  transition: border-color .2s ease, color .2s ease;
+}
+.hero-scroll-cue:hover { border-color: rgba(255, 255, 255, .6); color: #fff; }
+@keyframes heroScrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+@media (max-width: 767.98px) {
+  .hero-scroll-cue { display: none; }
+}
+
 /* ---------- Trusted by ---------- */
 .trusted-strip img { max-height: 32px; width: auto; }
 .trusted-strip .brand-name { font-size: 1.15rem; letter-spacing: -.01em; color: var(--mf-navy); opacity: .55; }
