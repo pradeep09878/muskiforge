@@ -1,7 +1,7 @@
 <header class="site-header" id="siteHeader">
 <nav class="navbar navbar-expand-lg navbar-dark py-0">
   <div class="container">
-    <div class="navbar-3d-panel d-flex align-items-center flex-wrap w-100">
+    <div class="navbar-3d-panel d-flex align-items-center justify-content-between flex-wrap w-100">
       <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="<?= e(url('index.php')) ?>">
         <span class="navbar-mark"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span>
         <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
