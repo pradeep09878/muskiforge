@@ -223,18 +223,22 @@ body { overflow-x: clip; }
   box-shadow: 0 1px 0 #082e94, 0 6px 14px -8px rgba(21, 94, 239, .5);
 }
 
-/* Services menu — compact icon+label grid, quick natural fade (no slide).
+/* Services menu — a raised 3D popover card (embossed edges + a pointer
+   notch aimed at the toggle) holding a single-column icon+label list.
    data-bs-display="static" on the toggle (navbar.php) keeps this off
    Popper's dynamic positioning so the CSS transform below isn't fighting
    an inline one — that fight was the "sliding" glitch on open. */
 .mega-menu {
-  min-width: 460px;
-  padding: .75rem;
+  min-width: 300px;
+  padding: .7rem;
   border: none;
-  border-radius: var(--mf-radius);
-  box-shadow: 0 24px 48px -20px rgba(15, 23, 41, .3);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .8),
+    0 26px 50px -20px rgba(15, 23, 41, .38),
+    0 3px 0 var(--mf-accent);
   left: 50%;
-  margin-top: .6rem !important;
+  margin-top: .95rem !important;
   display: block !important;
   visibility: hidden;
   opacity: 0;
@@ -246,35 +250,55 @@ body { overflow-x: clip; }
   opacity: 1;
   transform: translateX(-50%) scale(1);
 }
+.mega-menu::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 14px; height: 14px;
+  background: #fff;
+  border-radius: 3px 0 0 0;
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .8);
+}
 .mega-menu-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
 }
 .mega-menu-item {
   display: flex;
   align-items: center;
-  gap: .65rem;
-  padding: .55rem .6rem;
-  border-radius: 9px;
+  gap: .7rem;
+  padding: .55rem .65rem;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--mf-navy);
   font-weight: 600;
-  font-size: .87rem;
-  transition: background-color .15s ease;
+  font-size: .88rem;
+  transition: background-color .18s ease, transform .18s ease, box-shadow .18s ease;
 }
-.mega-menu-item:hover { background: var(--mf-accent-light); }
-.mega-menu-icon {
-  width: 32px; height: 32px;
-  flex-shrink: 0;
-  border-radius: 8px;
+.mega-menu-item:hover {
   background: var(--mf-accent-light);
+  transform: translateX(4px);
+  box-shadow: 0 6px 14px -9px rgba(21, 94, 239, .5);
+}
+.mega-menu-icon {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #f2f6ff 0%, var(--mf-accent-light) 100%);
   color: var(--mf-accent);
   display: flex; align-items: center; justify-content: center;
   font-size: .85rem;
-  transition: background-color .15s ease, color .15s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 2px 5px -1px rgba(21, 94, 239, .18);
+  transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
 }
-.mega-menu-item:hover .mega-menu-icon { background: var(--mf-accent); color: #fff; }
+.mega-menu-item:hover .mega-menu-icon {
+  background: linear-gradient(180deg, var(--mf-accent) 0%, var(--mf-accent-dark) 100%);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 4px 10px -2px rgba(21, 94, 239, .55);
+}
 .mega-menu-footer {
   border-top: 1px solid #eef0f4;
   margin-top: .5rem;
@@ -299,7 +323,7 @@ body { overflow-x: clip; }
     text-align: left;
   }
   .site-header .mega-menu.show { display: block !important; }
-  .mega-menu-grid { grid-template-columns: 1fr; }
+  .site-header .mega-menu::before { display: none; }
   .mega-menu-footer { text-align: left; }
 }
 
