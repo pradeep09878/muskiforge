@@ -116,23 +116,26 @@
     });
   }
 
-  /* Shrinks the floating nav shell and deepens its shadow once the page
-     has scrolled past it, via a passive scroll listener toggling one class. */
-  function initHeaderScroll() {
-    var header = document.getElementById('siteHeader');
-    if (!header) return;
+  /* A soft accent glow that tracks the cursor across the nav row (the
+     ".nav-spotlight" div in navbar.php), giving the 3D nav bar a mild
+     "pointing" highlight instead of a flat hover color swap. Desktop
+     pointer only — touch devices have no hover to track. */
+  function initNavSpotlight() {
+    var nav = document.querySelector('.navbar-nav-wrap');
+    var spotlight = document.querySelector('.nav-spotlight');
+    if (!nav || !spotlight || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-    function update() {
-      header.classList.toggle('is-scrolled', window.scrollY > 12);
-    }
-    update();
-    window.addEventListener('scroll', update, { passive: true });
+    nav.addEventListener('mousemove', function (e) {
+      var rect = nav.getBoundingClientRect();
+      spotlight.style.left = (e.clientX - rect.left) + 'px';
+      spotlight.style.top = (e.clientY - rect.top) + 'px';
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
-    initHeaderScroll();
+    initNavSpotlight();
   });
 })();
