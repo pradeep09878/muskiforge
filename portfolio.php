@@ -100,11 +100,13 @@ require __DIR__ . '/includes/header.php';
       <?php foreach ($projects as $pi => $p): $tv = tonal_vars($pi); ?>
       <div class="col-md-6 col-lg-4 portfolio-item" data-category="<?= e($p['category']) ?>">
         <div class="portfolio-card h-100">
-          <div class="portfolio-block position-relative" style="background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
-            <span class="portfolio-tag"><?= e($p['category']) ?></span>
-            <i class="<?= e($p['icon']) ?> portfolio-block-icon" aria-hidden="true"></i>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="portfolio-icon-tile" style="background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
+              <i class="<?= e($p['icon']) ?>" aria-hidden="true"></i>
+            </div>
+            <span class="portfolio-tag-inline"><?= e($p['category']) ?></span>
           </div>
-          <div class="pt-3">
+          <div>
             <h2 class="h6 fw-bold mb-1"><?= e($p['title']) ?></h2>
             <p class="small text-muted mb-2"><i class="fa-solid fa-building me-1 text-accent" aria-hidden="true"></i><?= e($p['industry']) ?></p>
             <p class="section-subtitle mb-2"><?= e($p['desc']) ?></p>

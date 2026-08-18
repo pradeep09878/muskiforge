@@ -445,38 +445,39 @@ body { overflow-x: hidden; }
 .portfolio-item { transition: opacity .2s ease; }
 .portfolio-item.is-hidden { display: none; }
 
-.portfolio-card { border-radius: var(--mf-radius); overflow: hidden; position: relative; transition: transform .25s ease, box-shadow .25s ease; }
-.portfolio-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px -26px rgba(17, 24, 39, .25); }
-.portfolio-card img { transition: transform .3s ease; }
-.portfolio-card:hover img { transform: scale(1.05); }
-.portfolio-tag {
-  position: absolute; top: 1rem; left: 1rem;
-  background: rgba(255, 255, 255, .92);
-  border-radius: 999px;
-  padding: .3rem .8rem;
-  font-size: .75rem;
-  font-weight: 700;
-  color: var(--mf-navy);
-  z-index: 1;
-  transition: background-color .25s ease, color .25s ease;
+.portfolio-card {
+  background: #fff;
+  border: 1px solid #eef0f4;
+  border-radius: var(--mf-radius);
+  padding: 1.75rem;
+  height: 100%;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
-.portfolio-card:hover .portfolio-tag {
-  background: var(--mf-accent);
-  color: #fff;
+.portfolio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -22px rgba(17, 24, 39, .2);
+  border-color: transparent;
 }
-.portfolio-block {
-  aspect-ratio: 16 / 11;
+.portfolio-icon-tile {
+  width: 60px; height: 60px;
+  flex-shrink: 0;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--mf-radius);
+  font-size: 1.6rem;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
 }
-.portfolio-block-icon {
-  font-size: 3.5rem;
-  opacity: .9;
-  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+.portfolio-card:hover .portfolio-icon-tile { transform: scale(1.08) rotate(-5deg); }
+.portfolio-tag-inline {
+  background: var(--mf-accent-light);
+  color: var(--mf-accent-dark);
+  font-size: .72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: .3rem .7rem;
+  white-space: nowrap;
 }
-.portfolio-card:hover .portfolio-block-icon { transform: scale(1.12) rotate(-6deg); }
 
 .portfolio-result {
   font-weight: 700;
