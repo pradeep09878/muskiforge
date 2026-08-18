@@ -62,7 +62,7 @@
 
     var selector = [
       '.card-service', '.card-why', '.testimonial-card',
-      '.stat-panel', '.quote-panel', '.portfolio-block', '.portfolio-card',
+      '.stat-panel', '.quote-panel', '.portfolio-card',
       '.blog-block', '.service-panel', '.process-step',
       '.tech-badge', '.accordion-item'
     ].join(',');
@@ -91,8 +91,34 @@
     });
   }
 
+  /* Client-side category filter for the portfolio grid (data-filter /
+     data-category pairing set in portfolio.php). No-ops on other pages. */
+  function initPortfolioFilter() {
+    var buttons = document.querySelectorAll('.portfolio-filter-btn');
+    var items = document.querySelectorAll('.portfolio-item');
+    var emptyState = document.getElementById('portfolioEmpty');
+    if (!buttons.length || !items.length) return;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+
+        var filter = btn.dataset.filter;
+        var visibleCount = 0;
+        items.forEach(function (item) {
+          var match = filter === 'all' || item.dataset.category === filter;
+          item.classList.toggle('is-hidden', !match);
+          if (match) visibleCount++;
+        });
+        if (emptyState) emptyState.classList.toggle('d-none', visibleCount !== 0);
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
+    initPortfolioFilter();
   });
 })();
