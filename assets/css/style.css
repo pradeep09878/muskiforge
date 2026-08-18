@@ -90,7 +90,25 @@ section { scroll-margin-top: 90px; }
 }
 
 .section-title { font-weight: 800; letter-spacing: -.025em; font-size: clamp(1.9rem, 3vw, 2.75rem); line-height: 1.15; }
-.section-subtitle { color: var(--mf-text-muted); max-width: 640px; }
+
+/* Body copy: justified consistently everywhere instead of an inconsistent
+   left/center mix, with the last line kept left-aligned (standard practice
+   — justifying a short final line stretches it into unreadable gaps) and
+   hyphenation to avoid large word-gaps ("rivers") in narrow columns. */
+.section-subtitle {
+  color: var(--mf-text-muted);
+  max-width: 640px;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
+.text-center .section-subtitle,
+.section-subtitle.text-center {
+  text-align: center;
+  text-align-last: center;
+  hyphens: none;
+}
+.blog-content p { text-align: justify; text-align-last: left; hyphens: auto; }
 
 /* ---------- Navbar ---------- */
 .site-header .navbar-brand { color: var(--mf-navy); }
@@ -150,7 +168,7 @@ section { scroll-margin-top: 90px; }
   overflow: hidden;
   background: var(--mf-dark);
   color: #fff;
-  padding: clamp(6rem, 13vw, 9.5rem) 0 clamp(4rem, 8vw, 6.5rem);
+  padding: clamp(3.5rem, 13vw, 9.5rem) 0 clamp(3rem, 8vw, 6.5rem);
 }
 .hero-main .container { position: relative; z-index: 2; }
 
@@ -175,12 +193,16 @@ section { scroll-margin-top: 90px; }
 
 .hero-main h1 {
   font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: 1.06;
-  font-size: clamp(2.6rem, 5.2vw, 4.5rem);
-  margin-bottom: 1.5rem;
+  letter-spacing: -.03em;
+  line-height: 1.08;
+  font-size: clamp(2rem, 8vw, 4.5rem);
+  margin-bottom: 1.25rem;
 }
 .hero-main .section-subtitle { color: rgba(255, 255, 255, .72); font-size: 1.15rem; }
+@media (max-width: 575.98px) {
+  .hero-main .section-subtitle { font-size: 1rem; }
+  .hero-trust-badge { font-size: .78rem; margin-bottom: 1.1rem; }
+}
 
 .btn-outline-light-2 {
   border: 1.5px solid rgba(255, 255, 255, .4);

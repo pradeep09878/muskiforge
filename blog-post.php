@@ -78,7 +78,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <?php endif; ?>
 
-      <div class="fs-5" style="color:var(--mf-text-muted);line-height:1.8">
+      <div class="blog-content fs-5" style="color:var(--mf-text-muted);line-height:1.8">
         <?= render_plain_content($post['content']) ?>
       </div>
 
