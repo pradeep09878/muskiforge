@@ -116,9 +116,23 @@
     });
   }
 
+  /* Shrinks the floating nav shell and deepens its shadow once the page
+     has scrolled past it, via a passive scroll listener toggling one class. */
+  function initHeaderScroll() {
+    var header = document.getElementById('siteHeader');
+    if (!header) return;
+
+    function update() {
+      header.classList.toggle('is-scrolled', window.scrollY > 12);
+    }
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
+    initHeaderScroll();
   });
 })();
