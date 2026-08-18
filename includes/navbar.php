@@ -16,16 +16,13 @@
           <li class="nav-item"><a class="nav-link<?= nav_active('index.php') ?>" href="<?= e(url('index.php')) ?>">Home</a></li>
           <li class="nav-item"><a class="nav-link<?= nav_active('about.php') ?>" href="<?= e(url('about.php')) ?>">About</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle<?= nav_active('services.php') ?>" href="<?= e(url('services.php')) ?>" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+            <a class="nav-link dropdown-toggle<?= nav_active('services.php') ?>" href="<?= e(url('services.php')) ?>" id="servicesDropdown" role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">Services</a>
             <div class="dropdown-menu mega-menu" aria-labelledby="servicesDropdown">
               <div class="mega-menu-grid">
                 <?php foreach (services_catalog() as $slug => $navService): ?>
                 <a class="mega-menu-item" href="<?= e(url('services/' . $slug . '.php')) ?>">
                   <span class="mega-menu-icon"><i class="<?= e($navService['icon']) ?>" aria-hidden="true"></i></span>
-                  <span class="mega-menu-text">
-                    <span class="mega-menu-title"><?= e($navService['title']) ?></span>
-                    <span class="mega-menu-desc"><?= e($navService['summary']) ?></span>
-                  </span>
+                  <span class="mega-menu-title"><?= e($navService['title']) ?></span>
                 </a>
                 <?php endforeach; ?>
               </div>

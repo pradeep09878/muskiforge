@@ -223,62 +223,65 @@ body { overflow-x: clip; }
   box-shadow: 0 1px 0 #082e94, 0 6px 14px -8px rgba(21, 94, 239, .5);
 }
 
-/* Services mega-menu — fades/pops in instead of Bootstrap's instant show */
+/* Services menu — compact icon+label grid, quick natural fade (no slide).
+   data-bs-display="static" on the toggle (navbar.php) keeps this off
+   Popper's dynamic positioning so the CSS transform below isn't fighting
+   an inline one — that fight was the "sliding" glitch on open. */
 .mega-menu {
-  min-width: 640px;
-  padding: 1.1rem;
+  min-width: 460px;
+  padding: .75rem;
   border: none;
   border-radius: var(--mf-radius);
-  box-shadow: 0 30px 60px -24px rgba(15, 23, 41, .32);
+  box-shadow: 0 24px 48px -20px rgba(15, 23, 41, .3);
   left: 50%;
   margin-top: .6rem !important;
   display: block !important;
   visibility: hidden;
   opacity: 0;
-  transform: translate(-50%, 10px) scale(.97);
-  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  transform: translateX(-50%) scale(.98);
+  transition: opacity .15s ease, transform .15s ease, visibility .15s;
 }
 .mega-menu.show {
   visibility: visible;
   opacity: 1;
-  transform: translate(-50%, 0) scale(1);
+  transform: translateX(-50%) scale(1);
 }
 .mega-menu-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: .15rem;
+  gap: .2rem;
 }
 .mega-menu-item {
   display: flex;
-  align-items: flex-start;
-  gap: .8rem;
-  padding: .6rem .65rem;
-  border-radius: 10px;
+  align-items: center;
+  gap: .65rem;
+  padding: .55rem .6rem;
+  border-radius: 9px;
   text-decoration: none;
   color: var(--mf-navy);
-  transition: background-color .2s ease;
+  font-weight: 600;
+  font-size: .87rem;
+  transition: background-color .15s ease;
 }
 .mega-menu-item:hover { background: var(--mf-accent-light); }
 .mega-menu-icon {
-  width: 38px; height: 38px;
+  width: 32px; height: 32px;
   flex-shrink: 0;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--mf-accent-light);
   color: var(--mf-accent);
   display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
-  transition: background-color .2s ease, color .2s ease, transform .25s ease;
+  font-size: .85rem;
+  transition: background-color .15s ease, color .15s ease;
 }
-.mega-menu-item:hover .mega-menu-icon { background: var(--mf-accent); color: #fff; transform: scale(1.08); }
-.mega-menu-title { display: block; font-weight: 700; font-size: .88rem; }
-.mega-menu-desc { display: block; font-size: .74rem; color: var(--mf-text-muted); line-height: 1.35; margin-top: .1rem; }
+.mega-menu-item:hover .mega-menu-icon { background: var(--mf-accent); color: #fff; }
 .mega-menu-footer {
   border-top: 1px solid #eef0f4;
-  margin-top: .6rem;
-  padding-top: .6rem;
+  margin-top: .5rem;
+  padding-top: .5rem;
   text-align: right;
 }
-.mega-menu-footer a { font-size: .85rem; font-weight: 700; color: var(--mf-accent); text-decoration: none; }
+.mega-menu-footer a { font-size: .82rem; font-weight: 700; color: var(--mf-accent); text-decoration: none; }
 .mega-menu-footer a:hover { text-decoration: underline; }
 
 @media (max-width: 991.98px) {
