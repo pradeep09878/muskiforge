@@ -184,6 +184,42 @@ function industries_served(): array
 }
 
 /**
+ * Homepage hero carousel slides — edit copy, CTAs, or add/remove slides
+ * here without touching the carousel markup in index.php. 'art' selects
+ * which decorative visual variant renders (see .hero-slide-art--* in
+ * style.css): network | glass | shield.
+ */
+function hero_slides(): array
+{
+    return [
+        [
+            'eyebrow' => 'IT Services & Digital Solutions',
+            'title' => 'Powering Businesses with Smarter IT Solutions',
+            'text' => 'We design, build and manage secure, scalable technology solutions that help businesses operate faster, smarter and more efficiently.',
+            'primary' => ['label' => 'Explore Our Services', 'url' => 'services.php'],
+            'secondary' => ['label' => 'Talk to an Expert', 'url' => 'contact.php'],
+            'art' => 'network',
+        ],
+        [
+            'eyebrow' => 'Software & Digital Transformation',
+            'title' => 'Transform Ideas Into Powerful Digital Products',
+            'text' => 'From custom software and web applications to enterprise platforms, we build technology that solves real business problems.',
+            'primary' => ['label' => 'View Our Solutions', 'url' => 'services.php'],
+            'secondary' => ['label' => 'Start Your Project', 'url' => 'contact.php'],
+            'art' => 'glass',
+        ],
+        [
+            'eyebrow' => 'Cloud, Security & Infrastructure',
+            'title' => 'Secure. Scalable. Always Ready.',
+            'text' => 'Build a resilient technology foundation with cloud infrastructure, cybersecurity, DevOps and managed IT services.',
+            'primary' => ['label' => 'Discover Our Solutions', 'url' => 'services.php'],
+            'secondary' => ['label' => 'Get a Free Consultation', 'url' => 'contact.php'],
+            'art' => 'shield',
+        ],
+    ];
+}
+
+/**
  * Converts arbitrary text into a URL-safe slug: lowercase, alphanumeric,
  * words joined with single hyphens. Used for blog post URLs.
  */

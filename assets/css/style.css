@@ -125,8 +125,14 @@ body { overflow-x: clip; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Navbar (3D raised deck, scrolls with the page — not sticky) ---------- */
-.site-header { position: relative; z-index: 1030; padding: 0; }
+/* ---------- Navbar (fixed; transparent glass over the homepage hero,
+   solidifying into the 3D raised deck once scrolled or on any other page) ---------- */
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1030; padding: 0; }
+
+/* Fixed nav is out of flow, so every page needs top clearance — except
+   the homepage, where the hero is meant to sit behind the transparent bar. */
+main { padding-top: 90px; }
+body.page-home main { padding-top: 0; }
 
 .navbar-3d-panel {
   position: relative;
@@ -137,6 +143,13 @@ body { overflow-x: clip; }
     inset 0 1px 0 rgba(255, 255, 255, .08),
     0 18px 34px -18px rgba(6, 11, 31, .6),
     0 3px 0 var(--mf-accent-dark);
+  transition: background .4s ease, box-shadow .4s ease, backdrop-filter .4s ease;
+}
+body.page-home .site-header:not(.is-scrolled) .navbar-3d-panel {
+  background: rgba(10, 16, 38, .3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14), 0 10px 30px -24px rgba(6, 11, 31, .4);
 }
 .navbar-3d-panel::before {
   content: "";
@@ -204,6 +217,7 @@ body { overflow-x: clip; }
 .site-header .nav-link.active::before { opacity: 1; transform: translateY(0) scale(1); }
 
 .btn-nav-cta-3d {
+  align-items: center;
   background: linear-gradient(180deg, var(--mf-accent) 0%, var(--mf-accent-dark) 100%);
   border: none;
   color: #fff;
@@ -223,13 +237,88 @@ body { overflow-x: clip; }
   box-shadow: 0 1px 0 #082e94, 0 6px 14px -8px rgba(21, 94, 239, .5);
 }
 
+/* Custom hamburger — three bars that morph into an X (.is-open, toggled
+   in main.js from the offcanvas show/hide events, since Bootstrap's
+   Offcanvas plugin doesn't drive aria-expanded on external triggers). */
+.navbar-toggler-3d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 42px; height: 42px;
+  border: none;
+  background: rgba(255, 255, 255, .08);
+  border-radius: 10px;
+  padding: 0;
+}
+.navbar-toggler-3d-bar {
+  display: block;
+  width: 19px; height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform .3s ease, opacity .2s ease;
+}
+.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(2) { opacity: 0; }
+.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile off-canvas nav panel */
+.mobile-nav-panel {
+  width: min(340px, 86vw);
+  background: linear-gradient(180deg, #141d3a 0%, var(--mf-dark) 100%);
+  color: #fff;
+}
+.mobile-nav-panel .offcanvas-header {
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  padding: 1.1rem 1.25rem;
+}
+.mobile-nav-list { display: flex; flex-direction: column; gap: .15rem; }
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, .82);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .85rem .6rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active { background: rgba(255, 255, 255, .08); color: #fff; }
+.mobile-nav-expand i { margin-left: auto; transition: transform .25s ease; font-size: .8rem; }
+.mobile-nav-expand[aria-expanded="true"] i { transform: rotate(180deg); }
+.mobile-nav-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding-left: .5rem;
+  margin: .15rem 0 .5rem;
+}
+.mobile-nav-sublist a {
+  display: flex;
+  align-items: center;
+  padding: .6rem .75rem;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, .62);
+  font-size: .88rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+.mobile-nav-sublist a:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+
 /* Services menu — a raised 3D popover card (embossed edges + a pointer
    notch aimed at the toggle) holding a single-column icon+label list.
    data-bs-display="static" on the toggle (navbar.php) keeps this off
    Popper's dynamic positioning so the CSS transform below isn't fighting
    an inline one — that fight was the "sliding" glitch on open. */
 .mega-menu {
-  min-width: 300px;
+  min-width: 620px;
   padding: .7rem;
   border: none;
   border-radius: 16px;
@@ -261,11 +350,21 @@ body { overflow-x: clip; }
   transform: translateX(-50%) rotate(45deg);
   box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .8);
 }
-.mega-menu-grid {
-  display: flex;
-  flex-direction: column;
-  gap: .15rem;
+.mega-menu-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 .5rem;
 }
+.mega-menu-col { display: flex; flex-direction: column; gap: .1rem; }
+.mega-menu-col-title {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--mf-text-muted);
+  padding: .4rem .65rem .5rem;
+}
+.mega-menu-col + .mega-menu-col { border-left: 1px solid #eef0f4; padding-left: .5rem; }
 .mega-menu-item {
   display: flex;
   align-items: center;
@@ -308,24 +407,8 @@ body { overflow-x: clip; }
 .mega-menu-footer a { font-size: .82rem; font-weight: 700; color: var(--mf-accent); text-decoration: none; }
 .mega-menu-footer a:hover { text-decoration: underline; }
 
-@media (max-width: 991.98px) {
-  .site-header .mega-menu {
-    display: none !important;
-    position: static !important;
-    opacity: 1;
-    visibility: visible;
-    transform: none !important;
-    min-width: 0;
-    width: 100%;
-    box-shadow: none;
-    border: none;
-    padding: .35rem 0 .5rem .5rem;
-    text-align: left;
-  }
-  .site-header .mega-menu.show { display: block !important; }
-  .site-header .mega-menu::before { display: none; }
-  .mega-menu-footer { text-align: left; }
-}
+/* The mega-menu is desktop-only (nav switches to the off-canvas mobile
+   panel below lg — see .mobile-nav-panel), so it needs no mobile variant. */
 
 /* ---------- Hero ---------- */
 .hero {
@@ -372,148 +455,289 @@ body { overflow-x: clip; }
   gap: .9rem;
 }
 
-/* ---------- Hero (unified, full-bleed dark — homepage) ---------- */
-.hero-main {
+/* ---------- Hero carousel (homepage) ---------- */
+.hero-carousel-section {
   position: relative;
   overflow: hidden;
   background: var(--mf-dark);
   color: #fff;
-  padding: clamp(3.5rem, 13vw, 9.5rem) 0 clamp(3rem, 8vw, 6.5rem);
+  height: clamp(600px, 92vh, 940px);
 }
-.hero-main .container { position: relative; z-index: 2; }
-
-.hero-texture { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .5; z-index: 0; }
-
+.hero-carousel-texture { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .5; z-index: 0; pointer-events: none; }
 .hero-glow { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 1; animation: heroGlowPulse 9s ease-in-out infinite; }
 .hero-glow-1 { width: 620px; height: 620px; top: -220px; left: -140px; background: rgba(21, 94, 239, .3); }
 .hero-glow-2 { width: 520px; height: 520px; bottom: -240px; right: -100px; background: rgba(21, 94, 239, .16); animation-delay: -4.5s; }
-
 @keyframes heroGlowPulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.12); opacity: .75; }
 }
 
-.hero-trust-badge {
-  display: inline-flex;
+.hero-carousel,
+.hero-carousel .carousel-inner,
+.hero-carousel .carousel-item { height: 100%; }
+.hero-carousel { position: relative; z-index: 2; }
+.hero-carousel:focus-visible { outline: 2px solid var(--mf-accent-2); outline-offset: -4px; }
+.hero-carousel .carousel-item {
+  display: flex;
   align-items: center;
-  gap: .55rem;
-  border: 1px solid rgba(255, 255, 255, .25);
-  border-radius: 999px;
-  padding: .4rem .9rem .4rem .7rem;
-  font-weight: 600;
-  font-size: .85rem;
-  margin-bottom: 1.5rem;
+  position: relative;
 }
-.hero-trust-badge .stars { color: #f5b301; letter-spacing: 1px; font-size: .75rem; }
+.hero-carousel.carousel-fade .carousel-item {
+  transition: opacity .5s ease, transform .8s ease;
+  transform: scale(1.015);
+}
+.hero-carousel.carousel-fade .carousel-item.active { transform: scale(1); }
 
-.hero-main h1 {
+.hero-eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--mf-accent-2);
+  margin-bottom: 1.1rem;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.hero-slide-title {
+  color: #fff;
   font-weight: 800;
   letter-spacing: -.03em;
-  line-height: 1.08;
-  font-size: clamp(2rem, 8vw, 4.5rem);
+  line-height: 1.1;
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  max-width: 720px;
   margin-bottom: 1.25rem;
+  opacity: 0;
+  transform: translateY(20px);
 }
-.hero-main .section-subtitle {
+.hero-slide-text {
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, .72);
-  font-size: 1.15rem;
-  text-align: center;
-  text-align-last: center;
-  hyphens: none;
+  max-width: 540px;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
 }
-@media (max-width: 575.98px) {
-  .hero-main .section-subtitle { font-size: 1rem; }
-  .hero-trust-badge { font-size: .78rem; margin-bottom: 1.1rem; }
+.hero-slide-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(20px);
 }
+/* Delays are measured from when Bootstrap finalizes .active on the
+   incoming slide, which (empirically) lands at the end of the crossfade
+   above, not the start of it — so these stack on top of that .5s, not
+   run alongside it. Kept short so the full reveal still lands well
+   under ~1.2s total, per "avoid long animation delays". */
+.carousel-item.active .hero-eyebrow { animation: heroSlideFadeUp .45s cubic-bezier(.16,.8,.3,1) forwards; }
+.carousel-item.active .hero-slide-title { animation: heroSlideFadeUp .45s cubic-bezier(.16,.8,.3,1) .08s forwards; }
+.carousel-item.active .hero-slide-text { animation: heroSlideFadeUp .45s cubic-bezier(.16,.8,.3,1) .16s forwards; }
+.carousel-item.active .hero-slide-ctas { animation: heroSlideFadeUp .45s cubic-bezier(.16,.8,.3,1) .24s forwards; }
+@keyframes heroSlideFadeUp { to { opacity: 1; transform: none; } }
 
-.btn-outline-light-2 {
-  border: 1.5px solid rgba(255, 255, 255, .4);
+/* Hero CTAs — gradient/glow primary with a sliding arrow, minimal outline secondary */
+.btn-hero-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: linear-gradient(135deg, var(--mf-accent) 0%, var(--mf-accent-dark) 100%);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: .85rem 1.6rem;
+  box-shadow: 0 16px 36px -14px rgba(21, 94, 239, .55);
+  transition: transform .25s ease, box-shadow .25s ease;
+  text-decoration: none;
+}
+.btn-hero-primary i { transition: transform .25s ease; }
+.btn-hero-primary:hover { color: #fff; transform: translateY(-3px); box-shadow: 0 20px 44px -14px rgba(21, 94, 239, .65); }
+.btn-hero-primary:hover i { transform: translateX(4px); }
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1.5px solid rgba(255, 255, 255, .3);
   color: #fff;
   font-weight: 600;
-  transition: transform .18s ease, background-color .18s ease, border-color .18s ease;
+  border-radius: 999px;
+  padding: .85rem 1.5rem;
+  transition: transform .25s ease, background-color .25s ease, border-color .25s ease;
+  text-decoration: none;
 }
-.btn-outline-light-2:hover {
-  background-color: rgba(255, 255, 255, .1);
-  border-color: rgba(255, 255, 255, .7);
+.btn-hero-secondary:hover { color: #fff; background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .6); transform: translateY(-3px); }
+
+/* Custom prev/next controls + indicators (replacing Bootstrap's defaults) */
+.hero-carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: #fff;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 767.98px) {
-  .hero-main { text-align: center; }
-}
-
-/* Hero entrance stagger — plays once on load, not scroll-triggered
-   (the hero is always above the fold, so IntersectionObserver would fire
-   immediately anyway). Disabled globally under prefers-reduced-motion. */
-.hero-anim {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: heroFadeUp .7s cubic-bezier(.16,.8,.3,1) forwards;
-}
-.hero-anim-1 { animation-delay: .05s; }
-.hero-anim-2 { animation-delay: .16s; }
-.hero-anim-3 { animation-delay: .3s; }
-.hero-anim-4 { animation-delay: .42s; }
-.hero-anim-5 { animation-delay: .54s; }
-@keyframes heroFadeUp {
-  to { opacity: 1; transform: none; }
-}
-
-.hero-mini-stats {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.1rem;
-  margin-top: 2.25rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid rgba(255, 255, 255, .12);
+  z-index: 3;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
 }
-.hero-mini-stat { display: flex; flex-direction: column; align-items: center; gap: .15rem; }
-.hero-mini-stat-num {
-  font-family: 'Manrope', 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 1.15rem;
-  color: #fff;
-  letter-spacing: -.02em;
-}
-.hero-mini-stat-label {
-  font-size: .68rem;
-  color: rgba(255, 255, 255, .58);
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  white-space: nowrap;
-}
-.hero-mini-stat-divider { width: 1px; height: 26px; background: rgba(255, 255, 255, .16); }
+.hero-carousel-control:hover { background: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .4); color: #fff; transform: translateY(-50%) scale(1.06); }
+.hero-carousel-control-prev { left: clamp(.75rem, 3vw, 2.5rem); }
+.hero-carousel-control-next { right: clamp(.75rem, 3vw, 2.5rem); }
 
-@media (max-width: 575.98px) {
-  .hero-main { padding-bottom: clamp(2.25rem, 6vw, 4rem); }
-  .hero-mini-stats { gap: .65rem; margin-top: 1.6rem; padding-top: 1rem; }
-  .hero-mini-stat-num { font-size: .95rem; }
-  .hero-mini-stat-label { font-size: .58rem; letter-spacing: .03em; }
-  .hero-mini-stat-divider { height: 20px; }
-}
-
-.hero-scroll-cue {
+/* Overrides Bootstrap's default .carousel-indicators (full-width flat
+   bars) with a compact centered pill cluster. right/margin are reset
+   since Bootstrap's own rule sets them, and left+right both non-auto
+   would stretch this to fill the gap instead of sizing to content. */
+.hero-carousel-indicators {
   position: absolute;
   left: 50%;
-  bottom: 1.5rem;
+  right: auto;
+  bottom: clamp(1.25rem, 4vw, 2.5rem);
   transform: translateX(-50%);
-  width: 36px; height: 36px;
+  display: flex;
+  gap: .5rem;
+  margin: 0;
+  z-index: 3;
+}
+/* [data-bs-target], not "button" — Bootstrap's own indicator rule is
+   ".carousel-indicators [data-bs-target]" (class+attribute, specificity
+   0,0,2,0); a plain "button" tag selector (0,0,1,1) loses that fight and
+   Bootstrap's 20px transparent hit-area border would leak through.
+   Matching the attribute selector ties specificity so source order
+   (this file loads after bootstrap.min.css) decides instead. */
+.hero-carousel-indicators [data-bs-target] {
+  box-sizing: border-box;
+  width: 28px; height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .28);
+  background-clip: border-box;
+  border: none;
+  border-top: none;
+  border-bottom: none;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: background-color .3s ease, width .3s ease;
+}
+.hero-carousel-indicators [data-bs-target].active { background: var(--mf-accent-2); width: 42px; opacity: 1; }
+
+/* Per-slide decorative visuals — abstract, not literal, GPU-friendly
+   transforms only (opacity/transform), respects prefers-reduced-motion
+   via the global rule at the top of this file. */
+.hero-slide-art {
+  position: absolute;
+  top: 50%;
+  right: clamp(1rem, 6vw, 6rem);
+  transform: translateY(-50%);
+  width: clamp(260px, 30vw, 420px);
+  height: clamp(260px, 30vw, 420px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-slide-art--network .art-node {
+  position: absolute;
+  width: 12px; height: 12px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, .25);
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255, 255, 255, .7);
+  background: var(--mf-accent-2);
+  box-shadow: 0 0 16px 2px rgba(0, 184, 217, .7);
+  animation: artNodePulse 3.4s ease-in-out infinite;
+}
+.hero-slide-art--network .art-node:nth-child(1) { top: 8%; left: 15%; animation-delay: 0s; }
+.hero-slide-art--network .art-node:nth-child(2) { top: 30%; right: 5%; animation-delay: .6s; background: var(--mf-accent); box-shadow: 0 0 16px 2px rgba(21,94,239,.7); }
+.hero-slide-art--network .art-node:nth-child(3) { bottom: 20%; left: 5%; animation-delay: 1.2s; }
+.hero-slide-art--network .art-node:nth-child(4) { bottom: 5%; right: 25%; animation-delay: 1.8s; background: var(--mf-accent); box-shadow: 0 0 16px 2px rgba(21,94,239,.7); }
+.hero-slide-art--network .art-node:nth-child(5) { top: 48%; left: 45%; animation-delay: 2.4s; }
+.hero-slide-art--network svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .45; }
+@keyframes artNodePulse {
+  0%, 100% { transform: scale(1); opacity: .85; }
+  50% { transform: scale(1.5); opacity: 1; }
+}
+
+.hero-slide-art--glass .art-card {
+  position: absolute;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 24px 50px -20px rgba(0, 0, 0, .5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--mf-accent-2);
+  animation: artCardFloat 6s ease-in-out infinite;
+}
+.hero-slide-art--glass .art-card:nth-child(1) { width: 150px; height: 100px; top: 6%; left: 10%; animation-delay: 0s; }
+.hero-slide-art--glass .art-card:nth-child(2) { width: 130px; height: 130px; top: 38%; right: 0; animation-delay: 1.2s; color: var(--mf-accent); }
+.hero-slide-art--glass .art-card:nth-child(3) { width: 170px; height: 90px; bottom: 4%; left: 20%; animation-delay: 2.4s; }
+@keyframes artCardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.hero-slide-art--shield {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-slide-art--shield .art-shield-icon {
+  position: relative;
   z-index: 2;
-  animation: heroScrollBounce 2s ease-in-out infinite;
-  transition: border-color .2s ease, color .2s ease;
+  font-size: 5rem;
+  color: var(--mf-accent-2);
+  filter: drop-shadow(0 0 24px rgba(0, 184, 217, .5));
 }
-.hero-scroll-cue:hover { border-color: rgba(255, 255, 255, .6); color: #fff; }
-@keyframes heroScrollBounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(6px); }
+.hero-slide-art--shield .art-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border: 1px solid rgba(0, 184, 217, .35);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: artRingPulse 3.5s ease-out infinite;
 }
+.hero-slide-art--shield .art-ring:nth-child(2) { width: 160px; height: 160px; animation-delay: 0s; }
+.hero-slide-art--shield .art-ring:nth-child(3) { width: 160px; height: 160px; animation-delay: 1.15s; }
+.hero-slide-art--shield .art-ring:nth-child(4) { width: 160px; height: 160px; animation-delay: 2.3s; }
+@keyframes artRingPulse {
+  0% { width: 120px; height: 120px; opacity: .8; }
+  100% { width: 320px; height: 320px; opacity: 0; }
+}
+.hero-slide-art--shield .art-orbit-icon {
+  position: absolute;
+  color: rgba(255, 255, 255, .55);
+  font-size: 1.4rem;
+}
+.hero-slide-art--shield .art-orbit-icon:nth-child(5) { top: 10%; left: 8%; }
+.hero-slide-art--shield .art-orbit-icon:nth-child(6) { top: 15%; right: 5%; }
+.hero-slide-art--shield .art-orbit-icon:nth-child(7) { bottom: 12%; left: 15%; }
+
+@media (max-width: 991.98px) {
+  .hero-slide-art { width: 280px; height: 280px; right: 0; opacity: .5; }
+}
+
 @media (max-width: 767.98px) {
-  .hero-scroll-cue { display: none; }
+  .hero-carousel-section,
+  .hero-carousel,
+  .hero-carousel .carousel-inner,
+  .hero-carousel .carousel-item { height: auto; }
+  .hero-carousel-section { padding: 7rem 0 4.5rem; }
+  .hero-carousel .carousel-item { padding: 1.5rem 0 4rem; text-align: center; }
+  .hero-slide-title,
+  .hero-slide-text { margin-left: auto; margin-right: auto; }
+  .hero-slide-ctas { justify-content: center; }
+  .hero-slide-art { display: none; }
+  /* Swipe + dot indicators handle navigation on touch; the circular
+     arrow buttons at the edges were overlapping the centered slide
+     text on narrow screens. */
+  .hero-carousel-control { display: none; }
 }
 
 /* ---------- Trusted by ---------- */
@@ -847,9 +1071,7 @@ body { overflow-x: clip; }
 
 @media (max-width: 991.98px) {
   .hero { padding: 4rem 0 3rem; text-align: center; }
-  .site-header .navbar-nav { text-align: center; gap: .25rem; }
-  .site-header .navbar-collapse .btn-nav-cta-3d { width: 100%; margin: .75rem 0 .25rem; }
-  .navbar-3d-panel { padding: .85rem 1.1rem; }
+  .navbar-3d-panel { padding: .7rem 1rem; }
 }
 
 @media (max-width: 575.98px) {

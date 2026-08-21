@@ -26,6 +26,7 @@
         <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
         <ul class="list-unstyled footer-links">
           <li><a href="<?= e(url('about.php')) ?>">About Us</a></li>
+          <li><a href="<?= e(url('industries.php')) ?>">Industries</a></li>
           <li><a href="<?= e(url('portfolio.php')) ?>">Portfolio</a></li>
           <li><a href="<?= e(url('blog.php')) ?>">Blog</a></li>
           <li><a href="<?= e(url('faq.php')) ?>">FAQs</a></li>

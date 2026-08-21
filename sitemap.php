@@ -16,6 +16,7 @@ $staticPages = [
     ['path' => 'about.php', 'priority' => '0.8', 'changefreq' => 'monthly'],
     ['path' => 'services.php', 'priority' => '0.9', 'changefreq' => 'monthly'],
     ['path' => 'portfolio.php', 'priority' => '0.7', 'changefreq' => 'monthly'],
+    ['path' => 'industries.php', 'priority' => '0.6', 'changefreq' => 'monthly'],
     ['path' => 'blog.php', 'priority' => '0.7', 'changefreq' => 'weekly'],
     ['path' => 'faq.php', 'priority' => '0.6', 'changefreq' => 'monthly'],
     ['path' => 'contact.php', 'priority' => '0.8', 'changefreq' => 'yearly'],

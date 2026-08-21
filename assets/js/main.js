@@ -132,10 +132,66 @@
     });
   }
 
+  /* Toggles .is-scrolled on the fixed header once the page moves past the
+     hero, so the transparent glass bar (homepage only — see style.css)
+     solidifies into the raised 3D deck used everywhere else. */
+  function initHeaderScroll() {
+    var header = document.getElementById('siteHeader');
+    if (!header) return;
+
+    function update() {
+      header.classList.toggle('is-scrolled', window.scrollY > 40);
+    }
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+
+  /* Bootstrap's Offcanvas plugin doesn't manage aria-expanded / a visual
+     state on external toggle buttons the way Collapse does, so the
+     hamburger-to-X morph (.is-open, see style.css) is driven here from
+     the offcanvas's own show/hide lifecycle events. */
+  function initMobileNavToggle() {
+    var panel = document.getElementById('mobileNav');
+    var toggler = document.querySelector('.navbar-toggler-3d');
+    if (!panel || !toggler) return;
+
+    panel.addEventListener('show.bs.offcanvas', function () {
+      toggler.classList.add('is-open');
+      toggler.setAttribute('aria-expanded', 'true');
+    });
+    panel.addEventListener('hide.bs.offcanvas', function () {
+      toggler.classList.remove('is-open');
+      toggler.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  /* Hero carousel: instantiated manually (rather than via data-bs-ride)
+     so autoplay can be skipped entirely under prefers-reduced-motion —
+     everything else (swipe, keyboard, pause-on-hover/focus) comes free
+     from Bootstrap's Carousel component. */
+  function initHeroCarousel() {
+    var el = document.getElementById('heroCarousel');
+    if (!el || typeof bootstrap === 'undefined') return;
+
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    new bootstrap.Carousel(el, {
+      interval: prefersReduced ? false : 6500,
+      ride: prefersReduced ? false : 'carousel',
+      pause: 'hover',
+      touch: true,
+      keyboard: true,
+      wrap: true,
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
     initNavSpotlight();
+    initHeaderScroll();
+    initMobileNavToggle();
+    initHeroCarousel();
   });
 })();

@@ -26,9 +26,9 @@ require __DIR__ . '/includes/header.php';
 ?>
 <main id="main-content">
 
-<!-- ============ HERO ============ -->
-<section class="hero-main">
-  <svg class="hero-texture" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<!-- ============ HERO CAROUSEL ============ -->
+<section class="hero-carousel-section" aria-label="Introduction">
+  <svg class="hero-carousel-texture" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
       <pattern id="heroDots" width="34" height="34" patternUnits="userSpaceOnUse">
         <circle cx="2" cy="2" r="1.3" fill="rgba(255,255,255,.16)"/>
@@ -38,32 +38,67 @@ require __DIR__ . '/includes/header.php';
   </svg>
   <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
   <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-9 text-center">
-        <span class="hero-trust-badge hero-anim hero-anim-1"><span class="stars">★★★★★</span> 98% Client Satisfaction Rating</span>
-        <h1 class="hero-anim hero-anim-2">End-to-End IT Services That Help Businesses Build, Scale &amp; Grow</h1>
-        <p class="section-subtitle mx-auto mb-4 hero-anim hero-anim-3" style="max-width:640px">
-          Muskiforge delivers custom software development, website development, mobile app development, cloud
-          solutions, SEO services, digital marketing, and IT consulting for startups, SMEs, and enterprises.
-        </p>
-        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3 hero-anim hero-anim-4">
-          <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent btn-lg rounded-pill px-4">Get Started</a>
-          <a href="<?= e(url('portfolio.php')) ?>" class="btn btn-outline-light-2 btn-lg rounded-pill px-4">See Our Work</a>
+
+  <div id="heroCarousel" class="carousel slide carousel-fade hero-carousel" tabindex="0" aria-roledescription="carousel" aria-label="Featured highlights">
+    <div class="carousel-inner">
+      <?php foreach (hero_slides() as $i => $slide): ?>
+      <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>" data-bs-interval="6500">
+        <div class="hero-slide-art hero-slide-art--<?= e($slide['art']) ?>" aria-hidden="true">
+          <?php if ($slide['art'] === 'network'): ?>
+            <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+              <line x1="45" y1="24" x2="270" y2="90" stroke="#fff" stroke-width="1"/>
+              <line x1="270" y1="90" x2="15" y2="210" stroke="#fff" stroke-width="1"/>
+              <line x1="15" y1="210" x2="225" y2="270" stroke="#fff" stroke-width="1"/>
+              <line x1="225" y1="270" x2="135" y2="144" stroke="#fff" stroke-width="1"/>
+              <line x1="135" y1="144" x2="45" y2="24" stroke="#fff" stroke-width="1"/>
+              <line x1="135" y1="144" x2="270" y2="90" stroke="#fff" stroke-width="1"/>
+            </svg>
+            <span class="art-node"></span><span class="art-node"></span><span class="art-node"></span>
+            <span class="art-node"></span><span class="art-node"></span>
+          <?php elseif ($slide['art'] === 'glass'): ?>
+            <span class="art-card"><i class="fa-solid fa-window-restore" aria-hidden="true"></i></span>
+            <span class="art-card"><i class="fa-solid fa-database" aria-hidden="true"></i></span>
+            <span class="art-card"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></span>
+          <?php else: ?>
+            <span class="art-ring"></span><span class="art-ring"></span><span class="art-ring"></span>
+            <i class="fa-solid fa-shield-halved art-shield-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-server art-orbit-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-cloud art-orbit-icon" aria-hidden="true"></i>
+            <i class="fa-solid fa-chart-line art-orbit-icon" aria-hidden="true"></i>
+          <?php endif; ?>
         </div>
-        <div class="hero-mini-stats hero-anim hero-anim-5">
-          <div class="hero-mini-stat"><span class="hero-mini-stat-num">150+</span><span class="hero-mini-stat-label">Projects Delivered</span></div>
-          <div class="hero-mini-stat-divider" aria-hidden="true"></div>
-          <div class="hero-mini-stat"><span class="hero-mini-stat-num">98%</span><span class="hero-mini-stat-label">Client Satisfaction</span></div>
-          <div class="hero-mini-stat-divider" aria-hidden="true"></div>
-          <div class="hero-mini-stat"><span class="hero-mini-stat-num">24/7</span><span class="hero-mini-stat-label">Support</span></div>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8">
+              <span class="hero-eyebrow"><?= e($slide['eyebrow']) ?></span>
+              <h1 class="hero-slide-title"><?= e($slide['title']) ?></h1>
+              <p class="hero-slide-text"><?= e($slide['text']) ?></p>
+              <div class="hero-slide-ctas">
+                <a href="<?= e(url($slide['primary']['url'])) ?>" class="btn-hero-primary"><?= e($slide['primary']['label']) ?> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                <a href="<?= e(url($slide['secondary']['url'])) ?>" class="btn-hero-secondary"><?= e($slide['secondary']['label']) ?></a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <?php endforeach; ?>
+    </div>
+
+    <button class="hero-carousel-control hero-carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+      <span class="visually-hidden">Previous slide</span>
+    </button>
+    <button class="hero-carousel-control hero-carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+      <span class="visually-hidden">Next slide</span>
+    </button>
+
+    <div class="carousel-indicators hero-carousel-indicators">
+      <?php foreach (hero_slides() as $i => $slide): ?>
+      <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="<?= $i ?>" class="<?= $i === 0 ? 'active' : '' ?>" aria-current="<?= $i === 0 ? 'true' : 'false' ?>" aria-label="Show slide <?= $i + 1 ?>: <?= e($slide['title']) ?>"></button>
+      <?php endforeach; ?>
     </div>
   </div>
-  <a href="#about" class="hero-scroll-cue" aria-label="Scroll to learn more">
-    <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
-  </a>
 </section>
 
 <!-- ============ TRUSTED BY ============ -->

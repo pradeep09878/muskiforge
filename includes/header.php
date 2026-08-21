@@ -17,7 +17,7 @@
 <?= schema_website() ?>
 <?php if (!empty($extraSchema)) { echo $extraSchema; } ?>
 </head>
-<body>
+<body class="<?= current_page() === 'index.php' ? 'page-home' : '' ?>">
 
 <a class="visually-hidden-focusable skip-link" href="#main-content">Skip to main content</a>
 
