@@ -18,11 +18,14 @@ RewriteRule ^ /%1 [R=301,L]
 # Root request internally serves index.php.
 RewriteRule ^$ index.php [L]
 
-# /foo internally serves foo.php, as long as that file exists and /foo
-# isn't already a real file or directory (so /assets/, /uploads/, etc.
-# keep working exactly as before).
+# /foo internally serves foo.php, as long as foo.php exists and /foo
+# isn't already a real file (so /assets/css/style.css etc. keep working
+# exactly as before). Deliberately NOT excluding real directories here:
+# /services is both services.php and a services/ directory of individual
+# service pages, and the .php file must win that case, not fall through
+# to Apache trying (and failing, since directory listing is disabled
+# below) to serve the directory itself.
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{DOCUMENT_ROOT}/$1.php -f
 RewriteRule ^(.*)$ $1.php [L,QSA]
 </IfModule>

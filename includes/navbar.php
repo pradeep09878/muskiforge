@@ -1,5 +1,5 @@
 <header class="site-header" id="siteHeader">
-<nav class="navbar navbar-expand-lg navbar-dark py-0">
+<nav class="navbar navbar-expand-xl navbar-dark py-0">
   <div class="container">
     <div class="navbar-3d-panel d-flex align-items-center justify-content-between flex-wrap w-100">
       <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="<?= e(url('index.php')) ?>">
@@ -7,15 +7,15 @@
         <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
       </a>
 
-      <button class="navbar-toggler-3d" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler-3d d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-3d-bar"></span>
         <span class="navbar-toggler-3d-bar"></span>
         <span class="navbar-toggler-3d-bar"></span>
       </button>
 
-      <div class="navbar-nav-wrap d-none d-lg-flex mx-auto">
+      <div class="navbar-nav-wrap d-none d-xl-flex mx-auto">
         <span class="nav-spotlight" aria-hidden="true"></span>
-        <ul class="navbar-nav align-items-lg-center gap-lg-1">
+        <ul class="navbar-nav align-items-xl-center gap-xl-1">
           <li class="nav-item"><a class="nav-link<?= nav_active('index.php') ?>" href="<?= e(url('index.php')) ?>">Home</a></li>
           <li class="nav-item"><a class="nav-link<?= nav_active('about.php') ?>" href="<?= e(url('about.php')) ?>">About Us</a></li>
           <li class="nav-item dropdown">
@@ -59,11 +59,12 @@
           <li class="nav-item"><a class="nav-link<?= nav_active('services.php') ?>" href="<?= e(url('services.php')) ?>">Solutions</a></li>
           <li class="nav-item"><a class="nav-link<?= nav_active('industries.php') ?>" href="<?= e(url('industries.php')) ?>">Industries</a></li>
           <li class="nav-item"><a class="nav-link<?= nav_active('portfolio.php') ?>" href="<?= e(url('portfolio.php')) ?>">Portfolio</a></li>
+          <li class="nav-item"><a class="nav-link<?= nav_active('blog.php') ?>" href="<?= e(url('blog.php')) ?>">Blog</a></li>
           <li class="nav-item"><a class="nav-link<?= nav_active('contact.php') ?>" href="<?= e(url('contact.php')) ?>">Contact Us</a></li>
         </ul>
       </div>
 
-      <a href="<?= e(url('contact.php')) ?>" class="btn btn-nav-cta-3d d-none d-lg-inline-flex">Get a Free Consultation <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i></a>
+      <a href="<?= e(url('contact.php')) ?>" class="btn btn-nav-cta-3d d-none d-xl-inline-flex">Get a Free Consultation <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i></a>
     </div>
   </div>
 </nav>

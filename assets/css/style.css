@@ -1071,6 +1071,9 @@ body.page-home .site-header:not(.is-scrolled) .navbar-3d-panel {
 
 @media (max-width: 991.98px) {
   .hero { padding: 4rem 0 3rem; text-align: center; }
+}
+
+@media (max-width: 1199.98px) {
   .navbar-3d-panel { padding: .7rem 1rem; }
 }
 
