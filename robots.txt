@@ -9,4 +9,4 @@ Allow: /uploads/blog/
 Disallow: /config.php
 Disallow: /config.local.php
 
-Sitemap: https://muskiforge.com/sitemap.php
+Sitemap: https://muskiforge.com/sitemap

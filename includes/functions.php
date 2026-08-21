@@ -40,14 +40,46 @@ function asset(string $path): string
     return SITE_URL . '/assets/' . ltrim($path, '/');
 }
 
+/**
+ * Builds a site URL with the .php extension stripped (see .htaccess for
+ * the rewrite that serves foo.php under /foo). 'index.php' collapses to
+ * the site root; a trailing '?query=string' is preserved as-is.
+ */
 function url(string $path = ''): string
 {
-    return SITE_URL . '/' . ltrim($path, '/');
+    $path = ltrim($path, '/');
+
+    $query = '';
+    $queryPos = strpos($path, '?');
+    if ($queryPos !== false) {
+        $query = substr($path, $queryPos);
+        $path = substr($path, 0, $queryPos);
+    }
+
+    if ($path === 'index.php' || $path === '') {
+        $path = '';
+    } elseif (substr($path, -4) === '.php') {
+        $path = substr($path, 0, -4);
+    }
+
+    return SITE_URL . '/' . $path . $query;
 }
 
+/**
+ * The current page as a '.php' filename (e.g. 'about.php'), regardless of
+ * whether the visitor requested /about.php directly or the clean /about
+ * URL — so every existing nav_active('xxx.php') call site keeps working
+ * unchanged under either URL style.
+ */
 function current_page(): string
 {
-    return basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: 'index.php');
+    $page = basename(parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '');
+
+    if ($page === '') {
+        return 'index.php';
+    }
+
+    return substr($page, -4) === '.php' ? $page : $page . '.php';
 }
 
 function nav_active(string $page): string
