@@ -164,7 +164,7 @@ body { overflow-x: clip; }
    <main class="container-fluid ..."> with no fixed header to clear. */
 #main-content { padding-top: 80px; }
 
-.navbar-brand { position: relative; z-index: 1; }
+.navbar-brand { position: relative; z-index: 1; --bs-navbar-brand-margin-end: 21rem; }
 .navbar-mark {
   width: 36px; height: 36px;
   border-radius: 10px;
