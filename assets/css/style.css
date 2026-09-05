@@ -159,7 +159,10 @@ body { overflow-x: clip; }
 }
 
 /* Fixed nav is out of flow, so every page needs top clearance. */
-main { padding-top: 80px; }
+/* Scoped to #main-content (every public page) rather than the bare "main"
+   tag — the admin section shares this stylesheet and has its own
+   <main class="container-fluid ..."> with no fixed header to clear. */
+#main-content { padding-top: 80px; }
 
 .navbar-brand { position: relative; z-index: 1; }
 .navbar-mark {
@@ -894,6 +897,24 @@ main { padding-top: 80px; }
 /* ---------- Utility ---------- */
 .rounded-xl { border-radius: var(--mf-radius); }
 .shadow-soft { box-shadow: 0 20px 45px -25px rgba(17, 24, 39, .25); }
+
+/* ---------- Admin: WordPress-style meta box panels (post editor sidebar
+   + content/excerpt boxes) ---------- */
+.meta-box {
+  background: #fff;
+  border: 1px solid var(--mf-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.meta-box-header {
+  background: var(--mf-border-soft);
+  border-bottom: 1px solid var(--mf-border);
+  padding: .6rem 1rem;
+  font-weight: 600;
+  font-size: .85rem;
+  color: var(--mf-navy);
+}
+.meta-box-body { padding: 1rem; }
 
 @media (max-width: 991.98px) {
   .hero { padding: 4rem 0 3rem; text-align: center; }

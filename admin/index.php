@@ -19,12 +19,18 @@ try {
 
 $flash = flash_get();
 $adminTitle = 'Blog Posts';
+
+$statusFilter = in_array($_GET['status'] ?? '', ['published', 'draft'], true) ? $_GET['status'] : 'all';
+$publishedCount = count(array_filter($posts, static fn (array $p): bool => $p['status'] === 'published'));
+$draftCount = count($posts) - $publishedCount;
+$visiblePosts = $statusFilter === 'all' ? $posts : array_values(array_filter($posts, static fn (array $p): bool => $p['status'] === $statusFilter));
+
 require __DIR__ . '/includes/header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-3">
   <h1 class="h4 fw-bold mb-0">Blog Posts</h1>
-  <a href="<?= e(url('admin/post-edit.php')) ?>" class="btn btn-accent rounded-pill px-3"><i class="fa-solid fa-plus me-1"></i>New Post</a>
+  <a href="<?= e(url('admin/post-edit.php')) ?>" class="btn btn-accent rounded-pill px-3"><i class="fa-solid fa-plus me-1"></i>Add New</a>
 </div>
 
 <?php if ($flash): ?>
@@ -35,16 +41,29 @@ require __DIR__ . '/includes/header.php';
 <div class="alert alert-warning py-2"><?= e($dbError) ?></div>
 <?php endif; ?>
 
+<?php if ($posts): ?>
+<ul class="nav nav-pills gap-2 mb-3 small">
+  <li class="nav-item"><a class="nav-link<?= $statusFilter === 'all' ? ' active' : '' ?>" href="<?= e(url('admin/index.php')) ?>">All <span class="opacity-75">(<?= count($posts) ?>)</span></a></li>
+  <li class="nav-item"><a class="nav-link<?= $statusFilter === 'published' ? ' active' : '' ?>" href="<?= e(url('admin/index.php?status=published')) ?>">Published <span class="opacity-75">(<?= $publishedCount ?>)</span></a></li>
+  <li class="nav-item"><a class="nav-link<?= $statusFilter === 'draft' ? ' active' : '' ?>" href="<?= e(url('admin/index.php?status=draft')) ?>">Draft <span class="opacity-75">(<?= $draftCount ?>)</span></a></li>
+</ul>
+<?php endif; ?>
+
 <?php if (!$posts): ?>
 <div class="bg-white rounded-xl p-5 text-center shadow-soft">
   <p class="section-subtitle mb-3">No blog posts yet.</p>
   <a href="<?= e(url('admin/post-edit.php')) ?>" class="btn btn-accent rounded-pill px-4">Write Your First Post</a>
+</div>
+<?php elseif (!$visiblePosts): ?>
+<div class="bg-white rounded-xl p-5 text-center shadow-soft">
+  <p class="section-subtitle mb-0">No posts in this filter.</p>
 </div>
 <?php else: ?>
 <div class="bg-white rounded-xl shadow-soft overflow-hidden">
   <table class="table table-hover align-middle mb-0">
     <thead class="table-light">
       <tr>
+        <th style="width:56px"></th>
         <th>Title</th>
         <th>Tag</th>
         <th>Status</th>
@@ -53,8 +72,15 @@ require __DIR__ . '/includes/header.php';
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($posts as $post): ?>
+      <?php foreach ($visiblePosts as $post): ?>
       <tr>
+        <td>
+          <?php if (!empty($post['cover_image'])): ?>
+          <img src="<?= e(url($post['cover_image'])) ?>" alt="" class="rounded" style="width:40px;height:40px;object-fit:cover">
+          <?php else: ?>
+          <span class="d-flex align-items-center justify-content-center rounded bg-light text-muted" style="width:40px;height:40px"><i class="<?= e(blog_tag_icon($post['tag'])) ?>"></i></span>
+          <?php endif; ?>
+        </td>
         <td class="fw-semibold"><?= e($post['title']) ?></td>
         <td><span class="badge text-bg-light border"><?= e($post['tag']) ?></span></td>
         <td>

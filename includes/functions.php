@@ -247,26 +247,6 @@ function blog_tag_icon(string $tag): string
     return $icons[$tag] ?? 'fa-solid fa-newspaper';
 }
 
-/**
- * Renders plain-text blog content (blank line = new paragraph) as safe,
- * escaped HTML. No raw HTML is ever trusted from the content field.
- */
-function render_plain_content(string $content): string
-{
-    $paragraphs = preg_split('/\n\s*\n/', trim($content)) ?: [];
-    $html = '';
-
-    foreach ($paragraphs as $paragraph) {
-        $paragraph = trim($paragraph);
-        if ($paragraph === '') {
-            continue;
-        }
-        $html .= '<p>' . nl2br(e($paragraph)) . "</p>\n";
-    }
-
-    return $html;
-}
-
 function page_meta(string $title, string $description, string $canonicalPath = ''): array
 {
     return [

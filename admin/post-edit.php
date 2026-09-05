@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($values['excerpt'] === '' || mb_strlen($values['excerpt']) > 300) {
         $errors[] = 'Excerpt is required (max 300 characters).';
     }
-    if ($values['content'] === '') {
+    if (trim(strip_tags($values['content'])) === '') {
         $errors[] = 'Content is required.';
     }
 
@@ -169,12 +169,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentCoverImage = $newCoverImage;
 }
 
-$adminTitle = $existing ? 'Edit Post' : 'New Post';
+$adminTitle = $existing ? 'Edit Post' : 'Add New Post';
 require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h4 fw-bold mb-0"><?= $existing ? 'Edit Post' : 'New Post' ?></h1>
+  <h1 class="h4 fw-bold mb-0"><?= $existing ? 'Edit Post' : 'Add New Post' ?></h1>
   <a href="<?= e(url('admin/index.php')) ?>" class="small text-decoration-none">&larr; Back to all posts</a>
 </div>
 
@@ -188,80 +188,93 @@ require __DIR__ . '/includes/header.php';
 </div>
 <?php endif; ?>
 
-<form method="post" enctype="multipart/form-data" class="bg-white rounded-xl shadow-soft p-4">
+<form method="post" enctype="multipart/form-data" id="postEditorForm">
   <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
   <?php if ($existing): ?><input type="hidden" name="id" value="<?= (int) $existing['id'] ?>"><?php endif; ?>
 
   <div class="row g-4">
     <div class="col-lg-8">
       <div class="mb-3">
-        <label for="title" class="form-label fw-semibold">Title</label>
-        <input type="text" id="title" name="title" class="form-control" required maxlength="200" value="<?= e($values['title']) ?>">
+        <input type="text" id="title" name="title" class="form-control form-control-lg fw-semibold" required maxlength="200" placeholder="Add title" value="<?= e($values['title']) ?>">
       </div>
       <div class="mb-3">
-        <label for="slug" class="form-label fw-semibold">URL Slug</label>
-        <div class="input-group">
-          <span class="input-group-text small text-muted"><?= e(url('blog-post.php?slug=')) ?></span>
+        <div class="input-group input-group-sm" style="max-width:520px">
+          <span class="input-group-text text-muted"><?= e(url('blog-post.php?slug=')) ?></span>
           <input type="text" id="slug" name="slug" class="form-control" maxlength="220" placeholder="auto-generated-from-title" value="<?= e($values['slug']) ?>">
         </div>
       </div>
-      <div class="mb-3">
-        <label for="excerpt" class="form-label fw-semibold">Excerpt <span class="text-muted fw-normal">(shown on the blog listing)</span></label>
-        <textarea id="excerpt" name="excerpt" class="form-control" rows="2" required maxlength="300"><?= e($values['excerpt']) ?></textarea>
+
+      <div class="meta-box mb-4">
+        <div class="meta-box-header">Content</div>
+        <div class="meta-box-body p-0">
+          <textarea id="content" name="content"><?= e($values['content']) ?></textarea>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="content" class="form-label fw-semibold">Content</label>
-        <textarea id="content" name="content" class="form-control" rows="16" required><?= e($values['content']) ?></textarea>
-        <div class="form-text">Plain text. Leave a blank line between paragraphs.</div>
+
+      <div class="meta-box mb-4">
+        <div class="meta-box-header">Excerpt</div>
+        <div class="meta-box-body">
+          <textarea id="excerpt" name="excerpt" class="form-control" rows="3" required maxlength="300"><?= e($values['excerpt']) ?></textarea>
+          <div class="form-text">Shown on the blog listing and in search results.</div>
+        </div>
       </div>
     </div>
 
     <div class="col-lg-4">
-      <div class="mb-3">
-        <label for="tag" class="form-label fw-semibold">Tag</label>
-        <input type="text" id="tag" name="tag" class="form-control" list="tagOptions" value="<?= e($values['tag']) ?>">
-        <datalist id="tagOptions">
-          <option value="SEO">
-          <option value="Software Development">
-          <option value="Mobile">
-          <option value="Cloud">
-          <option value="Digital Marketing">
-          <option value="IT Consulting">
-          <option value="Web Development">
-          <option value="General">
-        </datalist>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Cover Image <span class="text-muted fw-normal">(optional)</span></label>
-        <?php if ($currentCoverImage): ?>
-        <div class="mb-2 position-relative">
-          <img src="<?= e(url($currentCoverImage)) ?>" alt="Current cover image" class="img-fluid rounded-xl border">
-          <div class="form-check mt-2">
-            <input type="checkbox" class="form-check-input" id="removeCoverImage" name="remove_cover_image" value="1">
-            <label class="form-check-label small" for="removeCoverImage">Remove this image</label>
+      <div class="meta-box mb-3">
+        <div class="meta-box-header">Publish</div>
+        <div class="meta-box-body">
+          <div class="mb-3">
+            <label for="status" class="form-label small fw-semibold text-muted text-uppercase">Status</label>
+            <select id="status" name="status" class="form-select">
+              <option value="draft" <?= $values['status'] === 'draft' ? 'selected' : '' ?>>Draft</option>
+              <option value="published" <?= $values['status'] === 'published' ? 'selected' : '' ?>>Published</option>
+            </select>
           </div>
+          <button type="submit" id="publishBtn" class="btn btn-accent w-100 fw-semibold"></button>
         </div>
-        <?php else: ?>
-        <p class="small text-muted mb-2">No image uploaded — the blog listing will use a generated header instead.</p>
-        <?php endif; ?>
-        <input type="file" name="cover_image" class="form-control" accept="image/jpeg,image/png,image/webp">
-        <div class="form-text">JPG, PNG, or WEBP. Max 5MB.</div>
       </div>
 
-      <div class="mb-4">
-        <label for="status" class="form-label fw-semibold">Status</label>
-        <select id="status" name="status" class="form-select">
-          <option value="draft" <?= $values['status'] === 'draft' ? 'selected' : '' ?>>Draft</option>
-          <option value="published" <?= $values['status'] === 'published' ? 'selected' : '' ?>>Published</option>
-        </select>
+      <div class="meta-box mb-3">
+        <div class="meta-box-header">Tag</div>
+        <div class="meta-box-body">
+          <input type="text" id="tag" name="tag" class="form-control" list="tagOptions" value="<?= e($values['tag']) ?>">
+          <datalist id="tagOptions">
+            <option value="SEO">
+            <option value="Software Development">
+            <option value="Mobile">
+            <option value="Cloud">
+            <option value="Digital Marketing">
+            <option value="IT Consulting">
+            <option value="Web Development">
+            <option value="General">
+          </datalist>
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-accent w-100 fw-semibold"><?= $existing ? 'Save Changes' : 'Create Post' ?></button>
+      <div class="meta-box mb-3">
+        <div class="meta-box-header">Featured Image</div>
+        <div class="meta-box-body">
+          <?php if ($currentCoverImage): ?>
+          <div class="mb-2 position-relative">
+            <img src="<?= e(url($currentCoverImage)) ?>" alt="Current cover image" class="img-fluid rounded-xl border">
+            <div class="form-check mt-2">
+              <input type="checkbox" class="form-check-input" id="removeCoverImage" name="remove_cover_image" value="1">
+              <label class="form-check-label small" for="removeCoverImage">Remove this image</label>
+            </div>
+          </div>
+          <?php else: ?>
+          <p class="small text-muted mb-2">No image set — the blog listing will use a generated header instead.</p>
+          <?php endif; ?>
+          <input type="file" name="cover_image" class="form-control form-control-sm" accept="image/jpeg,image/png,image/webp">
+          <div class="form-text">JPG, PNG, or WEBP. Max 5MB.</div>
+        </div>
+      </div>
     </div>
   </div>
 </form>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.10.9/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
 (function () {
   var titleEl = document.getElementById('title');
@@ -277,6 +290,57 @@ require __DIR__ . '/includes/header.php';
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
+  });
+
+  // Publish/Save Draft/Update button label — mirrors WordPress, where the
+  // primary action reflects the chosen status rather than a generic "Save".
+  var statusEl = document.getElementById('status');
+  var publishBtn = document.getElementById('publishBtn');
+  var isExisting = <?= $existing ? 'true' : 'false' ?>;
+
+  function updatePublishLabel() {
+    if (isExisting) {
+      publishBtn.textContent = 'Update';
+    } else {
+      publishBtn.textContent = statusEl.value === 'published' ? 'Publish' : 'Save Draft';
+    }
+  }
+  statusEl.addEventListener('change', updatePublishLabel);
+  updatePublishLabel();
+
+  var csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+  tinymce.init({
+    selector: '#content',
+    height: 520,
+    menubar: false,
+    plugins: 'lists link image table code blockquote wordcount',
+    toolbar: 'undo redo | formatselect | bold italic | bullist numlist blockquote | link image | alignleft aligncenter alignright | code',
+    content_style: "body { font-family: 'Geist', -apple-system, sans-serif; font-size: 15px; color: #0f172a; }",
+    branding: false,
+    images_upload_handler: function (blobInfo, progress) {
+      return new Promise(function (resolve, reject) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '<?= e(url("admin/upload-image.php")) ?>');
+        xhr.upload.onprogress = function (e) { progress(e.loaded / e.total * 100); };
+        xhr.onload = function () {
+          if (xhr.status !== 200) { reject('Upload failed (HTTP ' + xhr.status + ')'); return; }
+          var json;
+          try { json = JSON.parse(xhr.responseText); } catch (e) { reject('Invalid server response'); return; }
+          if (!json || !json.location) { reject(json && json.error ? json.error : 'Upload failed'); return; }
+          resolve(json.location);
+        };
+        xhr.onerror = function () { reject('Upload failed — network error'); };
+        var formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+        formData.append('csrf_token', csrfToken);
+        xhr.send(formData);
+      });
+    },
+  });
+
+  document.getElementById('postEditorForm').addEventListener('submit', function () {
+    if (window.tinymce) tinymce.triggerSave();
   });
 })();
 </script>
