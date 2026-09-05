@@ -91,11 +91,11 @@ function schema_service(string $name, string $description, string $slug): string
 
 function schema_blog_posting(array $post): string
 {
-    return schema_json([
+    $data = [
         '@context' => 'https://schema.org',
         '@type' => 'BlogPosting',
         'headline' => $post['title'],
-        'description' => $post['excerpt'],
+        'description' => !empty($post['meta_description']) ? $post['meta_description'] : $post['excerpt'],
         'image' => $post['cover_image'] ? url($post['cover_image']) : asset('images/logo.svg'),
         'datePublished' => date('c', strtotime((string) $post['published_at'])),
         'dateModified' => date('c', strtotime((string) ($post['updated_at'] ?? $post['published_at']))),
@@ -106,7 +106,15 @@ function schema_blog_posting(array $post): string
             'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.svg')],
         ],
         'mainEntityOfPage' => url('blog-post.php?slug=' . $post['slug']),
-    ]);
+        'articleSection' => $post['tag'],
+        'wordCount' => str_word_count(strip_tags($post['content'])),
+    ];
+
+    if (!empty($post['focus_keyword'])) {
+        $data['keywords'] = $post['focus_keyword'];
+    }
+
+    return schema_json($data);
 }
 
 /**

@@ -37,6 +37,10 @@ $values = [
     'excerpt' => $existing['excerpt'] ?? '',
     'content' => $existing['content'] ?? '',
     'status' => $existing['status'] ?? 'draft',
+    'cover_image_alt' => $existing['cover_image_alt'] ?? '',
+    'meta_title' => $existing['meta_title'] ?? '',
+    'meta_description' => $existing['meta_description'] ?? '',
+    'focus_keyword' => $existing['focus_keyword'] ?? '',
 ];
 $currentCoverImage = $existing['cover_image'] ?? null;
 
@@ -51,6 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $values['excerpt'] = trim((string) ($_POST['excerpt'] ?? ''));
     $values['content'] = trim((string) ($_POST['content'] ?? ''));
     $values['status'] = ($_POST['status'] ?? 'draft') === 'published' ? 'published' : 'draft';
+    $values['cover_image_alt'] = trim((string) ($_POST['cover_image_alt'] ?? ''));
+    $values['meta_title'] = trim((string) ($_POST['meta_title'] ?? ''));
+    $values['meta_description'] = trim((string) ($_POST['meta_description'] ?? ''));
+    $values['focus_keyword'] = trim((string) ($_POST['focus_keyword'] ?? ''));
 
     if ($values['title'] === '' || mb_strlen($values['title']) > 200) {
         $errors[] = 'Title is required (max 200 characters).';
@@ -63,6 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (trim(strip_tags($values['content'])) === '') {
         $errors[] = 'Content is required.';
+    }
+    if (mb_strlen($values['meta_title']) > 200) {
+        $errors[] = 'SEO title must be 200 characters or fewer.';
+    }
+    if (mb_strlen($values['meta_description']) > 300) {
+        $errors[] = 'Meta description must be 300 characters or fewer.';
     }
 
     if ($values['slug'] !== '' && !$errors) {
@@ -124,7 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = db()->prepare(
                     'UPDATE blog_posts
                      SET title = :title, slug = :slug, tag = :tag, excerpt = :excerpt, content = :content,
-                         cover_image = :cover_image, status = :status, published_at = :published_at
+                         cover_image = :cover_image, cover_image_alt = :cover_image_alt, status = :status,
+                         published_at = :published_at, meta_title = :meta_title,
+                         meta_description = :meta_description, focus_keyword = :focus_keyword
                      WHERE id = :id'
                 );
                 $stmt->execute([
@@ -134,14 +150,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'excerpt' => $values['excerpt'],
                     'content' => $values['content'],
                     'cover_image' => $newCoverImage,
+                    'cover_image_alt' => $values['cover_image_alt'] ?: null,
                     'status' => $values['status'],
                     'published_at' => $publishedAt,
+                    'meta_title' => $values['meta_title'] ?: null,
+                    'meta_description' => $values['meta_description'] ?: null,
+                    'focus_keyword' => $values['focus_keyword'] ?: null,
                     'id' => $existing['id'],
                 ]);
             } else {
                 $stmt = db()->prepare(
-                    'INSERT INTO blog_posts (title, slug, tag, excerpt, content, cover_image, status, published_at, author_id)
-                     VALUES (:title, :slug, :tag, :excerpt, :content, :cover_image, :status, :published_at, :author_id)'
+                    'INSERT INTO blog_posts (title, slug, tag, excerpt, content, cover_image, cover_image_alt, status,
+                         published_at, author_id, meta_title, meta_description, focus_keyword)
+                     VALUES (:title, :slug, :tag, :excerpt, :content, :cover_image, :cover_image_alt, :status,
+                         :published_at, :author_id, :meta_title, :meta_description, :focus_keyword)'
                 );
                 $stmt->execute([
                     'title' => $values['title'],
@@ -150,9 +172,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'excerpt' => $values['excerpt'],
                     'content' => $values['content'],
                     'cover_image' => $newCoverImage,
+                    'cover_image_alt' => $values['cover_image_alt'] ?: null,
                     'status' => $values['status'],
                     'published_at' => $publishedAt,
                     'author_id' => $_SESSION['admin_id'],
+                    'meta_title' => $values['meta_title'] ?: null,
+                    'meta_description' => $values['meta_description'] ?: null,
+                    'focus_keyword' => $values['focus_keyword'] ?: null,
                 ]);
             }
 
@@ -218,6 +244,41 @@ require __DIR__ . '/includes/header.php';
           <div class="form-text">Shown on the blog listing and in search results.</div>
         </div>
       </div>
+
+      <div class="meta-box mb-4">
+        <div class="meta-box-header">Search Engine Preview &amp; SEO</div>
+        <div class="meta-box-body">
+          <div class="mb-3">
+            <label for="focusKeyword" class="form-label small fw-semibold text-muted text-uppercase">Focus Keyword</label>
+            <input type="text" id="focusKeyword" name="focus_keyword" class="form-control" maxlength="100" placeholder="e.g. cloud migration services" value="<?= e($values['focus_keyword']) ?>">
+          </div>
+          <div class="mb-3">
+            <label for="metaTitle" class="form-label small fw-semibold text-muted text-uppercase d-flex justify-content-between">
+              <span>SEO Title</span>
+              <span id="metaTitleCount" class="fw-normal text-muted"></span>
+            </label>
+            <input type="text" id="metaTitle" name="meta_title" class="form-control" maxlength="200" placeholder="<?= e($values['title'] ?: 'Falls back to the post title') ?>" value="<?= e($values['meta_title']) ?>">
+          </div>
+          <div class="mb-3">
+            <label for="metaDescription" class="form-label small fw-semibold text-muted text-uppercase d-flex justify-content-between">
+              <span>Meta Description</span>
+              <span id="metaDescriptionCount" class="fw-normal text-muted"></span>
+            </label>
+            <textarea id="metaDescription" name="meta_description" class="form-control" rows="2" maxlength="300" placeholder="Falls back to the excerpt"><?= e($values['meta_description']) ?></textarea>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-text mb-1">Google preview</div>
+            <div class="serp-preview">
+              <div class="serp-preview-url"><?= e(SITE_URL) ?>/blog-post<span class="text-muted">?slug=</span><span id="serpSlug"><?= e($values['slug']) ?></span></div>
+              <div class="serp-preview-title" id="serpTitle"></div>
+              <div class="serp-preview-desc" id="serpDescription"></div>
+            </div>
+          </div>
+
+          <ul class="seo-checklist list-unstyled mb-0" id="seoChecklist"></ul>
+        </div>
+      </div>
     </div>
 
     <div class="col-lg-4">
@@ -266,7 +327,9 @@ require __DIR__ . '/includes/header.php';
           <?php else: ?>
           <p class="small text-muted mb-2">No image set — the blog listing will use a generated header instead.</p>
           <?php endif; ?>
-          <input type="file" name="cover_image" class="form-control form-control-sm" accept="image/jpeg,image/png,image/webp">
+          <input type="file" name="cover_image" class="form-control form-control-sm mb-2" accept="image/jpeg,image/png,image/webp">
+          <label for="coverImageAlt" class="form-label small fw-semibold text-muted text-uppercase mb-1">Alt Text</label>
+          <input type="text" id="coverImageAlt" name="cover_image_alt" class="form-control form-control-sm" maxlength="200" placeholder="Describes the image for search engines and screen readers" value="<?= e($values['cover_image_alt']) ?>">
           <div class="form-text">JPG, PNG, or WEBP. Max 5MB.</div>
         </div>
       </div>
@@ -337,11 +400,82 @@ require __DIR__ . '/includes/header.php';
         xhr.send(formData);
       });
     },
+    setup: function (editor) {
+      editor.on('input change undo redo SetContent', function () { updateSeoPanel(); });
+    },
   });
 
   document.getElementById('postEditorForm').addEventListener('submit', function () {
     if (window.tinymce) tinymce.triggerSave();
   });
+
+  // ---------- SEO panel: live Google-style preview + a Yoast-style
+  // focus-keyword checklist, recalculated on every relevant keystroke. ----------
+  var excerptEl = document.getElementById('excerpt');
+  var focusKeywordEl = document.getElementById('focusKeyword');
+  var metaTitleEl = document.getElementById('metaTitle');
+  var metaDescriptionEl = document.getElementById('metaDescription');
+  var metaTitleCountEl = document.getElementById('metaTitleCount');
+  var metaDescriptionCountEl = document.getElementById('metaDescriptionCount');
+  var serpSlugEl = document.getElementById('serpSlug');
+  var serpTitleEl = document.getElementById('serpTitle');
+  var serpDescriptionEl = document.getElementById('serpDescription');
+  var checklistEl = document.getElementById('seoChecklist');
+
+  function countClass(len, min, max) {
+    if (len === 0) return 'text-muted';
+    return (len < min || len > max) ? 'text-danger' : 'text-success';
+  }
+
+  function checklistItem(ok, label, neutral) {
+    var icon = neutral ? 'fa-circle-info text-muted' : (ok ? 'fa-circle-check text-success' : 'fa-circle-xmark text-danger');
+    return '<li class="d-flex align-items-start gap-2 small mb-1"><i class="fa-solid ' + icon + ' mt-1"></i><span>' + label + '</span></li>';
+  }
+
+  function updateSeoPanel() {
+    var title = titleEl.value.trim();
+    var slug = slugEl.value.trim();
+    var metaTitle = metaTitleEl.value.trim();
+    var metaDescription = metaDescriptionEl.value.trim();
+    var excerpt = excerptEl.value.trim();
+    var keyword = focusKeywordEl.value.trim().toLowerCase();
+    var editor = window.tinymce && tinymce.get('content');
+    var contentText = editor ? editor.getContent({ format: 'text' }) : '';
+    var wordCount = contentText.trim() ? contentText.trim().split(/\s+/).length : 0;
+
+    var displayTitle = metaTitle || title || '(untitled)';
+    var displayDescription = metaDescription || excerpt || '';
+
+    serpSlugEl.textContent = slug || 'your-post-slug';
+    serpTitleEl.textContent = displayTitle;
+    serpDescriptionEl.textContent = displayDescription || 'Add an excerpt or meta description to see it here.';
+
+    metaTitleCountEl.textContent = metaTitle.length + ' / 60';
+    metaTitleCountEl.className = 'fw-normal ' + countClass(metaTitle.length, 1, 60);
+    metaDescriptionCountEl.textContent = metaDescription.length + ' / 160';
+    metaDescriptionCountEl.className = 'fw-normal ' + countClass(metaDescription.length, 50, 160);
+
+    var checks = [];
+    if (keyword) {
+      var slugKeyword = keyword.replace(/\s+/g, '-');
+      checks.push(checklistItem(displayTitle.toLowerCase().indexOf(keyword) !== -1, 'Focus keyword appears in the SEO title'));
+      checks.push(checklistItem(displayDescription.toLowerCase().indexOf(keyword) !== -1, 'Focus keyword appears in the meta description'));
+      checks.push(checklistItem(slug.toLowerCase().indexOf(slugKeyword) !== -1, 'Focus keyword appears in the URL slug'));
+      checks.push(checklistItem(contentText.toLowerCase().indexOf(keyword) !== -1, 'Focus keyword appears in the content'));
+    } else {
+      checks.push(checklistItem(false, 'Add a focus keyword above to see keyword checks', true));
+    }
+    checks.push(checklistItem(wordCount >= 300, 'Content is at least 300 words (' + wordCount + ' so far)'));
+    checks.push(checklistItem(displayTitle.length > 0 && displayTitle.length <= 60, 'SEO title is 60 characters or fewer'));
+    checks.push(checklistItem(displayDescription.length >= 50 && displayDescription.length <= 160, 'Meta description is 50–160 characters'));
+
+    checklistEl.innerHTML = checks.join('');
+  }
+
+  [titleEl, slugEl, excerptEl, focusKeywordEl, metaTitleEl, metaDescriptionEl].forEach(function (el) {
+    el.addEventListener('input', updateSeoPanel);
+  });
+  updateSeoPanel();
 })();
 </script>
 

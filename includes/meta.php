@@ -14,6 +14,8 @@ $metaCanonical = $meta['canonical'] ?? SITE_URL . '/';
 // 1200x630) is supplied per-page via $meta['image'], we omit og:image/
 // twitter:image entirely rather than link a social-preview image that 404s.
 $metaImage = $meta['image'] ?? null;
+// Optional: ['type' => 'article', 'published' => 'c'-format date, 'modified' => ..., 'tag' => 'string']
+$metaArticle = $meta['article'] ?? null;
 ?>
 <title><?= e($metaTitle) ?></title>
 <meta name="description" content="<?= e($metaDescription) ?>">
@@ -22,7 +24,7 @@ $metaImage = $meta['image'] ?? null;
 <meta name="author" content="<?= e(SITE_NAME) ?>">
 
 <!-- Open Graph -->
-<meta property="og:type" content="website">
+<meta property="og:type" content="<?= $metaArticle ? 'article' : 'website' ?>">
 <meta property="og:site_name" content="<?= e(SITE_NAME) ?>">
 <meta property="og:title" content="<?= e($metaTitle) ?>">
 <meta property="og:description" content="<?= e($metaDescription) ?>">
@@ -31,6 +33,15 @@ $metaImage = $meta['image'] ?? null;
 <meta property="og:image" content="<?= e($metaImage) ?>">
 <?php endif; ?>
 <meta property="og:locale" content="en_US">
+<?php if ($metaArticle): ?>
+<meta property="article:published_time" content="<?= e($metaArticle['published'] ?? '') ?>">
+<?php if (!empty($metaArticle['modified'])): ?>
+<meta property="article:modified_time" content="<?= e($metaArticle['modified']) ?>">
+<?php endif; ?>
+<?php if (!empty($metaArticle['tag'])): ?>
+<meta property="article:tag" content="<?= e($metaArticle['tag']) ?>">
+<?php endif; ?>
+<?php endif; ?>
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="<?= $metaImage ? 'summary_large_image' : 'summary' ?>">

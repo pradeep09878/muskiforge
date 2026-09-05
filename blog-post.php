@@ -39,10 +39,18 @@ if (!$post) {
 }
 
 $meta = page_meta(
-    $post['title'] . ' | Muskiforge Blog',
-    $post['excerpt'],
+    ($post['meta_title'] ?: $post['title']) . ' | Muskiforge Blog',
+    $post['meta_description'] ?: $post['excerpt'],
     'blog-post.php?slug=' . $post['slug']
 );
+if ($post['cover_image']) {
+    $meta['image'] = url($post['cover_image']);
+}
+$meta['article'] = [
+    'published' => date('c', strtotime((string) $post['published_at'])),
+    'modified' => date('c', strtotime((string) ($post['updated_at'] ?? $post['published_at']))),
+    'tag' => $post['tag'],
+];
 
 $extraSchema = schema_blog_posting($post) . schema_breadcrumb([
     ['name' => 'Home', 'url' => url('index.php')],
@@ -51,6 +59,8 @@ $extraSchema = schema_blog_posting($post) . schema_breadcrumb([
 ]);
 
 $tv = tonal_vars((int) crc32($post['slug']));
+$wordCount = str_word_count(strip_tags($post['content']));
+$readingMinutes = max(1, (int) round($wordCount / 200));
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -67,10 +77,14 @@ require __DIR__ . '/includes/header.php';
       </nav>
       <span class="eyebrow"><?= e($post['tag']) ?></span>
       <h1 class="section-title mt-2 mb-3"><?= e($post['title']) ?></h1>
-      <p class="text-muted mb-4"><?= e(date('F j, Y', strtotime((string) $post['published_at']))) ?></p>
+      <p class="text-muted mb-4">
+        <?= e(date('F j, Y', strtotime((string) $post['published_at']))) ?>
+        <span aria-hidden="true">&middot;</span>
+        <?= $readingMinutes ?> min read
+      </p>
 
       <?php if ($post['cover_image']): ?>
-      <img src="<?= e(url($post['cover_image'])) ?>" alt="<?= e($post['title']) ?>" class="img-fluid rounded-xl shadow-soft w-100 mb-4" style="max-height:420px;object-fit:cover">
+      <img src="<?= e(url($post['cover_image'])) ?>" alt="<?= e($post['cover_image_alt'] ?: $post['title']) ?>" class="img-fluid rounded-xl shadow-soft w-100 mb-4" style="max-height:420px;object-fit:cover" loading="lazy">
       <?php else: ?>
       <div class="blog-block rounded-xl shadow-soft w-100 mb-4" style="height:280px;background:<?= e($tv['bg']) ?>;color:<?= e($tv['fg']) ?>">
         <i class="<?= e(blog_tag_icon($post['tag'])) ?> blog-block-icon" style="font-size:3rem" aria-hidden="true"></i>
