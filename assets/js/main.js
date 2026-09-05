@@ -116,36 +116,6 @@
     });
   }
 
-  /* A soft accent glow that tracks the cursor across the nav row (the
-     ".nav-spotlight" div in navbar.php), giving the 3D nav bar a mild
-     "pointing" highlight instead of a flat hover color swap. Desktop
-     pointer only — touch devices have no hover to track. */
-  function initNavSpotlight() {
-    var nav = document.querySelector('.navbar-nav-wrap');
-    var spotlight = document.querySelector('.nav-spotlight');
-    if (!nav || !spotlight || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-    nav.addEventListener('mousemove', function (e) {
-      var rect = nav.getBoundingClientRect();
-      spotlight.style.left = (e.clientX - rect.left) + 'px';
-      spotlight.style.top = (e.clientY - rect.top) + 'px';
-    });
-  }
-
-  /* Toggles .is-scrolled on the fixed header once the page moves past the
-     hero, so the transparent glass bar (homepage only — see style.css)
-     solidifies into the raised 3D deck used everywhere else. */
-  function initHeaderScroll() {
-    var header = document.getElementById('siteHeader');
-    if (!header) return;
-
-    function update() {
-      header.classList.toggle('is-scrolled', window.scrollY > 40);
-    }
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-  }
-
   /* Bootstrap's Offcanvas plugin doesn't manage aria-expanded / a visual
      state on external toggle buttons the way Collapse does, so the
      hamburger-to-X morph (.is-open, see style.css) is driven here from
@@ -165,33 +135,10 @@
     });
   }
 
-  /* Hero carousel: instantiated manually (rather than via data-bs-ride)
-     so autoplay can be skipped entirely under prefers-reduced-motion —
-     everything else (swipe, keyboard, pause-on-hover/focus) comes free
-     from Bootstrap's Carousel component. */
-  function initHeroCarousel() {
-    var el = document.getElementById('heroCarousel');
-    if (!el || typeof bootstrap === 'undefined') return;
-
-    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    new bootstrap.Carousel(el, {
-      interval: prefersReduced ? false : 6500,
-      ride: prefersReduced ? false : 'carousel',
-      pause: 'hover',
-      touch: true,
-      keyboard: true,
-      wrap: true,
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
-    initNavSpotlight();
-    initHeaderScroll();
     initMobileNavToggle();
-    initHeroCarousel();
   });
 })();

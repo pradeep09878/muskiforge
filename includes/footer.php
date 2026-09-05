@@ -1,15 +1,15 @@
-<footer class="site-footer bg-dark text-light pt-5 pb-4">
+<footer class="site-footer pt-5 pb-4">
   <div class="container">
     <div class="row gy-4">
       <div class="col-lg-4 col-md-6">
-        <a class="navbar-brand fw-bold fs-4 text-white" href="<?= e(url('index.php')) ?>">Muski<span class="text-accent">forge</span></a>
+        <a class="navbar-brand fw-bold fs-4" href="<?= e(url('index.php')) ?>">Muski<span class="text-accent">forge</span></a>
         <p class="mt-3 text-light-50">Muskiforge helps startups, SMEs, and enterprises accelerate growth with custom software, websites, mobile apps, cloud solutions, SEO, and IT consulting.</p>
         <div class="d-flex gap-3 mt-3 fs-5">
-          <a href="<?= e(SOCIAL_LINKEDIN) ?>" class="text-light" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="<?= e(SOCIAL_TWITTER) ?>" class="text-light" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="<?= e(SOCIAL_FACEBOOK) ?>" class="text-light" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-          <a href="<?= e(SOCIAL_INSTAGRAM) ?>" class="text-light" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="<?= e(SOCIAL_GITHUB) ?>" class="text-light" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+          <a href="<?= e(SOCIAL_LINKEDIN) ?>" class="footer-social" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="<?= e(SOCIAL_TWITTER) ?>" class="footer-social" aria-label="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="<?= e(SOCIAL_FACEBOOK) ?>" class="footer-social" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="<?= e(SOCIAL_INSTAGRAM) ?>" class="footer-social" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="<?= e(SOCIAL_GITHUB) ?>" class="footer-social" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
         </div>
       </div>
 
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <hr class="border-secondary mt-5 mb-4">
+    <hr class="footer-divider mt-5 mb-4">
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
       <p class="mb-0 text-light-50">&copy; <?= date('Y') ?> <?= e(SITE_NAME) ?>. All rights reserved.</p>
