@@ -929,6 +929,11 @@ body { overflow-x: clip; }
 .serp-preview-desc { font-size: .82rem; line-height: 1.4; color: #4d5156; }
 .seo-checklist { display: flex; flex-direction: column; }
 
+/* WordPress-style row actions: hidden until the row is hovered/focused */
+.row-actions { color: var(--mf-text-muted); opacity: 0; transition: opacity .15s ease; }
+tr:hover .row-actions,
+tr:focus-within .row-actions { opacity: 1; }
+
 @media (max-width: 991.98px) {
   .hero { padding: 4rem 0 3rem; text-align: center; }
 }
