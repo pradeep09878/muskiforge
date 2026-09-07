@@ -429,17 +429,22 @@ body { overflow-x: clip; }
 
 /* =========================================================
    MEGA MENU
-   Scoped entirely to .mega-menu and its own descendants — nothing here
-   touches .site-header, .site-header-inner, .navbar-nav or .nav-link,
-   so it cannot affect the header's own box or the nav row's layout.
+   Opens on click only (Bootstrap's own data-bs-toggle="dropdown" in
+   navbar.php, untouched) — no hover trigger.
+
+   .mega-menu is anchored to .site-header-inner (position:relative, set
+   in HEADER INNER above), not to the Services <li> itself — a shallow,
+   fixed-height container is a far more reliable positioning context
+   than a flex item nested inside .navbar-nav-wrap/.navbar-nav. The
+   .navbar-nav .nav-item.dropdown{position:static} rule (DESKTOP NAV
+   section) cancels Bootstrap's own .dropdown{position:relative} so it
+   can't compete as the containing block instead. One consequence: the
+   menu centers under the whole header, not precisely under "Services".
 
    display is never set unconditionally on .mega-menu: Bootstrap's own
    .dropdown-menu{display:none} / .dropdown-menu.show{display:block}
-   keeps driving the click path exactly as before (data-bs-toggle=
-   "dropdown" in navbar.php, untouched). The hover-to-open rule below
-   only forces display:block while the cursor is actually over the
-   Services item — outside that state Bootstrap's default display:none
-   applies exactly as it always has.
+   fully drives visibility — this block only adds the fade/scale
+   transition on top of that.
    ========================================================= */
 
 .mega-menu {
@@ -477,32 +482,16 @@ body { overflow-x: clip; }
         transform 0.15s ease;
 }
 
-/* Click path (Bootstrap JS adds/removes .show on toggle). */
+/* Opens on click only (Bootstrap JS adds/removes .show on the toggle) —
+   no hover trigger. Bootstrap's own .dropdown-menu{display:none} /
+   .dropdown-menu.show{display:block} keeps driving display; this just
+   adds the fade/scale on top of it. */
 .mega-menu.show {
     opacity: 1;
 
     transform: translateX(-50%) translateY(0) scale(1);
 
     pointer-events: auto;
-}
-
-/* Hover path (mouse/trackpad only — pointer:fine keeps this off touch
-   devices, which never get a true hover state anyway). Higher
-   specificity than Bootstrap's base .dropdown-menu{display:none} wins
-   deterministically, no !important needed. Bootstrap's click handler
-   still runs independently and adds its own .show class on top of this
-   — the two never conflict since both just converge on "visible". */
-@media (hover: hover) and (pointer: fine) {
-    .nav-item.dropdown:hover > .mega-menu,
-    .nav-item.dropdown:focus-within > .mega-menu {
-        display: block;
-
-        opacity: 1;
-
-        transform: translateX(-50%) translateY(0) scale(1);
-
-        pointer-events: auto;
-    }
 }
 
 .mega-menu-columns {
