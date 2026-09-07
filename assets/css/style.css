@@ -500,18 +500,111 @@ body { overflow-x: clip; }
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-.mobile-overlay {
-    display: none;
 
-    position: fixed;
-    inset: 0;
+/* ---------- Mobile off-canvas nav panel ----------
+   Bootstrap's own Offcanvas plugin (data-bs-toggle="offcanvas" on the
+   hamburger in navbar.php) drives show/hide and the backdrop — no custom
+   overlay or slide-in CSS to maintain here, just the panel's content. */
+.mobile-nav-panel {
+    width: min(360px, 88vw);
+    max-width: 100vw;
 
-    background: rgba(0, 0, 0, .4);
-    backdrop-filter: blur(2px);
-
-    z-index: 997;
+    background: #fff;
 }
-.mobile-overlay.show { display: block; }
+
+.mobile-nav-panel .offcanvas-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--nav-gray-100);
+}
+
+.mobile-nav-panel .offcanvas-body {
+    padding: 16px 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--nav-gray-800);
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    text-decoration: none;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.mobile-nav-link:hover { background: var(--nav-blue-50); }
+
+.mobile-nav-link.active {
+    color: var(--nav-blue-700);
+    background: var(--nav-blue-50);
+    font-weight: 600;
+}
+
+.mobile-nav-expand i {
+    margin-left: auto;
+    color: var(--nav-gray-600);
+    font-size: .8rem;
+    transition: transform .2s ease;
+}
+.mobile-nav-expand[aria-expanded="true"] i { transform: rotate(180deg); }
+
+.mobile-nav-sublist {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin: 2px 0 8px;
+    padding: 0 0 0 12px;
+
+    list-style: none;
+}
+
+.mobile-nav-sublist a {
+    display: flex;
+    align-items: center;
+
+    min-height: 40px;
+
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    color: var(--nav-gray-600);
+
+    font-size: .88rem;
+    font-weight: 500;
+
+    text-decoration: none;
+}
+.mobile-nav-sublist a:hover { background: var(--nav-blue-50); color: var(--nav-blue-700); }
 
 
 /* =========================================================
@@ -524,78 +617,8 @@ body { overflow-x: clip; }
 }
 
 @media (max-width: 1150px) {
-
     .topbar { display: none; }
-
-    .nav-pill { background: none; border: none; padding: 0; }
-
-    .nav-menu {
-        display: none;
-
-        position: fixed;
-        top: 0;
-        left: -100%;
-
-        width: 300px;
-        max-width: 86vw;
-        height: 100vh;
-
-        background: #fff;
-
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-
-        padding: 88px 24px 24px;
-
-        box-shadow: var(--nav-shadow-xl);
-        z-index: 998;
-
-        overflow-y: auto;
-
-        transition: left .35s cubic-bezier(.4, 0, .2, 1);
-    }
-    .nav-menu.open { left: 0; display: flex; }
-
-    .nav-menu li { width: 100%; }
-
-    .nav-menu a {
-        width: 100%;
-        padding: 13px 4px;
-        border-radius: 0;
-        border-bottom: 1px solid var(--nav-gray-100);
-
-        font-size: 1rem;
-        color: var(--nav-gray-700);
-        background: transparent;
-    }
-    .nav-menu a.active { color: var(--nav-blue-600); background: transparent; }
-
-    .dropdown-menu {
-        position: static;
-        left: auto;
-        transform: none;
-
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-
-        box-shadow: none;
-        border: none;
-
-        display: none;
-        grid-template-columns: 1fr;
-
-        width: 100%;
-        max-width: none;
-
-        margin: 4px 0 8px;
-        padding: 4px 0 4px 12px;
-
-        background: var(--nav-gray-50);
-    }
-    .has-dropdown.open .dropdown-menu { display: grid; }
-
+    .nav-pill { display: none; }
     .nav-cta { display: none; }
     .hamburger { display: flex; }
 }

@@ -153,39 +153,24 @@
     });
   }
 
-  /* Hamburger: toggles the fixed slide-in .nav-menu (see RESPONSIVE in
-     style.css), the dimmed .mobile-overlay behind it, and the bars-to-X
-     icon animation — plain class toggles, no Bootstrap plugin involved. */
-  function initMobileMenu() {
+  /* Mobile nav is Bootstrap's own Offcanvas plugin (data-bs-toggle=
+     "offcanvas" on the hamburger, #mobileNav in navbar.php) — it already
+     handles show/hide, the backdrop, and focus trapping. Bootstrap
+     doesn't drive a visual state on the external toggle button the way
+     Collapse does, so the hamburger's bars-to-X animation is driven here
+     from the offcanvas's own show/hide lifecycle events instead. */
+  function initMobileNavToggle() {
+    var panel = document.getElementById('mobileNav');
     var button = document.getElementById('hamburgerBtn');
-    var menu = document.getElementById('navMenu');
-    var overlay = document.getElementById('mobileOverlay');
-    if (!button || !menu || !overlay) return;
+    if (!panel || !button) return;
 
-    function close() {
+    panel.addEventListener('show.bs.offcanvas', function () {
+      button.classList.add('open');
+      button.setAttribute('aria-expanded', 'true');
+    });
+    panel.addEventListener('hide.bs.offcanvas', function () {
       button.classList.remove('open');
-      menu.classList.remove('open');
-      overlay.classList.remove('show');
       button.setAttribute('aria-expanded', 'false');
-    }
-
-    button.addEventListener('click', function () {
-      var isOpen = menu.classList.contains('open');
-      button.classList.toggle('open', !isOpen);
-      menu.classList.toggle('open', !isOpen);
-      overlay.classList.toggle('show', !isOpen);
-      button.setAttribute('aria-expanded', String(!isOpen));
-    });
-
-    overlay.addEventListener('click', close);
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') close();
-    });
-
-    /* A plain (non-dropdown) link tapped inside the open mobile panel
-       should close it, same as any standard mobile nav. */
-    menu.querySelectorAll('li:not(.has-dropdown) > a').forEach(function (link) {
-      link.addEventListener('click', close);
     });
   }
 
@@ -216,7 +201,7 @@
     initScrollReveal();
     initPortfolioFilter();
     initNavDropdown();
-    initMobileMenu();
+    initMobileNavToggle();
     initNavbarScrollState();
   });
 })();
