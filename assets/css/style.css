@@ -173,6 +173,12 @@ body { overflow-x: clip; }
    ========================================================= */
 
 .site-header-inner {
+    /* Positioning context for .mega-menu (see MEGA MENU section) —
+       anchoring the flyout here instead of to the deeply-nested Services
+       <li> keeps it immune to any flex/grid alignment quirk further down
+       the tree. */
+    position: relative;
+
     width: 100%;
     max-width: 1440px;
 
@@ -285,6 +291,18 @@ body { overflow-x: clip; }
     flex: 0 0 auto;
 
     position: relative;
+}
+
+/* Bootstrap's own .dropdown{position:relative} would otherwise make the
+   Services <li> the containing block for .mega-menu (it's nearer in the
+   ancestor chain than .site-header-inner). Forcing it back to static
+   pushes .mega-menu's absolute positioning up to .site-header-inner
+   instead — see the position:relative note there. Specificity of this
+   selector (.navbar-nav .nav-item.dropdown, 3 classes) beats Bootstrap's
+   single-class .dropdown rule regardless of load order, no !important
+   needed. */
+.navbar-nav .nav-item.dropdown {
+    position: static;
 }
 
 .site-header .nav-link {
