@@ -159,7 +159,22 @@ body { overflow-x: clip; }
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow: 0 1px 8px rgba(0, 0, 0, .04);
 }
-.site-header-inner { width: 100%; }
+/* Wider than Bootstrap's default .container max-width — with 8 top-level
+   items plus a CTA, the standard container was too narrow and forced
+   flex-shrink to kick in (links wrapping to two lines, the CTA button
+   squeezed down to nearly nothing). flex-shrink:0 on the end groups
+   plus nowrap labels means nothing will silently compress again even if
+   a link gets added later — the row will simply need its width instead. */
+.site-header-inner {
+  width: 100%;
+  max-width: 1400px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin: 0 auto;
+}
+.site-header-inner > .navbar-brand,
+.site-header-inner > .navbar-actions { flex-shrink: 0; }
+.navbar-actions .btn { white-space: nowrap; flex-shrink: 0; }
 
 /* Fixed nav is out of flow, so every page needs top clearance. Scoped to
    #main-content (every public page) rather than the bare "main" tag —
@@ -178,14 +193,15 @@ body { overflow-x: clip; }
 .navbar-wordmark { font-weight: 600; font-size: 1.05rem; color: var(--mf-navy); letter-spacing: -.01em; }
 .navbar-wordmark-accent { color: var(--mf-accent); }
 
-.navbar-nav .nav-item { list-style: none; }
-.navbar-nav { gap: 2rem; }
+.navbar-nav .nav-item { list-style: none; flex-shrink: 0; }
+.navbar-nav { gap: 1.35rem; flex-shrink: 1; min-width: 0; }
 
 .site-header .nav-link {
   font-weight: 500;
   font-size: .93rem;
   color: var(--mf-text-muted);
   padding: 0;
+  white-space: nowrap;
   transition: color .15s ease;
 }
 .site-header .nav-link:hover,
