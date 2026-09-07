@@ -172,7 +172,16 @@ body { overflow-x: clip; }
   padding-right: 1.5rem;
   margin: 0 auto;
 }
+/* All three top-level groups are flex-shrink:0 — none of them may
+   compress. (Previously .navbar-nav was left shrinkable while its own
+   <li> children were not: the <ul> would get squeezed smaller by the
+   row, but its non-shrinking, non-wrapping items refused to shrink with
+   it and spilled out past the <ul>'s own box instead — that mismatch
+   was the scrambled/overlapping nav labels bug.) If content is ever
+   wider than the row, the row overflows as one coherent unit rather
+   than fragmenting internally. */
 .site-header-inner > .navbar-brand,
+.site-header-inner > .navbar-nav-wrap,
 .site-header-inner > .navbar-actions { flex-shrink: 0; }
 .navbar-actions .btn { white-space: nowrap; flex-shrink: 0; }
 
@@ -194,7 +203,7 @@ body { overflow-x: clip; }
 .navbar-wordmark-accent { color: var(--mf-accent); }
 
 .navbar-nav .nav-item { list-style: none; flex-shrink: 0; }
-.navbar-nav { gap: 1.35rem; flex-shrink: 1; min-width: 0; }
+.navbar-nav { gap: 1.35rem; }
 
 .site-header .nav-link {
   font-weight: 500;
