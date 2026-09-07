@@ -1,5 +1,5 @@
 <header class="site-header" id="siteHeader">
-  <div class="site-header-inner container d-flex align-items-center justify-content-between">
+  <div class="site-header-inner container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="<?= e(url('index.php')) ?>">
       <span class="navbar-mark"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span>
       <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
