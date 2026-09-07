@@ -353,7 +353,8 @@ body { overflow-x: clip; }
 
 .nav-menu a:hover {
     color: var(--nav-blue-700);
-    background: var(--nav-blue-50);
+    background: transparent;
+	/*background: var(--nav-blue-50); */
 }
 
 .nav-menu a.active {
