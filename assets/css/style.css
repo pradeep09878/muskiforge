@@ -174,14 +174,31 @@ body { overflow-x: clip; }
 .navbar-actions { flex-shrink: 0; }
 .navbar-actions .btn { white-space: nowrap; flex-shrink: 0; }
 
-/* At the desktop breakpoint (matches d-xxl-* in navbar.php) the header
-   switches from flex to a 3-column grid — logo | nav | actions — with
-   the nav genuinely centered in the middle track rather than merely
-   spaced-between. This needs the Bootstrap flex utility classes removed
-   from .site-header-inner's markup first: .d-flex/.justify-content-between
-   both carry !important, which would silently override any non-important
-   display:grid here no matter the specificity. */
-@media (min-width: 1400px) {
+/* Desktop nav visibility is driven by these two custom classes rather
+   than Bootstrap's d-xxl-*/d-none utilities. Bootstrap's xxl breakpoint
+   is fixed at 1400px in the CDN build (can't be tuned without a local
+   Sass rebuild), which left no margin for the 8 nav items + CTA to
+   actually fit — the middle grid column would shrink narrower than the
+   nav's real width and the overflow spilled, centered, onto the logo
+   and CTA. 1560px gives real headroom above the ~1050px the nav content
+   needs, and the two rules stay in one place so the visibility
+   breakpoint and the layout breakpoint below can never drift apart. */
+/* !important here is deliberate: these are visibility-toggle utility
+   classes (same job as Bootstrap's d-*), and .navbar-toggler-3d/.btn
+   below declare their own unconditional `display`. Without !important,
+   plain source order would decide the fight, which is exactly the class
+   of bug that caused this whole saga — this makes the toggle win
+   unconditionally, regardless of where component rules land in the file. */
+.mf-desktop-only { display: none !important; }
+.mf-desktop-only-inline { display: none !important; }
+.mf-mobile-only { display: flex !important; }
+@media (min-width: 1560px) {
+  .mf-desktop-only { display: flex !important; }
+  .mf-desktop-only-inline { display: inline-flex !important; }
+  .mf-mobile-only { display: none !important; }
+}
+
+@media (min-width: 1560px) {
   .site-header-inner {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -191,6 +208,12 @@ body { overflow-x: clip; }
   .navbar-nav-wrap {
     justify-content: center;
     min-width: 0;
+    /* Safety net: if this column is ever squeezed narrower than the nav's
+       natural width (unusual OS/browser zoom, edge-case DPI), the nav
+       clips inside its own track instead of overflowing onto the logo
+       or CTA. Clipped nav items are a lesser failure than overlapping
+       text and should never happen at this breakpoint's width anyway. */
+    overflow: hidden;
   }
   .navbar-nav { justify-content: center; }
 }
