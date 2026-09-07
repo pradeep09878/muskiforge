@@ -434,127 +434,163 @@ body { overflow-x: clip; }
 
     cursor: pointer;
 }
-
-
-/* =========================================================
-   CONTENT CLEARANCE
-   ========================================================= */
-
-#main-content {
-    padding-top: 72px;
+.mobile-menu-button {
+  display: none;
+  width: 40px; height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--mf-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--mf-navy);
+  flex-shrink: 0;
 }
 
-
-/* =========================================================
-   TABLET / MOBILE
-   ========================================================= */
+/* Compress padding/type before dropping to the mobile layout, so the
+   single-row desktop nav holds as long as there's genuinely room. */
+@media (max-width: 1350px) {
+  .site-header-inner { grid-template-columns: 175px minmax(0, 1fr) 180px; column-gap: .75rem; }
+  .site-header .nav-link { padding-left: .4rem; padding-right: .4rem; font-size: .85rem; }
+  .navbar-cta { padding-left: .85rem; padding-right: .85rem; font-size: .78rem; }
+}
 
 @media (max-width: 1199px) {
-
-    .site-header {
-        height: 68px;
-    }
-
-    .site-header-inner {
-        height: 68px;
-
-        display: flex;
-
-        align-items: center;
-        justify-content: space-between;
-
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    #main-content {
-        padding-top: 68px;
-    }
-
-    /* Hide desktop navigation */
-
-    #siteHeader .navbar-nav-wrap {
-        display: none;
-    }
-
-    /* Hide consultation button */
-
-    #siteHeader .navbar-cta {
-        display: none;
-    }
-
-    /* Show hamburger */
-
-    #siteHeader .mobile-menu-button {
-        display: flex;
-    }
-
-    .navbar-actions {
-        margin-left: auto;
-    }
+  .site-header { height: 72px; }
+  #main-content { padding-top: 72px; }
+  .site-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navbar-nav-wrap { display: none; }
+  .navbar-cta { display: none; }
+  .navbar-actions { margin-left: auto; }
+  .mobile-menu-button { display: flex; }
 }
 
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 575px) {
-
-    .site-header {
-        height: 64px;
-    }
-
-    .site-header-inner {
-        height: 64px;
-
-        padding-left: 14px;
-        padding-right: 14px;
-    }
-
-    #main-content {
-        padding-top: 64px;
-    }
-
-    .navbar-mark {
-        width: 30px;
-        height: 30px;
-
-        flex-basis: 30px;
-    }
-
-    .navbar-wordmark {
-        font-size: 0.98rem;
-    }
-
-    .mobile-menu-button {
-        width: 38px;
-        height: 38px;
-
-        flex-basis: 38px;
-    }
+/* Mobile off-canvas nav panel */
+.mobile-nav-panel {
+  width: min(340px, 86vw);
+  background: #fff;
 }
-
-
-/* =========================================================
-   VERY SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 360px) {
-
-    .site-header-inner {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .navbar-wordmark {
-        font-size: 0.92rem;
-    }
+.mobile-nav-panel .offcanvas-header {
+  border-bottom: 1px solid var(--mf-border);
+  padding: 1.1rem 1.25rem;
 }
+.mobile-nav-list { display: flex; flex-direction: column; gap: .15rem; }
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--mf-navy);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: .8rem .6rem;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background-color .18s ease, color .18s ease;
+}
+.mobile-nav-link:hover,
+.mobile-nav-link.active { background: var(--mf-border-soft); color: var(--mf-navy); }
+.mobile-nav-expand i { margin-left: auto; transition: transform .25s ease; font-size: .8rem; color: var(--mf-text-muted); }
+.mobile-nav-expand[aria-expanded="true"] i { transform: rotate(180deg); }
+.mobile-nav-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding-left: .5rem;
+  margin: .15rem 0 .5rem;
+}
+.mobile-nav-sublist a {
+  display: flex;
+  align-items: center;
+  padding: .6rem .75rem;
+  border-radius: 8px;
+  color: var(--mf-text-muted);
+  font-size: .88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+.mobile-nav-sublist a:hover { background: var(--mf-border-soft); color: var(--mf-navy); }
+
+/* Services menu — a flat card with a hairline border and the system's
+   ambient double-layer shadow, not a heavy embossed popover.
+   data-bs-display="static" on the toggle (navbar.php) keeps this off
+   Popper's dynamic positioning so the CSS transform below isn't fighting
+   an inline one — that fight was the "sliding" glitch on open. */
+.mega-menu {
+  min-width: 620px;
+  padding: .7rem;
+  border: 1px solid var(--mf-border);
+  border-radius: 16px;
+  box-shadow: var(--mf-glow);
+  left: 50%;
+  margin-top: .75rem !important;
+  display: block !important;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-50%) scale(.98);
+  transition: opacity .15s ease, transform .15s ease, visibility .15s;
+}
+.mega-menu.show {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.mega-menu-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 .5rem;
+}
+.mega-menu-col { display: flex; flex-direction: column; gap: .1rem; }
+.mega-menu-col-title {
+  font-size: .72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--mf-text-muted);
+  padding: .4rem .65rem .5rem;
+}
+.mega-menu-col + .mega-menu-col { border-left: 1px solid var(--mf-border-soft); padding-left: .5rem; }
+.mega-menu-item {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .55rem .65rem;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--mf-navy);
+  font-weight: 500;
+  font-size: .88rem;
+  transition: background-color .15s ease;
+}
+.mega-menu-item:hover { background: var(--mf-border-soft); }
+.mega-menu-icon {
+  width: 34px; height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--mf-accent-light);
+  color: var(--mf-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+  transition: background-color .15s ease, color .15s ease;
+}
+.mega-menu-item:hover .mega-menu-icon { background: var(--mf-navy); color: #fff; }
+.mega-menu-footer {
+  border-top: 1px solid var(--mf-border-soft);
+  margin-top: .5rem;
+  padding-top: .5rem;
+  text-align: right;
+}
+.mega-menu-footer a { font-size: .82rem; font-weight: 600; color: var(--mf-accent); text-decoration: none; }
+.mega-menu-footer a:hover { text-decoration: underline; }
 
 /* The mega-menu is desktop-only (nav switches to the off-canvas mobile
    panel below lg — see .mobile-nav-panel), so it needs no mobile variant. */
-  transition: opacity .15s ease, transform .15s ease, visibility .15s;}.mega-menu.show {  visibility: visible;  opacity: 1;  transform: translateX(-50%) scale(1);}.mega-menu-columns {  display: grid;  grid-template-columns: repeat(3, 1fr);  gap: 0 .5rem;}.mega-menu-col { display: flex; flex-direction: column; gap: .1rem; }.mega-menu-col-title {  font-size: .72rem;  font-weight: 600;  text-transform: uppercase;  letter-spacing: .06em;  color: var(--mf-text-muted);  padding: .4rem .65rem .5rem;}.mega-menu-col + .mega-menu-col { border-left: 1px solid var(--mf-border-soft); padding-left: .5rem; }.mega-menu-item {  display: flex;  align-items: center;  gap: .7rem;  padding: .55rem .65rem;  border-radius: 10px;  text-decoration: none;  color: var(--mf-navy);  font-weight: 500;  font-size: .88rem;  transition: background-color .15s ease;}.mega-menu-item:hover { background: var(--mf-border-soft); }.mega-menu-icon {  width: 34px; height: 34px;  flex-shrink: 0;  border-radius: 9px;  background: var(--mf-accent-light);  color: var(--mf-accent);  display: flex; align-items: center; justify-content: center;  font-size: .85rem;  transition: background-color .15s ease, color .15s ease;}.mega-menu-item:hover .mega-menu-icon { background: var(--mf-navy); color: #fff; }.mega-menu-footer {  border-top: 1px solid var(--mf-border-soft);  margin-top: .5rem;  padding-top: .5rem;  text-align: right;}.mega-menu-footer a { font-size: .82rem; font-weight: 600; color: var(--mf-accent); text-decoration: none; }.mega-menu-footer a:hover { text-decoration: underline; }
+
 /* ---------- Hero (inner-page page-header band) ---------- */
 .hero {
   position: relative;
