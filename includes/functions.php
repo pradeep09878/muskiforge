@@ -35,9 +35,21 @@ function tonal_vars(int $index): array
     return $palette[$index % count($palette)];
 }
 
+/**
+ * Cache-busted asset URL. style.css/main.js are served with a 7-day
+ * browser Cache-Control (see .htaccess), which is otherwise correct —
+ * but it means every deployed CSS/JS fix would sit invisible in
+ * visitors' browsers for up to a week. Appending the file's own mtime
+ * as ?v= gives each deployed change a new URL, so the 7-day cache
+ * never has a stale file to serve back for something that just changed.
+ */
 function asset(string $path): string
 {
-    return SITE_URL . '/assets/' . ltrim($path, '/');
+    $path = ltrim($path, '/');
+    $absolute = __DIR__ . '/../assets/' . $path;
+    $version = is_file($absolute) ? filemtime($absolute) : null;
+
+    return SITE_URL . '/assets/' . $path . ($version ? '?v=' . $version : '');
 }
 
 /**
