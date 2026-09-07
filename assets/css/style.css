@@ -1160,3 +1160,46 @@ tr:focus-within .row-actions { opacity: 1; }
   .service-panel { padding: 1.5rem; }
   .cta-section { padding: 2.5rem 1.5rem !important; }
 }
+/* =========================================================
+   FIX: DESKTOP NAV MUST ALWAYS BE HORIZONTAL
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    #siteHeader .navbar-nav {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        width: max-content;
+        max-width: 100%;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        list-style: none;
+        gap: 2px;
+    }
+
+    #siteHeader .navbar-nav .nav-item {
+        display: block !important;
+        width: auto !important;
+
+        flex: 0 0 auto !important;
+    }
+
+    #siteHeader .navbar-nav .nav-link {
+        display: inline-flex !important;
+
+        width: auto !important;
+
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        white-space: nowrap !important;
+    }
+}
