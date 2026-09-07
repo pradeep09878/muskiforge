@@ -16,8 +16,9 @@
   --mf-surface: #fbfbfc;
   --mf-radius: 16px;
   /* Header geometry lives here so the fixed header's height and
-     #main-content's matching top clearance can never drift apart. */
-  --header-height: 76px;
+     #main-content's matching top clearance can never drift apart.
+     80px matches the reference header's h-20. */
+  --header-height: 80px;
   --header-height-mobile: 64px;
   --mf-glow: 0 1px 2px 0 rgba(15, 23, 42, .04), 0 8px 24px -4px rgba(15, 23, 42, .05);
 }
@@ -140,20 +141,33 @@ body { overflow-x: clip; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Navbar — light theme ----------
-   Three-column grid: brand | centered nav | actions. The outer columns
-   are content-sized and the nav takes the slack, so the nav stays
-   optically centered without any auto-margin or flex-basis guesswork.
-   Fit is protected by the compression band in the media queries below
-   (not by overflow:hidden, which would clip the mega-menu open state).
-   No Bootstrap display/flex utility classes appear in the header markup,
-   so there's no !important fight to manage. */
+/* ---------- Navbar ----------
+   Ported from the Stitch reference's header, with its Tailwind tokens
+   resolved to real values:
+     h-20                -> 80px height
+     max-w-*-content     -> 1280px
+     px-margin-desktop   -> 48px
+     bg-surface/80       -> rgba(248, 249, 255, .8)
+     backdrop-blur-xl    -> blur(24px)
+     gap-space-xl        -> 32px between nav links
+     gap-space-md / -sm  -> 16px actions / 12px brand
+   Nav links are plain text — no pill, padding or radius — so the only
+   hover/active signal is ink color, exactly as in the reference. Fit for
+   our 8 items (the reference has 5) is protected by the compression band
+   in the media queries below. */
 .site-header,
 .site-header * {
   box-sizing: border-box;
 }
 
+/* Header-scoped palette, kept literal to the reference rather than
+   remapped onto --mf-* so this block stays a faithful port. */
 .site-header {
+  --nav-ink: #0b1c30;        /* on-surface — wordmark, hover, active   */
+  --nav-ink-muted: #45474c;  /* on-surface-variant — resting nav link  */
+  --nav-cta: #091426;        /* primary — CTA background               */
+  --nav-cta-hover: #1e293b;  /* primary-container — CTA hover          */
+
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 1030;
@@ -161,28 +175,12 @@ body { overflow-x: clip; }
   width: 100%;
   height: var(--header-height);
 
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(248, 249, 255, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 
-  /* Transparent (not absent) so the border appearing on scroll doesn't
-     shift the header's box by a pixel. */
-  border-bottom: 1px solid transparent;
-
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-/* Toggled from main.js past ~8px of scroll: the header sits flush and
-   borderless over the hero, then settles onto the page as you leave it. */
-.site-header.is-scrolled {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom-color: var(--mf-border-soft);
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 10px 28px -14px rgba(15, 23, 42, 0.14);
+  /* Reference carries a flat ambient shadow and no border at all. */
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
 }
 
 
@@ -192,16 +190,16 @@ body { overflow-x: clip; }
 
 .site-header-inner {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1280px;
   height: 100%;
 
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 48px;
 
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+
   gap: 24px;
 }
 
@@ -223,53 +221,47 @@ body { overflow-x: clip; }
   display: inline-flex;
   align-items: center;
 
-  gap: 9px;
+  /* gap-space-sm */
+  gap: 12px;
 
+  flex-shrink: 0;
   min-width: 0;
 
-  color: var(--mf-navy);
+  color: var(--nav-ink);
   text-decoration: none;
 
   white-space: nowrap;
 }
 
+/* Reference uses a 32px-tall image mark (h-8); ours is an icon chip at
+   the same height, kept flat to match the reference's plain treatment. */
 .navbar-mark {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
 
-  flex: 0 0 34px;
+  flex: 0 0 32px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: 8px;
 
-  /* Slight gradient + inner highlight keeps the one dark element on an
-     otherwise pale header from reading as a flat black square. */
-  background: linear-gradient(140deg, #1e293b 0%, var(--mf-navy) 60%);
+  background: var(--nav-cta);
   color: #fff;
 
   font-size: 0.85rem;
-
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-
-  transition: transform 0.2s cubic-bezier(.16, .8, .3, 1);
 }
 
-.navbar-brand:hover .navbar-mark {
-  transform: scale(1.05);
-}
-
+/* text-title-md, with the anchor's tracking-tight + font-semibold */
 .navbar-wordmark {
-  color: var(--mf-navy);
+  color: var(--nav-ink);
 
-  font-size: 1.05rem;
+  font-size: 18px;
+  line-height: 26px;
   font-weight: 600;
 
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 
   white-space: nowrap;
 }
@@ -284,7 +276,11 @@ body { overflow-x: clip; }
    ========================================================= */
 
 #siteHeader .navbar-nav-wrap {
-  min-width: 0;
+  /* Must not shrink below its content: a shrinkable wrap with centered,
+     nowrap children is precisely what let the nav spill symmetrically
+     onto the logo and CTA. Fit is guaranteed by the compression band
+     instead. overflow stays visible so the mega-menu isn't clipped. */
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -306,7 +302,8 @@ body { overflow-x: clip; }
 
   list-style: none;
 
-  gap: 2px;
+  /* gap-space-xl */
+  gap: 32px;
 
   white-space: nowrap;
 }
@@ -316,51 +313,47 @@ body { overflow-x: clip; }
   flex: 0 0 auto;
 }
 
+/* text-body-md: 14px / 22px / -0.005em / 400. No padding, background or
+   radius — the reference's links are bare text that only shifts ink
+   color, which is what gives the header its uncluttered feel. */
 .site-header .nav-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
 
-  min-height: 38px;
+  padding: 0;
 
-  padding: 8px 12px;
+  color: var(--nav-ink-muted);
 
-  color: var(--mf-text-muted);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
 
-  font-size: 0.9rem;
-  font-weight: 500;
-
-  line-height: 1.2;
+  letter-spacing: -0.005em;
 
   white-space: nowrap;
 
   text-decoration: none;
 
-  border-radius: 10px;
+  background: none;
+  border-radius: 0;
 
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease;
+  transition: color 0.15s ease;
 }
 
-/* Hover reads as a neutral tint; the current page gets the cobalt tint
-   instead, so wayfinding and hover feedback never look like the same
-   state. Accent on a link is consistent with the design system's rule
-   that cobalt carries links and status, dark ink carries actions. */
 .site-header .nav-link:hover {
-  color: var(--mf-navy);
-  background: rgba(15, 23, 42, 0.045);
+  color: var(--nav-ink);
 }
 
+/* aria-current page: same ink as hover, distinguished by weight only. */
 .site-header .nav-link.active {
-  color: var(--mf-accent);
-  background: var(--mf-accent-light);
-  font-weight: 600;
+  color: var(--nav-ink);
+  font-weight: 500;
 }
 
 .site-header .nav-link:focus-visible {
   outline: 2px solid var(--mf-accent);
-  outline-offset: 2px;
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 /* Bootstrap's caret is a solid triangle; this is a lighter chevron drawn
@@ -390,8 +383,7 @@ body { overflow-x: clip; }
 }
 
 .site-header .dropdown-toggle.show {
-  color: var(--mf-navy);
-  background: rgba(15, 23, 42, 0.045);
+  color: var(--nav-ink);
 }
 
 
@@ -404,58 +396,43 @@ body { overflow-x: clip; }
   align-items: center;
   justify-content: flex-end;
 
-  gap: 12px;
+  /* gap-space-md */
+  gap: 16px;
 
+  flex-shrink: 0;
   min-width: 0;
 }
 
+/* rounded-full bg-primary px-space-lg py-space-xs, text-body-sm */
 .navbar-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 40px;
-
-  padding: 10px 20px;
+  padding: 8px 24px;
 
   border: 0;
-  border-radius: 999px;
+  border-radius: 9999px;
 
-  background: var(--mf-navy);
+  background: var(--nav-cta);
   color: #fff;
 
-  font-size: 0.855rem;
-  font-weight: 500;
-
-  line-height: 1;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
 
   white-space: nowrap;
   text-decoration: none;
 
-  box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-
   transition:
-    transform 0.15s cubic-bezier(.16, .8, .3, 1),
     background-color 0.15s ease,
-    box-shadow 0.15s ease;
+    color 0.15s ease;
 }
 
 .navbar-cta:hover,
 .navbar-cta:focus {
-  background: #1e293b;
+  background: var(--nav-cta-hover);
   color: #fff;
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 6px 18px -6px rgba(15, 23, 42, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
-}
-
-.navbar-cta:active {
-  transform: translateY(0);
 }
 
 .navbar-cta:focus-visible {
@@ -816,52 +793,30 @@ body { overflow-x: clip; }
 
 /* =========================================================
    DESKTOP COMPRESSION BAND
-   Between the widest desktop layout and the mobile switch, tighten the
-   nav's own padding/type rather than letting 8 items + a CTA run at full
-   size down to 1199px — running full-size into a shrinking middle column
-   is what pushed the nav onto the logo and CTA before.
+   The reference header carries 5 nav items; ours carries 8 plus a
+   dropdown caret. At the reference's 32px gaps that needs ~1100px of
+   content width, which the 1280px container clears comfortably but a
+   1200-1279px viewport does not. Tightening the gap and side padding
+   through that window keeps the row from running out of room before the
+   mobile switch at 1199px takes over.
    ========================================================= */
 
-@media (max-width: 1399px) {
+@media (max-width: 1279px) {
 
   .site-header-inner {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 32px;
+    padding-right: 32px;
 
-    gap: 16px;
-  }
-
-  .site-header .nav-link {
-    padding-left: 9px;
-    padding-right: 9px;
-
-    font-size: 0.865rem;
-  }
-
-  .navbar-cta {
-    padding-left: 16px;
-    padding-right: 16px;
-
-    font-size: 0.82rem;
-  }
-}
-
-@media (max-width: 1299px) {
-
-  .site-header .nav-link {
-    padding-left: 7px;
-    padding-right: 7px;
-
-    font-size: 0.845rem;
+    gap: 20px;
   }
 
   .navbar-nav {
-    gap: 0;
+    gap: 24px;
   }
 
   .navbar-cta {
-    padding-left: 14px;
-    padding-right: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
   }
 }
 
@@ -881,8 +836,6 @@ body { overflow-x: clip; }
   }
 
   .site-header-inner {
-    grid-template-columns: minmax(0, 1fr) auto;
-
     padding-left: 20px;
     padding-right: 20px;
 
