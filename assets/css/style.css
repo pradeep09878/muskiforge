@@ -410,6 +410,197 @@ body { overflow-x: clip; }
 
 
 /* =========================================================
+   MEGA MENU
+   Scoped entirely to .mega-menu and its own descendants — nothing here
+   touches .site-header, .site-header-inner, .navbar-nav or .nav-link,
+   so it cannot affect the header's own box or the nav row's layout.
+
+   display is never set unconditionally on .mega-menu: Bootstrap's own
+   .dropdown-menu{display:none} / .dropdown-menu.show{display:block}
+   keeps driving the click path exactly as before (data-bs-toggle=
+   "dropdown" in navbar.php, untouched). The hover-to-open rule below
+   only forces display:block while the cursor is actually over the
+   Services item — outside that state Bootstrap's default display:none
+   applies exactly as it always has.
+   ========================================================= */
+
+.mega-menu {
+    position: absolute;
+
+    top: calc(100% + 12px);
+    left: 50%;
+
+    width: min(620px, calc(100vw - 32px));
+    min-width: 0;
+
+    margin-top: 0;
+    padding: 12px;
+
+    border: 1px solid var(--mf-border);
+    border-radius: 18px;
+
+    background: #fff;
+
+    box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.04),
+        0 24px 48px -20px rgba(15, 23, 42, 0.22);
+
+    opacity: 0;
+
+    transform: translateX(-50%) translateY(-4px) scale(0.98);
+    transform-origin: top center;
+
+    pointer-events: none;
+
+    z-index: 1040;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
+}
+
+/* Click path (Bootstrap JS adds/removes .show on toggle). */
+.mega-menu.show {
+    opacity: 1;
+
+    transform: translateX(-50%) translateY(0) scale(1);
+
+    pointer-events: auto;
+}
+
+/* Hover path (mouse/trackpad only — pointer:fine keeps this off touch
+   devices, which never get a true hover state anyway). Higher
+   specificity than Bootstrap's base .dropdown-menu{display:none} wins
+   deterministically, no !important needed. Bootstrap's click handler
+   still runs independently and adds its own .show class on top of this
+   — the two never conflict since both just converge on "visible". */
+@media (hover: hover) and (pointer: fine) {
+    .nav-item.dropdown:hover > .mega-menu,
+    .nav-item.dropdown:focus-within > .mega-menu {
+        display: block;
+
+        opacity: 1;
+
+        transform: translateX(-50%) translateY(0) scale(1);
+
+        pointer-events: auto;
+    }
+}
+
+.mega-menu-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 0 8px;
+}
+
+.mega-menu-col {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.mega-menu-col + .mega-menu-col {
+    border-left: 1px solid var(--mf-border-soft);
+
+    padding-left: 8px;
+}
+
+.mega-menu-col-title {
+    padding: 6px 10px 8px;
+
+    color: var(--mf-text-muted);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.mega-menu-item {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    gap: 10px;
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+
+    color: var(--mf-navy);
+
+    font-size: 0.88rem;
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.mega-menu-item:hover {
+    background: var(--mf-accent-light);
+    color: var(--mf-accent);
+}
+
+.mega-menu-icon {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--mf-accent-light);
+    color: var(--mf-accent);
+
+    font-size: 0.85rem;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.mega-menu-item:hover .mega-menu-icon {
+    background: var(--mf-accent);
+    color: #fff;
+}
+
+.mega-menu-footer {
+    margin-top: 8px;
+    padding-top: 8px;
+
+    border-top: 1px solid var(--mf-border-soft);
+
+    text-align: right;
+}
+
+.mega-menu-footer a {
+    color: var(--mf-accent);
+
+    font-size: 0.82rem;
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+.mega-menu-footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
    MOBILE BUTTON
    ========================================================= */
 
