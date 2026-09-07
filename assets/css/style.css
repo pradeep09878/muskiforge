@@ -213,7 +213,7 @@ body { overflow-x: clip; }
    This does not require touching navbar.php, but if the toggler still
    appears after this, the markup itself has a conflicting class — see
    note at bottom of file. */
-.navbar-nav-wrap {
+#siteHeader .navbar-nav-wrap {
   display: flex !important;
   justify-content: center;
   align-items: center;
@@ -258,7 +258,6 @@ body { overflow-x: clip; }
 }
 
 .navbar-cta {
-  display: inline-flex !important;
   align-items: center;
   justify-content: center;
   padding: .55rem 1.1rem;
@@ -272,6 +271,7 @@ body { overflow-x: clip; }
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .16);
   transition: transform .15s cubic-bezier(.16,.8,.3,1), background-color .15s ease;
 }
+#siteHeader .navbar-cta { display: inline-flex !important; }
 .navbar-cta:hover,
 .navbar-cta:focus {
   background: #1e293b;
@@ -279,9 +279,7 @@ body { overflow-x: clip; }
   transform: scale(1.01);
 }
 
-button.mobile-menu-button,
-.site-header .mobile-menu-button {
-  display: none !important;
+.mobile-menu-button {
   width: 40px; height: 40px;
   align-items: center;
   justify-content: center;
@@ -291,6 +289,11 @@ button.mobile-menu-button,
   color: var(--mf-navy);
   flex-shrink: 0;
 }
+/* ID-scoped: this is the actual enforcement rule. #siteHeader beats
+   any class-only selector (.mobile-menu-button, .navbar-toggler, or a
+   later theme override) regardless of stylesheet load order, without
+   needing to know what that other rule is. */
+#siteHeader .mobile-menu-button { display: none !important; }
 
 /* Compress padding/type before dropping to the mobile layout, so the
    single-row desktop nav holds as long as there's genuinely room. */
@@ -308,11 +311,10 @@ button.mobile-menu-button,
     justify-content: space-between;
     align-items: center;
   }
-  .navbar-nav-wrap { display: none !important; }
-  .navbar-cta { display: none !important; }
+  #siteHeader .navbar-nav-wrap { display: none !important; }
+  #siteHeader .navbar-cta { display: none !important; }
   .navbar-actions { margin-left: auto; }
-  button.mobile-menu-button,
-  .site-header .mobile-menu-button { display: flex !important; }
+  #siteHeader .mobile-menu-button { display: flex !important; }
 }
 
 /* Mobile off-canvas nav panel */
@@ -434,6 +436,26 @@ button.mobile-menu-button,
 }
 .mega-menu-footer a { font-size: .82rem; font-weight: 600; color: var(--mf-accent); text-decoration: none; }
 .mega-menu-footer a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------------
+   NOTE: The show/hide rules for .navbar-nav-wrap, .navbar-cta, and
+   .mobile-menu-button are now scoped with the #siteHeader id (matching
+   <header id="siteHeader"> in navbar.php). ID selectors beat any
+   class-only selector regardless of specificity math or load order, so
+   this closes off the "some other stylesheet redefines this class"
+   failure mode without needing to know what that stylesheet is.
+
+   If the hamburger STILL shows on desktop after this, it is not a CSS
+   specificity issue at all — it means the browser genuinely considers
+   the viewport to be ≤1199px wide. That happens on:
+     - an unmaximized/narrow browser window or split-screen view
+     - a laptop at certain OS-level display scaling percentages
+     - DevTools device toolbar left in a mobile preset
+   Check window.innerWidth in the console when you see the bug. If it's
+   under 1199, the fix is to either widen the window/browser or lower
+   the breakpoint value in the two @media queries above.
+   --------------------------------------------------------------------- */
+
 
 /* ---------------------------------------------------------------------
    NOTE: If the hamburger still shows on desktop after this update, the
