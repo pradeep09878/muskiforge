@@ -165,7 +165,6 @@ body { overflow-x: clip; }
   --nav-blue-500: #3b82f6;
   --nav-blue-300: #93c5fd;
   --nav-blue-200: #bfdbfe;
-  --nav-blue-100: #dbeafe;
   --nav-blue-50:  #eff6ff;
   --nav-accent:   #0ea5e9;
   --nav-gray-900: #111827;
@@ -346,32 +345,22 @@ body { overflow-x: clip; }
     text-decoration: none;
 
     background: transparent;
-    box-shadow: none;
-    transform: translateY(0);
 
     transition:
-        transform .18s cubic-bezier(.4, 0, .2, 1),
-        box-shadow .18s ease,
         background-color .18s ease,
         color .18s ease;
 }
 
 .nav-menu a:hover {
     color: var(--nav-blue-700);
-    background: #fff;
-    box-shadow: 0 3px 0 var(--nav-blue-100), 0 8px 16px rgba(30, 58, 138, .14);
-    transform: translateY(-3px);
+    background: var(--nav-blue-50);
 }
 
 .nav-menu a.active {
     color: #fff;
     background: var(--nav-gradient);
-    box-shadow: 0 3px 0 var(--nav-blue-800), 0 8px 18px rgba(37, 99, 235, .35);
-    transform: translateY(-3px);
     font-weight: 700;
 }
-
-.nav-menu a:active { transform: translateY(0); box-shadow: none; }
 
 .nav-menu i { font-size: .65rem; transition: transform .25s; }
 .has-dropdown.open i { transform: rotate(180deg); }
@@ -468,24 +457,19 @@ body { overflow-x: clip; }
     text-decoration: none;
     flex-shrink: 0;
 
-    box-shadow: 0 3px 0 var(--nav-blue-800), 0 8px 20px rgba(37, 99, 235, .35);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, .3);
 
-    transform: translateY(0);
-
-    transition:
-        transform .18s cubic-bezier(.4, 0, .2, 1),
-        box-shadow .18s ease;
+    transition: box-shadow .18s ease, opacity .18s ease;
 }
 
 .nav-cta:hover {
     color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 0 var(--nav-blue-800), 0 12px 26px rgba(37, 99, 235, .45);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, .4);
 }
 
 .nav-cta:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 0 var(--nav-blue-800), 0 4px 10px rgba(37, 99, 235, .3);
+    color: #fff;
+    opacity: .9;
 }
 
 
@@ -583,12 +567,9 @@ body { overflow-x: clip; }
 
         font-size: 1rem;
         color: var(--nav-gray-700);
-
-        transform: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
+        background: transparent;
     }
-    .nav-menu a.active { color: var(--nav-blue-600); background: transparent !important; }
+    .nav-menu a.active { color: var(--nav-blue-600); background: transparent; }
 
     .dropdown-menu {
         position: static;
