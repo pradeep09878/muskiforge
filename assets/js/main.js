@@ -116,32 +116,107 @@
     });
   }
 
-  /* Bootstrap's Offcanvas plugin doesn't manage aria-expanded / a visual
-     state on external toggle buttons the way Collapse does, so the
-     bars-to-close icon swap is driven here from the offcanvas's own
-     show/hide lifecycle events. */
-  function initMobileNavToggle() {
-    var panel = document.getElementById('mobileNav');
-    var toggler = document.querySelector('.mobile-menu-button');
-    var icon = toggler ? toggler.querySelector('i') : null;
-    if (!panel || !toggler || !icon) return;
+  /* Services dropdown: click-only (no :hover), same .has-dropdown/.open
+     mechanism drives both the desktop flyout and the mobile in-page
+     sublist, so there's one code path instead of two. */
+  function initNavDropdown() {
+    var items = document.querySelectorAll('.nav-menu .has-dropdown');
+    if (!items.length) return;
 
-    panel.addEventListener('show.bs.offcanvas', function () {
-      icon.classList.remove('fa-bars');
-      icon.classList.add('fa-xmark');
-      toggler.setAttribute('aria-expanded', 'true');
+    function closeAll(except) {
+      items.forEach(function (item) {
+        if (item === except) return;
+        item.classList.remove('open');
+        var toggle = item.querySelector(':scope > a');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    items.forEach(function (item) {
+      var toggle = item.querySelector(':scope > a');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        var isOpen = item.classList.contains('open');
+        closeAll(item);
+        item.classList.toggle('open', !isOpen);
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
     });
-    panel.addEventListener('hide.bs.offcanvas', function () {
-      icon.classList.remove('fa-xmark');
-      icon.classList.add('fa-bars');
-      toggler.setAttribute('aria-expanded', 'false');
+
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.has-dropdown')) closeAll();
     });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') closeAll();
+    });
+  }
+
+  /* Hamburger: toggles the fixed slide-in .nav-menu (see RESPONSIVE in
+     style.css), the dimmed .mobile-overlay behind it, and the bars-to-X
+     icon animation — plain class toggles, no Bootstrap plugin involved. */
+  function initMobileMenu() {
+    var button = document.getElementById('hamburgerBtn');
+    var menu = document.getElementById('navMenu');
+    var overlay = document.getElementById('mobileOverlay');
+    if (!button || !menu || !overlay) return;
+
+    function close() {
+      button.classList.remove('open');
+      menu.classList.remove('open');
+      overlay.classList.remove('show');
+      button.setAttribute('aria-expanded', 'false');
+    }
+
+    button.addEventListener('click', function () {
+      var isOpen = menu.classList.contains('open');
+      button.classList.toggle('open', !isOpen);
+      menu.classList.toggle('open', !isOpen);
+      overlay.classList.toggle('show', !isOpen);
+      button.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    overlay.addEventListener('click', close);
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') close();
+    });
+
+    /* A plain (non-dropdown) link tapped inside the open mobile panel
+       should close it, same as any standard mobile nav. */
+    menu.querySelectorAll('li:not(.has-dropdown) > a').forEach(function (link) {
+      link.addEventListener('click', close);
+    });
+  }
+
+  /* .navbar is position:sticky; .scrolled (see style.css) just deepens
+     its shadow once the page has actually scrolled, so it reads as
+     "landed" rather than floating over the very top of the page. */
+  function initNavbarScrollState() {
+    var header = document.getElementById('siteHeader');
+    if (!header) return;
+
+    var ticking = false;
+    function apply() {
+      header.classList.toggle('scrolled', window.scrollY > 8);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(apply);
+    }, { passive: true });
+
+    apply();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
-    initMobileNavToggle();
+    initNavDropdown();
+    initMobileMenu();
+    initNavbarScrollState();
   });
 })();

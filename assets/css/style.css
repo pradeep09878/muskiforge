@@ -15,11 +15,6 @@
   --mf-border-soft: #f1f5f9;
   --mf-surface: #fbfbfc;
   --mf-radius: 16px;
-  /* Header geometry lives here so the fixed header's height and
-     #main-content's matching top clearance can never drift apart.
-     80px matches the reference header's h-20. */
-  --header-height: 80px;
-  --header-height-mobile: 64px;
   --mf-glow: 0 1px 2px 0 rgba(15, 23, 42, .04), 0 8px 24px -4px rgba(15, 23, 42, .05);
 }
 
@@ -141,539 +136,187 @@ body { overflow-x: clip; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Navbar ----------
-/* =========================================================
-   HEADER
-   ========================================================= */
+/* ==========================================================================
+   NAVBAR — ported from a reference "Blue & White Premium IT Services" theme
+   (topbar, sticky pill nav, dropdown, CTA, hamburger). Kept the reference's
+   own palette/shadows/radii, namespaced --nav-* below so nothing here can
+   collide with the site's --mf-* tokens or anything else in this file.
+   Adapted in three deliberate ways:
+     1. Font stays Geist (site-wide) — not the reference's Poppins/Inter.
+     2. Dropdown opens on CLICK only (.open, toggled in main.js), not the
+        reference's :hover — matches "no hover, keep it simple."
+     3. Container widened from the reference's 1200px to 1400px, and the
+        breakpoint raised from 768px to 1150px with a compression step
+        above that. The reference's own numbers were sized for a shorter
+        example nav; at 1200px/768px this site's 8 items + a dropdown
+        would overflow across roughly the entire 769-1300px range — the
+        exact "items overlapping the logo/CTA" bug this project kept
+        hitting with earlier layouts. Sized to this site's actual content.
+   position:sticky (not fixed) also means #main-content needs no
+   padding-top hack to stay in sync with header height — sticky elements
+   stay in normal document flow until they reach the top of the viewport.
+   ========================================================================== */
 
-.site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    width: 100%;
-    height: 72px;
-
-    z-index: 1030;
-
-    background: rgba(251, 251, 252, 0.96);
-
-    border-bottom: 1px solid #e5e7eb;
-
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+:root {
+  --nav-blue-900: #1e3a8a;
+  --nav-blue-800: #1e40af;
+  --nav-blue-700: #1d4ed8;
+  --nav-blue-600: #2563eb;
+  --nav-blue-500: #3b82f6;
+  --nav-blue-300: #93c5fd;
+  --nav-blue-200: #bfdbfe;
+  --nav-blue-100: #dbeafe;
+  --nav-blue-50:  #eff6ff;
+  --nav-accent:   #0ea5e9;
+  --nav-gray-900: #111827;
+  --nav-gray-800: #1f2937;
+  --nav-gray-700: #374151;
+  --nav-gray-600: #4b5563;
+  --nav-gray-100: #f3f4f6;
+  --nav-gray-50:  #f9fafb;
+  --nav-gradient: linear-gradient(135deg, var(--nav-blue-800) 0%, var(--nav-blue-600) 50%, var(--nav-accent) 100%);
+  --nav-shadow-xl: 0 20px 60px rgba(30, 58, 138, .22);
+  --nav-radius: 12px;
+  --nav-radius-sm: 8px;
+  --nav-transition: all .3s cubic-bezier(.4, 0, .2, 1);
 }
 
+/* ---------- Topbar ---------- */
+.topbar {
+    background: var(--nav-blue-900);
+    color: rgba(255, 255, 255, .85);
 
-/* =========================================================
-   HEADER INNER
-   ========================================================= */
+    font-size: .82rem;
 
-.site-header-inner {
-    /* Positioning context for .mega-menu (see MEGA MENU section) —
-       anchoring the flyout here instead of to the deeply-nested Services
-       <li> keeps it immune to any flex/grid alignment quirk further down
-       the tree. */
+    padding: 8px 0;
+
     position: relative;
+    z-index: 1000;
+}
 
-    width: 100%;
-    max-width: 1440px;
-
-    height: 72px;
-
+.topbar-inner {
+    max-width: 1400px;
     margin: 0 auto;
-
     padding: 0 24px;
 
-    display: grid;
-
-    /*
-       Logo       Navigation       Button
-       auto       1fr              auto
-    */
-    grid-template-columns: auto minmax(0, 1fr) auto;
-
-    align-items: center;
-
-    column-gap: 30px;
-}
-
-
-/* =========================================================
-   LOGO
-   ========================================================= */
-
-.navbar-brand {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    gap: 8px;
-
-    flex-shrink: 0;
-
-    text-decoration: none;
-    white-space: nowrap;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-.navbar-mark {
-    width: 32px;
-    height: 32px;
+.topbar-left { display: flex; gap: 20px; }
+.topbar-left span,
+.topbar-right span { display: flex; align-items: center; gap: 6px; }
+.topbar-left i,
+.topbar-right i { color: var(--nav-blue-300); font-size: .75rem; }
 
-    flex: 0 0 32px;
+.topbar-right { display: flex; align-items: center; gap: 16px; }
+.topbar-badge { color: var(--nav-blue-200); font-weight: 500; }
+.topbar-badge .pulse-dot { color: #34d399; animation: navPulse 2s infinite; }
+@keyframes navPulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.topbar .social-links { display: flex; gap: 10px; }
+.topbar .social-links a {
+    width: 26px;
+    height: 26px;
 
-    border-radius: 8px;
+    border-radius: 50%;
 
-    background: var(--mf-navy);
+    background: rgba(255, 255, 255, .1);
     color: #fff;
 
-    font-size: 0.85rem;
-}
-
-.navbar-wordmark {
-    font-size: 1.05rem;
-    font-weight: 600;
-
-    color: var(--mf-navy);
-
-    white-space: nowrap;
-}
-
-.navbar-wordmark-accent {
-    color: var(--mf-accent);
-}
-
-
-/* =========================================================
-   DESKTOP NAV
-   ========================================================= */
-
-#siteHeader .navbar-nav-wrap {
-    min-width: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
-    /*
-       IMPORTANT:
-       Never use overflow:hidden here.
-       It will clip the mega menu.
-    */
-    overflow: visible;
+    font-size: .7rem;
 }
-
-.navbar-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: max-content;
-    max-width: 100%;
-
-    margin: 0;
-    padding: 0;
-
-    list-style: none;
-
-    gap: 2px;
-
-    white-space: nowrap;
-}
-
-.navbar-nav .nav-item {
-    flex: 0 0 auto;
-
-    position: relative;
-}
-
-/* Bootstrap's own .dropdown{position:relative} would otherwise make the
-   Services <li> the containing block for .mega-menu (it's nearer in the
-   ancestor chain than .site-header-inner). Forcing it back to static
-   pushes .mega-menu's absolute positioning up to .site-header-inner
-   instead — see the position:relative note there. Specificity of this
-   selector (.navbar-nav .nav-item.dropdown, 3 classes) beats Bootstrap's
-   single-class .dropdown rule regardless of load order, no !important
-   needed. */
-.navbar-nav .nav-item.dropdown {
-    position: static;
-}
-
-.site-header .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 40px;
-
-    padding: 0 10px;
-
-    color: #64748b;
-
-    font-size: 0.92rem;
-    font-weight: 500;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    white-space: nowrap;
-
-    border-radius: 6px;
-
-    transition:
-        color 0.15s ease,
-        background-color 0.15s ease;
-}
-
-.site-header .nav-link:hover {
-    color: var(--mf-navy);
-}
-
-.site-header .nav-link.active {
-    color: var(--mf-navy);
-
-    font-weight: 600;
-
-    position: relative;
-}
+.topbar .social-links a:hover { background: var(--nav-blue-600); }
 
 
-/* Blue underline under active item */
-
-.site-header .nav-link.active::after {
-    content: "";
-
-    position: absolute;
-
-    left: 10px;
-    right: 10px;
-
-    bottom: -1px;
-
-    height: 2px;
-
-    background: #2563eb;
-
-    border-radius: 2px;
-}
-
-
-/* Dropdown arrow */
-
-.site-header .dropdown-toggle::after {
-    margin-left: 6px;
-
-    vertical-align: middle;
-}
-
-
-/* =========================================================
-   RIGHT ACTIONS
-   ========================================================= */
-
-.navbar-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    flex-shrink: 0;
-
-    gap: 12px;
-}
-
-.navbar-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 40px;
-
-    padding: 0 18px;
-
-    border-radius: 999px;
-
-    background: var(--mf-navy);
-    color: #fff;
-
-    font-size: 0.85rem;
-    font-weight: 500;
-
-    white-space: nowrap;
-
-    text-decoration: none;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.15);
-
-    transition:
-        background-color .15s ease,
-        transform .15s ease;
-}
-
-.navbar-cta:hover,
-.navbar-cta:focus {
-    background: #1e293b;
-
-    color: #fff;
-
-    transform: translateY(-1px);
-}
-
-
-/* =========================================================
-   MEGA MENU
-   Opens on click only (Bootstrap's own data-bs-toggle="dropdown" in
-   navbar.php, untouched) — no hover trigger.
-
-   .mega-menu is anchored to .site-header-inner (position:relative, set
-   in HEADER INNER above), not to the Services <li> itself — a shallow,
-   fixed-height container is a far more reliable positioning context
-   than a flex item nested inside .navbar-nav-wrap/.navbar-nav. The
-   .navbar-nav .nav-item.dropdown{position:static} rule (DESKTOP NAV
-   section) cancels Bootstrap's own .dropdown{position:relative} so it
-   can't compete as the containing block instead. One consequence: the
-   menu centers under the whole header, not precisely under "Services".
-
-   display is never set unconditionally on .mega-menu: Bootstrap's own
-   .dropdown-menu{display:none} / .dropdown-menu.show{display:block}
-   fully drives visibility — this block only adds the fade/scale
-   transition on top of that.
-   ========================================================= */
-
-.mega-menu {
-    position: absolute;
-
-    top: calc(100% + 12px);
-    left: 50%;
-
-    width: min(620px, calc(100vw - 32px));
-    min-width: 0;
-
-    margin-top: 0;
-    padding: 12px;
-
-    border: 1px solid var(--mf-border);
-    border-radius: 18px;
+/* ---------- Navbar shell ---------- */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
 
     background: #fff;
+    box-shadow: 0 2px 20px rgba(30, 58, 138, .08);
 
-    box-shadow:
-        0 1px 2px rgba(15, 23, 42, 0.04),
-        0 24px 48px -20px rgba(15, 23, 42, 0.22);
-
-    opacity: 0;
-
-    transform: translateX(-50%) translateY(-4px) scale(0.98);
-    transform-origin: top center;
-
-    pointer-events: none;
-
-    z-index: 1040;
-
-    transition:
-        opacity 0.15s ease,
-        transform 0.15s ease;
+    transition: var(--nav-transition);
 }
+.navbar.scrolled { box-shadow: 0 4px 30px rgba(30, 58, 138, .15); }
 
-/* Opens on click only (Bootstrap JS adds/removes .show on the toggle) —
-   no hover trigger. Bootstrap's own .dropdown-menu{display:none} /
-   .dropdown-menu.show{display:block} keeps driving display; this just
-   adds the fade/scale on top of it. */
-.mega-menu.show {
-    opacity: 1;
+.nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 24px;
 
-    transform: translateX(-50%) translateY(0) scale(1);
-
-    pointer-events: auto;
-}
-
-.mega-menu-columns {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-
-    gap: 0 8px;
-}
-
-.mega-menu-col {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
-}
-
-.mega-menu-col + .mega-menu-col {
-    border-left: 1px solid var(--mf-border-soft);
-
-    padding-left: 8px;
-}
-
-.mega-menu-col-title {
-    padding: 6px 10px 8px;
-
-    color: var(--mf-text-muted);
-
-    font-size: 0.72rem;
-    font-weight: 600;
-
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-.mega-menu-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    min-width: 0;
+    gap: 20px;
+}
+
+
+/* ---------- Logo ---------- */
+.logo {
+    display: flex;
+    align-items: center;
 
     gap: 10px;
 
-    padding: 8px 10px;
+    flex-shrink: 0;
+
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
 
     border-radius: 10px;
 
-    color: var(--mf-navy);
-
-    font-size: 0.88rem;
-    font-weight: 500;
-
-    text-decoration: none;
-
-    transition:
-        background-color 0.15s ease,
-        color 0.15s ease;
-}
-
-.mega-menu-item:hover {
-    background: var(--mf-accent-light);
-    color: var(--mf-accent);
-}
-
-.mega-menu-icon {
-    width: 34px;
-    height: 34px;
-
-    flex: 0 0 34px;
-
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 9px;
-
-    background: var(--mf-accent-light);
-    color: var(--mf-accent);
-
-    font-size: 0.85rem;
-
-    transition:
-        background-color 0.15s ease,
-        color 0.15s ease;
-}
-
-.mega-menu-item:hover .mega-menu-icon {
-    background: var(--mf-accent);
+    background: var(--nav-gradient);
     color: #fff;
-}
 
-.mega-menu-footer {
-    margin-top: 8px;
-    padding-top: 8px;
+    font-size: 1.1rem;
 
-    border-top: 1px solid var(--mf-border-soft);
-
-    text-align: right;
-}
-
-.mega-menu-footer a {
-    color: var(--mf-accent);
-
-    font-size: 0.82rem;
-    font-weight: 600;
-
-    text-decoration: none;
-}
-
-.mega-menu-footer a:hover {
-    text-decoration: underline;
-}
-
-
-/* =========================================================
-   MOBILE BUTTON
-   ========================================================= */
-
-.mobile-menu-button {
-    display: none;
-
-    width: 40px;
-    height: 40px;
-
-    flex: 0 0 40px;
-
+    display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0;
-
-    border: 1px solid var(--mf-border);
-    border-radius: 10px;
-
-    background: #fff;
-    color: var(--mf-navy);
-
-    cursor: pointer;
-
-    transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, .35);
 }
 
-.mobile-menu-button:hover {
-    background: var(--mf-border-soft);
-}
-
-.mobile-menu-button:focus-visible {
-    outline: 2px solid var(--mf-accent);
-    outline-offset: 2px;
-}
+.logo-name { font-size: 1.25rem; font-weight: 800; color: var(--nav-gray-900); }
+.logo-domain { color: var(--nav-blue-600); font-weight: 700; }
 
 
-/* =========================================================
-   MOBILE OFF-CANVAS PANEL
-   ========================================================= */
-
-.mobile-nav-panel {
-    width: min(360px, 88vw);
-    max-width: 100vw;
-
-    background: #fff;
-}
-
-.mobile-nav-panel .offcanvas-header {
-    padding: 16px 20px;
-
-    border-bottom: 1px solid var(--mf-border);
-}
-
-.mobile-nav-panel .offcanvas-body {
-    padding: 16px 20px;
-
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.mobile-nav-list {
+/* ---------- Nav menu — pill container ---------- */
+.nav-pill {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+
+    background: var(--nav-gray-50);
+    border: 1px solid var(--nav-gray-100);
+    border-radius: 50px;
+
+    padding: 5px;
+
+    min-width: 0;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
 
     gap: 2px;
 
@@ -681,156 +324,300 @@ body { overflow-x: clip; }
     padding: 0;
 
     list-style: none;
+
+    min-width: 0;
 }
 
-.mobile-nav-link {
+.nav-menu li { position: relative; flex-shrink: 0; }
+
+.nav-menu a {
+    padding: 9px 14px;
+    border-radius: 50px;
+
+    font-weight: 600;
+    font-size: .87rem;
+    color: var(--nav-gray-600);
+
     display: flex;
     align-items: center;
+    gap: 6px;
 
-    width: 100%;
-
-    min-height: 44px;
-
-    padding: 10px 12px;
-
-    border: 0;
-    border-radius: 10px;
+    white-space: nowrap;
+    text-decoration: none;
 
     background: transparent;
-    color: var(--mf-navy);
+    box-shadow: none;
+    transform: translateY(0);
 
-    font-size: 1rem;
+    transition:
+        transform .18s cubic-bezier(.4, 0, .2, 1),
+        box-shadow .18s ease,
+        background-color .18s ease,
+        color .18s ease;
+}
+
+.nav-menu a:hover {
+    color: var(--nav-blue-700);
+    background: #fff;
+    box-shadow: 0 3px 0 var(--nav-blue-100), 0 8px 16px rgba(30, 58, 138, .14);
+    transform: translateY(-3px);
+}
+
+.nav-menu a.active {
+    color: #fff;
+    background: var(--nav-gradient);
+    box-shadow: 0 3px 0 var(--nav-blue-800), 0 8px 18px rgba(37, 99, 235, .35);
+    transform: translateY(-3px);
+    font-weight: 700;
+}
+
+.nav-menu a:active { transform: translateY(0); box-shadow: none; }
+
+.nav-menu i { font-size: .65rem; transition: transform .25s; }
+.has-dropdown.open i { transform: rotate(180deg); }
+
+
+/* ---------- Dropdown ----------
+   Opens on .open (toggled by click in main.js), not :hover — the click
+   that opens it isn't tied to the cursor staying over a specific patch
+   of screen, so there's no "did the mouse cross the gap to the panel"
+   timing problem to manage. */
+.dropdown-menu {
+    position: absolute;
+
+    top: calc(100% + 14px);
+    left: 50%;
+
+    width: max-content;
+    min-width: 220px;
+    max-width: min(480px, calc(100vw - 32px));
+
+    background: #fff;
+    border: 1px solid var(--nav-gray-100);
+    border-radius: var(--nav-radius);
+    box-shadow: var(--nav-shadow-xl);
+
+    padding: 12px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateX(-50%) translateY(10px);
+
+    transition: var(--nav-transition);
+
+    z-index: 100;
+}
+
+.has-dropdown.open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-menu a {
+    padding: 10px 12px;
+    border-radius: var(--nav-radius-sm);
+
+    font-size: .85rem;
     font-weight: 500;
+    color: var(--nav-gray-700);
 
-    text-decoration: none;
-    text-align: left;
-
-    cursor: pointer;
-}
-
-.mobile-nav-link:hover {
-    background: var(--mf-border-soft);
-}
-
-.mobile-nav-link.active {
-    color: var(--mf-accent);
-    background: var(--mf-accent-light);
-    font-weight: 600;
-}
-
-.mobile-nav-expand i {
-    margin-left: auto;
-
-    color: var(--mf-text-muted);
-    font-size: 0.8rem;
-
-    transition: transform 0.2s ease;
-}
-
-.mobile-nav-expand[aria-expanded="true"] i {
-    transform: rotate(180deg);
-}
-
-.mobile-nav-sublist {
-    display: flex;
-    flex-direction: column;
-
-    gap: 2px;
-
-    margin: 2px 0 8px;
-    padding: 0 0 0 12px;
-
-    list-style: none;
-}
-
-.mobile-nav-sublist a {
     display: flex;
     align-items: center;
+    gap: 10px;
 
-    min-height: 40px;
+    transform: none;
+    box-shadow: none;
+    background: transparent;
+}
 
-    padding: 8px 12px;
+.dropdown-menu a i { color: var(--nav-blue-500); width: 16px; text-align: center; }
 
-    border-radius: 8px;
+.dropdown-menu a:hover {
+    background: var(--nav-blue-50);
+    color: var(--nav-blue-700);
+    transform: none;
+    box-shadow: none;
+}
 
-    color: var(--mf-text-muted);
 
-    font-size: 0.88rem;
-    font-weight: 500;
+/* ---------- CTA ---------- */
+.nav-cta {
+    background: var(--nav-gradient);
+    color: #fff;
 
+    padding: 11px 22px;
+    border-radius: 50px;
+
+    font-weight: 600;
+    font-size: .87rem;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    white-space: nowrap;
     text-decoration: none;
+    flex-shrink: 0;
+
+    box-shadow: 0 3px 0 var(--nav-blue-800), 0 8px 20px rgba(37, 99, 235, .35);
+
+    transform: translateY(0);
+
+    transition:
+        transform .18s cubic-bezier(.4, 0, .2, 1),
+        box-shadow .18s ease;
 }
 
-.mobile-nav-sublist a:hover {
-    background: var(--mf-border-soft);
-    color: var(--mf-navy);
+.nav-cta:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 0 var(--nav-blue-800), 0 12px 26px rgba(37, 99, 235, .45);
 }
+
+.nav-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 0 var(--nav-blue-800), 0 4px 10px rgba(37, 99, 235, .3);
+}
+
+
+/* ---------- Hamburger ---------- */
+.hamburger {
+    display: none;
+    flex-direction: column;
+
+    gap: 5px;
+    padding: 6px;
+
+    flex-shrink: 0;
+}
+
+.hamburger span {
+    width: 24px;
+    height: 2px;
+
+    background: var(--nav-gray-800);
+    border-radius: 2px;
+
+    display: block;
+
+    transition: var(--nav-transition);
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-overlay {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, .4);
+    backdrop-filter: blur(2px);
+
+    z-index: 997;
+}
+.mobile-overlay.show { display: block; }
 
 
 /* =========================================================
-   RESPONSIVE SWITCH
-   Below this, the grid/flex desktop nav (.navbar-nav-wrap, .navbar-cta)
-   hides and the off-canvas trigger (.mobile-menu-button) takes over.
-   1200px matches the "FIX: DESKTOP NAV MUST ALWAYS BE HORIZONTAL" band
-   further down this file, so the two breakpoints can't drift apart.
+   RESPONSIVE
    ========================================================= */
 
-@media (max-width: 1199.98px) {
-
-    .site-header,
-    .site-header-inner {
-        height: var(--header-height-mobile);
-    }
-
-    #main-content {
-        padding-top: var(--header-height-mobile);
-    }
-
-    #siteHeader .navbar-nav-wrap {
-        display: none;
-    }
-
-    .navbar-cta {
-        display: none;
-    }
-
-    .navbar-actions {
-        margin-left: auto;
-    }
-
-    .mobile-menu-button {
-        display: inline-flex;
-    }
+@media (max-width: 1400px) and (min-width: 1151px) {
+    .nav-menu a { padding: 9px 10px; font-size: .83rem; }
+    .nav-cta { padding: 10px 16px; font-size: .82rem; }
 }
 
-/* =========================================================
-   DESKTOP COMPRESSION BAND
-   Between the mobile switch above and the point where the nav has full
-   room, tighten padding/gap rather than letting 8 items + a dropdown run
-   at full size into a shrinking middle grid column — that mismatch (wrap
-   allowed to shrink, nav-items refusing to) is what overflowed onto the
-   logo and CTA in earlier drafts.
-   ========================================================= */
+@media (max-width: 1150px) {
 
-@media (min-width: 1200px) and (max-width: 1439.98px) {
+    .topbar { display: none; }
 
-    .site-header-inner {
-        column-gap: 16px;
+    .nav-pill { background: none; border: none; padding: 0; }
+
+    .nav-menu {
+        display: none;
+
+        position: fixed;
+        top: 0;
+        left: -100%;
+
+        width: 300px;
+        max-width: 86vw;
+        height: 100vh;
+
+        background: #fff;
+
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+
+        padding: 88px 24px 24px;
+
+        box-shadow: var(--nav-shadow-xl);
+        z-index: 998;
+
+        overflow-y: auto;
+
+        transition: left .35s cubic-bezier(.4, 0, .2, 1);
     }
+    .nav-menu.open { left: 0; display: flex; }
 
-    .site-header .nav-link {
-        padding: 0 7px;
-        font-size: 0.86rem;
-    }
+    .nav-menu li { width: 100%; }
 
-    .navbar-cta {
-        padding: 0 14px;
-        font-size: 0.8rem;
+    .nav-menu a {
+        width: 100%;
+        padding: 13px 4px;
+        border-radius: 0;
+        border-bottom: 1px solid var(--nav-gray-100);
+
+        font-size: 1rem;
+        color: var(--nav-gray-700);
+
+        transform: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
     }
+    .nav-menu a.active { color: var(--nav-blue-600); background: transparent !important; }
+
+    .dropdown-menu {
+        position: static;
+        left: auto;
+        transform: none;
+
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+
+        box-shadow: none;
+        border: none;
+
+        display: none;
+        grid-template-columns: 1fr;
+
+        width: 100%;
+        max-width: none;
+
+        margin: 4px 0 8px;
+        padding: 4px 0 4px 12px;
+
+        background: var(--nav-gray-50);
+    }
+    .has-dropdown.open .dropdown-menu { display: grid; }
+
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
 }
-
-/* The mega-menu is desktop-only (nav switches to the off-canvas mobile
-   panel below lg — see .mobile-nav-panel), so it needs no mobile variant. */
 
 /* ---------- Hero (inner-page page-header band) ---------- */
 .hero {
@@ -1436,47 +1223,4 @@ tr:focus-within .row-actions { opacity: 1; }
   .stat-panel, .quote-panel { padding: 1.75rem 1.5rem; }
   .service-panel { padding: 1.5rem; }
   .cta-section { padding: 2.5rem 1.5rem !important; }
-}
-/* =========================================================
-   FIX: DESKTOP NAV MUST ALWAYS BE HORIZONTAL
-   ========================================================= */
-
-@media (min-width: 1200px) {
-
-    #siteHeader .navbar-nav {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-
-        align-items: center !important;
-        justify-content: center !important;
-
-        width: max-content;
-        max-width: 100%;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        list-style: none;
-        gap: 2px;
-    }
-
-    #siteHeader .navbar-nav .nav-item {
-        display: block !important;
-        width: auto !important;
-
-        flex: 0 0 auto !important;
-    }
-
-    #siteHeader .navbar-nav .nav-link {
-        display: inline-flex !important;
-
-        width: auto !important;
-
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: center !important;
-
-        white-space: nowrap !important;
-    }
 }
