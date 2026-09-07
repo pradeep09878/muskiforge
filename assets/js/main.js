@@ -118,19 +118,22 @@
 
   /* Bootstrap's Offcanvas plugin doesn't manage aria-expanded / a visual
      state on external toggle buttons the way Collapse does, so the
-     hamburger-to-X morph (.is-open, see style.css) is driven here from
-     the offcanvas's own show/hide lifecycle events. */
+     bars-to-close icon swap is driven here from the offcanvas's own
+     show/hide lifecycle events. */
   function initMobileNavToggle() {
     var panel = document.getElementById('mobileNav');
-    var toggler = document.querySelector('.navbar-toggler-3d');
-    if (!panel || !toggler) return;
+    var toggler = document.querySelector('.mobile-menu-button');
+    var icon = toggler ? toggler.querySelector('i') : null;
+    if (!panel || !toggler || !icon) return;
 
     panel.addEventListener('show.bs.offcanvas', function () {
-      toggler.classList.add('is-open');
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-xmark');
       toggler.setAttribute('aria-expanded', 'true');
     });
     panel.addEventListener('hide.bs.offcanvas', function () {
-      toggler.classList.remove('is-open');
+      icon.classList.remove('fa-xmark');
+      icon.classList.add('fa-bars');
       toggler.setAttribute('aria-expanded', 'false');
     });
   }

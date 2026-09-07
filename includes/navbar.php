@@ -1,12 +1,12 @@
 <header class="site-header" id="siteHeader">
-  <div class="site-header-inner container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="<?= e(url('index.php')) ?>">
+  <div class="site-header-inner">
+    <a class="navbar-brand" href="<?= e(url('index.php')) ?>">
       <span class="navbar-mark"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span>
       <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
     </a>
 
-    <nav class="navbar-nav-wrap mf-desktop-only align-items-center" aria-label="Primary">
-      <ul class="navbar-nav d-flex flex-row align-items-center list-unstyled mb-0">
+    <nav class="navbar-nav-wrap" aria-label="Primary">
+      <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link<?= nav_active('index.php') ?>" href="<?= e(url('index.php')) ?>">Home</a></li>
         <li class="nav-item"><a class="nav-link<?= nav_active('about.php') ?>" href="<?= e(url('about.php')) ?>">About Us</a></li>
         <li class="nav-item dropdown">
@@ -55,12 +55,10 @@
       </ul>
     </nav>
 
-    <div class="navbar-actions d-flex align-items-center gap-3">
-      <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent rounded-pill px-4 py-2 mf-desktop-only-inline align-items-center">Get a Free Consultation</a>
-      <button class="navbar-toggler-3d mf-mobile-only" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-3d-bar"></span>
-        <span class="navbar-toggler-3d-bar"></span>
-        <span class="navbar-toggler-3d-bar"></span>
+    <div class="navbar-actions">
+      <a href="<?= e(url('contact.php')) ?>" class="navbar-cta">Get a Free Consultation</a>
+      <button class="mobile-menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
     </div>
   </div>

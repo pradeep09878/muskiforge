@@ -3,13 +3,6 @@
    Loaded after Bootstrap 5 + Font Awesome; only overrides/extends them.
    ========================================================================== */
 
-/* ==========================================================================
-   "Kinetic Obsidian" design system — pearl canvas, obsidian ink, a single
-   surgical cobalt accent. Swiss-modernist restraint: hairline borders and
-   ambient low-contrast shadows instead of glows, gradients, or heavy 3D
-   embossing. Every component below reads these tokens, so this block is
-   the whole palette/type system in one place.
-   ========================================================================== */
 :root {
   --mf-accent: #2563eb;
   --mf-accent-dark: #1d4ed8;
@@ -143,10 +136,14 @@ body { overflow-x: clip; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Navbar — plain 3-item flex row (logo | links | actions),
-   justify-content:space-between, no auto-margins or nested wrappers.
-   This is the same structure Bootstrap's own .navbar uses internally —
-   about as standard and well-tested as a layout pattern gets. ---------- */
+/* ---------- Navbar ----------
+   Fixed-pixel outer columns (not auto) so the logo and CTA can never
+   grow to claim space from the nav — the middle minmax(0,1fr) column
+   gets exactly the leftover width, nothing left for the browser to
+   resolve ambiguously. This is what actually stops the nav from
+   overflowing onto its neighbors, unlike the flex/auto-grid attempts
+   before it. No Bootstrap display/flex utility classes are used in the
+   header markup at all, so there's no !important fight to manage. */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -159,63 +156,15 @@ body { overflow-x: clip; }
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow: 0 1px 8px rgba(0, 0, 0, .04);
 }
-/* Wider than Bootstrap's default .container max-width — with 8 top-level
-   items plus a CTA, the standard container needs real room. */
 .site-header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1400px;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  max-width: 1440px;
+  height: 100%;
   margin: 0 auto;
-}
-.navbar-actions { flex-shrink: 0; }
-.navbar-actions .btn { white-space: nowrap; flex-shrink: 0; }
-
-/* Desktop nav visibility is driven by these two custom classes rather
-   than Bootstrap's d-xxl-*/d-none utilities. Bootstrap's xxl breakpoint
-   is fixed at 1400px in the CDN build (can't be tuned without a local
-   Sass rebuild), which left no margin for the 8 nav items + CTA to
-   actually fit — the middle grid column would shrink narrower than the
-   nav's real width and the overflow spilled, centered, onto the logo
-   and CTA. 1560px gives real headroom above the ~1050px the nav content
-   needs, and the two rules stay in one place so the visibility
-   breakpoint and the layout breakpoint below can never drift apart. */
-/* !important here is deliberate: these are visibility-toggle utility
-   classes (same job as Bootstrap's d-*), and .navbar-toggler-3d/.btn
-   below declare their own unconditional `display`. Without !important,
-   plain source order would decide the fight, which is exactly the class
-   of bug that caused this whole saga — this makes the toggle win
-   unconditionally, regardless of where component rules land in the file. */
-.mf-desktop-only { display: none !important; }
-.mf-desktop-only-inline { display: none !important; }
-.mf-mobile-only { display: flex !important; }
-@media (min-width: 1560px) {
-  .mf-desktop-only { display: flex !important; }
-  .mf-desktop-only-inline { display: inline-flex !important; }
-  .mf-mobile-only { display: none !important; }
-}
-
-@media (min-width: 1560px) {
-  .site-header-inner {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 1.5rem;
-  }
-  .navbar-nav-wrap {
-    justify-content: center;
-    min-width: 0;
-    /* Safety net: if this column is ever squeezed narrower than the nav's
-       natural width (unusual OS/browser zoom, edge-case DPI), the nav
-       clips inside its own track instead of overflowing onto the logo
-       or CTA. Clipped nav items are a lesser failure than overlapping
-       text and should never happen at this breakpoint's width anyway. */
-    overflow: hidden;
-  }
-  .navbar-nav { justify-content: center; }
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 210px;
+  align-items: center;
+  column-gap: 1.25rem;
 }
 
 /* Fixed nav is out of flow, so every page needs top clearance. Scoped to
@@ -224,6 +173,13 @@ body { overflow-x: clip; }
    <main class="container-fluid ..."> with no fixed header to clear. */
 #main-content { padding-top: 80px; }
 
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
 .navbar-mark {
   width: 32px; height: 32px;
   border-radius: 8px;
@@ -231,51 +187,110 @@ body { overflow-x: clip; }
   background: var(--mf-navy);
   color: #fff;
   font-size: .85rem;
+  flex-shrink: 0;
 }
 .navbar-wordmark { font-weight: 600; font-size: 1.05rem; color: var(--mf-navy); letter-spacing: -.01em; }
 .navbar-wordmark-accent { color: var(--mf-accent); }
 
-.navbar-nav .nav-item { list-style: none; flex-shrink: 0; }
-.navbar-nav { gap: .5rem; }
+.navbar-nav-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  /* Safety net: if this column is ever squeezed narrower than the nav's
+     natural width, the nav clips inside its own track instead of
+     overflowing onto the logo or CTA. */
+  /*overflow: hidden; */
+}
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+}
+.navbar-nav .nav-item { position: relative; flex-shrink: 0; }
 
 .site-header .nav-link {
+  display: flex;
+  align-items: center;
+  padding: .5rem .55rem;
   font-weight: 500;
   font-size: .93rem;
   color: var(--mf-text-muted);
-  padding: .5rem .55rem;
   white-space: nowrap;
   transition: color .15s ease;
 }
 .site-header .nav-link:hover,
 .site-header .nav-link.active { color: var(--mf-navy); }
 .site-header .nav-link.active { font-weight: 600; }
+.site-header .dropdown-toggle::after { margin-left: 6px; }
 
-/* Custom hamburger — three bars that morph into an X (.is-open, toggled
-   in main.js from the offcanvas show/hide events, since Bootstrap's
-   Offcanvas plugin doesn't drive aria-expanded on external triggers). */
-.navbar-toggler-3d {
+.navbar-actions {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+}
+
+.navbar-cta {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  padding: .55rem 1.1rem;
+  border-radius: 999px;
+  background: var(--mf-navy);
+  color: #fff;
+  font-weight: 500;
+  font-size: .85rem;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .16);
+  transition: transform .15s cubic-bezier(.16,.8,.3,1), background-color .15s ease;
+}
+.navbar-cta:hover,
+.navbar-cta:focus {
+  background: #1e293b;
+  color: #fff;
+  transform: scale(1.01);
+}
+
+.mobile-menu-button {
+  display: none;
   width: 40px; height: 40px;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--mf-border);
-  background: #fff;
   border-radius: 10px;
-  padding: 0;
+  background: #fff;
+  color: var(--mf-navy);
   flex-shrink: 0;
 }
-.navbar-toggler-3d-bar {
-  display: block;
-  width: 18px; height: 2px;
-  background: var(--mf-navy);
-  border-radius: 2px;
-  transition: transform .3s ease, opacity .2s ease;
+
+/* Compress padding/type before dropping to the mobile layout, so the
+   single-row desktop nav holds as long as there's genuinely room. */
+@media (max-width: 1350px) {
+  .site-header-inner { grid-template-columns: 175px minmax(0, 1fr) 180px; column-gap: .75rem; }
+  .site-header .nav-link { padding-left: .4rem; padding-right: .4rem; font-size: .85rem; }
+  .navbar-cta { padding-left: .85rem; padding-right: .85rem; font-size: .78rem; }
 }
-.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(2) { opacity: 0; }
-.navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 1199px) {
+  .site-header { height: 72px; }
+  #main-content { padding-top: 72px; }
+  .site-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .navbar-nav-wrap { display: none; }
+  .navbar-cta { display: none; }
+  .navbar-actions { margin-left: auto; }
+  .mobile-menu-button { display: flex; }
+}
 
 /* Mobile off-canvas nav panel */
 .mobile-nav-panel {
