@@ -143,106 +143,75 @@ body { overflow-x: clip; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-/* ---------- Navbar — floating dark 3D deck (embossed edges, layered
-   shadow) over the light page. The toggler is deliberately taken out of
-   flex flow entirely (position:absolute, see below) and pinned to the
-   right with plain coordinates — no justify-content/auto-margin
-   combination for it to fight, so its position can't drift regardless
-   of flex context. ---------- */
+/* ---------- Navbar — plain 3-item flex row (logo | links | actions),
+   justify-content:space-between, no auto-margins or nested wrappers.
+   This is the same structure Bootstrap's own .navbar uses internally —
+   about as standard and well-tested as a layout pattern gets. ---------- */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1030;
-  padding: .85rem 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  background: rgba(251, 251, 252, .82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, .04);
 }
+.site-header-inner { width: 100%; }
 
 /* Fixed nav is out of flow, so every page needs top clearance. Scoped to
    #main-content (every public page) rather than the bare "main" tag —
    the admin section shares this stylesheet and has its own
    <main class="container-fluid ..."> with no fixed header to clear. */
-#main-content { padding-top: 96px; }
+#main-content { padding-top: 80px; }
 
-.navbar-3d-panel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 60px;
-  background: linear-gradient(180deg, #182449 0%, #0b1226 100%);
-  border-radius: 18px;
-  padding: .7rem 1.25rem;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, .09),
-    0 20px 40px -18px rgba(4, 8, 22, .65),
-    0 3px 0 var(--mf-accent-dark);
-}
-.navbar-3d-panel::before {
-  content: "";
-  position: absolute;
-  top: 0; left: 8%; right: 8%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35), transparent);
-  pointer-events: none;
-}
-
-.navbar-brand { position: relative; z-index: 1; }
 .navbar-mark {
-  width: 36px; height: 36px;
-  border-radius: 10px;
+  width: 32px; height: 32px;
+  border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, var(--mf-accent) 0%, var(--mf-accent-dark) 100%);
+  background: var(--mf-navy);
   color: #fff;
-  font-size: .95rem;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .35), 0 6px 14px -6px rgba(37, 99, 235, .6);
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  font-size: .85rem;
 }
-.navbar-brand:hover .navbar-mark { transform: perspective(300px) rotateY(18deg) scale(1.05); }
-.navbar-wordmark { font-weight: 700; font-size: 1.05rem; color: #fff; letter-spacing: -.01em; }
-.navbar-wordmark-accent { color: var(--mf-accent-2); }
+.navbar-wordmark { font-weight: 600; font-size: 1.05rem; color: var(--mf-navy); letter-spacing: -.01em; }
+.navbar-wordmark-accent { color: var(--mf-accent); }
 
-.navbar-nav-wrap { display: flex; position: relative; z-index: 1; }
+.navbar-nav .nav-item { list-style: none; }
+.navbar-nav { gap: 2rem; }
 
 .site-header .nav-link {
-  position: relative;
   font-weight: 500;
   font-size: .93rem;
-  color: rgba(255, 255, 255, .68);
-  padding: .5rem .85rem;
-  border-radius: 8px;
-  transition: color .15s ease, background-color .15s ease;
+  color: var(--mf-text-muted);
+  padding: 0;
+  transition: color .15s ease;
 }
 .site-header .nav-link:hover,
-.site-header .nav-link.active { color: #fff; background: rgba(255, 255, 255, .08); }
+.site-header .nav-link.active { color: var(--mf-navy); }
 .site-header .nav-link.active { font-weight: 600; }
-
-.btn-accent.d-xl-inline-flex {
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, .16), 0 10px 22px -10px rgba(37, 99, 235, .55);
-}
 
 /* Custom hamburger — three bars that morph into an X (.is-open, toggled
    in main.js from the offcanvas show/hide events, since Bootstrap's
-   Offcanvas plugin doesn't drive aria-expanded on external triggers).
-   Positioned absolutely within the panel: right: <padding>, vertically
-   centered — independent of the flex order/spacing of its siblings. */
+   Offcanvas plugin doesn't drive aria-expanded on external triggers). */
 .navbar-toggler-3d {
-  position: absolute;
-  top: 50%;
-  right: 1.25rem;
-  transform: translateY(-50%);
-  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
   width: 40px; height: 40px;
-  border: 1px solid rgba(255, 255, 255, .16);
-  background: rgba(255, 255, 255, .06);
+  border: 1px solid var(--mf-border);
+  background: #fff;
   border-radius: 10px;
   padding: 0;
+  flex-shrink: 0;
 }
 .navbar-toggler-3d-bar {
   display: block;
   width: 18px; height: 2px;
-  background: #fff;
+  background: var(--mf-navy);
   border-radius: 2px;
   transition: transform .3s ease, opacity .2s ease;
 }
@@ -250,17 +219,15 @@ body { overflow-x: clip; }
 .navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(2) { opacity: 0; }
 .navbar-toggler-3d.is-open .navbar-toggler-3d-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile off-canvas nav panel — dark, matching the 3D deck */
+/* Mobile off-canvas nav panel */
 .mobile-nav-panel {
   width: min(340px, 86vw);
-  background: linear-gradient(180deg, #182449 0%, #0b1226 100%);
-  color: #fff;
+  background: #fff;
 }
 .mobile-nav-panel .offcanvas-header {
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid var(--mf-border);
   padding: 1.1rem 1.25rem;
 }
-.mobile-nav-panel .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
 .mobile-nav-list { display: flex; flex-direction: column; gap: .15rem; }
 .mobile-nav-link {
   display: flex;
@@ -268,7 +235,7 @@ body { overflow-x: clip; }
   width: 100%;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, .85);
+  color: var(--mf-navy);
   font-weight: 500;
   font-size: 1rem;
   padding: .8rem .6rem;
@@ -277,8 +244,8 @@ body { overflow-x: clip; }
   transition: background-color .18s ease, color .18s ease;
 }
 .mobile-nav-link:hover,
-.mobile-nav-link.active { background: rgba(255, 255, 255, .1); color: #fff; }
-.mobile-nav-expand i { margin-left: auto; transition: transform .25s ease; font-size: .8rem; color: rgba(255, 255, 255, .6); }
+.mobile-nav-link.active { background: var(--mf-border-soft); color: var(--mf-navy); }
+.mobile-nav-expand i { margin-left: auto; transition: transform .25s ease; font-size: .8rem; color: var(--mf-text-muted); }
 .mobile-nav-expand[aria-expanded="true"] i { transform: rotate(180deg); }
 .mobile-nav-sublist {
   display: flex;
@@ -292,13 +259,13 @@ body { overflow-x: clip; }
   align-items: center;
   padding: .6rem .75rem;
   border-radius: 8px;
-  color: rgba(255, 255, 255, .65);
+  color: var(--mf-text-muted);
   font-size: .88rem;
   font-weight: 500;
   text-decoration: none;
   transition: background-color .15s ease, color .15s ease;
 }
-.mobile-nav-sublist a:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+.mobile-nav-sublist a:hover { background: var(--mf-border-soft); color: var(--mf-navy); }
 
 /* Services menu — a flat card with a hairline border and the system's
    ambient double-layer shadow, not a heavy embossed popover.

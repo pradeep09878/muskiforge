@@ -1,23 +1,12 @@
 <header class="site-header" id="siteHeader">
-<nav class="navbar navbar-expand-xl navbar-dark py-0">
-  <div class="container">
-  <div class="navbar-3d-panel">
-    <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="<?= e(url('index.php')) ?>">
+  <div class="site-header-inner container d-flex align-items-center justify-content-between">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="<?= e(url('index.php')) ?>">
       <span class="navbar-mark"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span>
       <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
     </a>
 
-    <!-- Positioned via CSS (position:absolute, right-pinned) — not part of
-         the flex flow, so its placement can't be affected by the flex
-         order/spacing of the elements around it. -->
-    <button class="navbar-toggler-3d d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-3d-bar"></span>
-      <span class="navbar-toggler-3d-bar"></span>
-      <span class="navbar-toggler-3d-bar"></span>
-    </button>
-
-    <div class="navbar-nav-wrap d-none d-xl-flex align-items-center mx-auto">
-      <ul class="navbar-nav align-items-xl-center gap-xl-2">
+    <nav class="navbar-nav-wrap d-none d-xl-flex align-items-center" aria-label="Primary">
+      <ul class="navbar-nav d-flex flex-row align-items-center list-unstyled mb-0">
         <li class="nav-item"><a class="nav-link<?= nav_active('index.php') ?>" href="<?= e(url('index.php')) ?>">Home</a></li>
         <li class="nav-item"><a class="nav-link<?= nav_active('about.php') ?>" href="<?= e(url('about.php')) ?>">About Us</a></li>
         <li class="nav-item dropdown">
@@ -64,12 +53,17 @@
         <li class="nav-item"><a class="nav-link<?= nav_active('blog.php') ?>" href="<?= e(url('blog.php')) ?>">Blog</a></li>
         <li class="nav-item"><a class="nav-link<?= nav_active('contact.php') ?>" href="<?= e(url('contact.php')) ?>">Contact Us</a></li>
       </ul>
-    </div>
+    </nav>
 
-    <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent rounded-pill px-4 py-2 d-none d-xl-inline-flex align-items-center">Get a Free Consultation</a>
+    <div class="navbar-actions d-flex align-items-center gap-3">
+      <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent rounded-pill px-4 py-2 d-none d-xl-inline-flex align-items-center">Get a Free Consultation</a>
+      <button class="navbar-toggler-3d d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-3d-bar"></span>
+        <span class="navbar-toggler-3d-bar"></span>
+        <span class="navbar-toggler-3d-bar"></span>
+      </button>
+    </div>
   </div>
-  </div>
-</nav>
 </header>
 
 <!-- Mobile off-canvas nav panel -->
