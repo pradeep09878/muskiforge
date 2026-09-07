@@ -1,18 +1,18 @@
 <header class="site-header" id="siteHeader">
 <nav class="navbar navbar-expand-xl navbar-light py-0">
-  <div class="container d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between">
     <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="<?= e(url('index.php')) ?>">
       <span class="navbar-mark"><i class="fa-solid fa-bolt" aria-hidden="true"></i></span>
       <span class="navbar-wordmark">Muski<span class="navbar-wordmark-accent">forge</span></span>
     </a>
 
-    <button class="navbar-toggler-3d d-xl-none ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler-3d d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-3d-bar"></span>
       <span class="navbar-toggler-3d-bar"></span>
       <span class="navbar-toggler-3d-bar"></span>
     </button>
 
-    <div class="navbar-nav-wrap d-none d-xl-flex align-items-center ms-auto">
+    <div class="navbar-nav-wrap d-none d-xl-flex align-items-center mx-auto">
       <ul class="navbar-nav align-items-xl-center gap-xl-2">
         <li class="nav-item"><a class="nav-link<?= nav_active('index.php') ?>" href="<?= e(url('index.php')) ?>">Home</a></li>
         <li class="nav-item"><a class="nav-link<?= nav_active('about.php') ?>" href="<?= e(url('about.php')) ?>">About Us</a></li>
@@ -60,8 +60,9 @@
         <li class="nav-item"><a class="nav-link<?= nav_active('blog.php') ?>" href="<?= e(url('blog.php')) ?>">Blog</a></li>
         <li class="nav-item"><a class="nav-link<?= nav_active('contact.php') ?>" href="<?= e(url('contact.php')) ?>">Contact Us</a></li>
       </ul>
-      <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent rounded-pill px-4 py-2 ms-3 d-inline-flex align-items-center">Get a Free Consultation</a>
     </div>
+
+    <a href="<?= e(url('contact.php')) ?>" class="btn btn-accent rounded-pill px-4 py-2 d-none d-xl-inline-flex align-items-center">Get a Free Consultation</a>
   </div>
 </nav>
 </header>
