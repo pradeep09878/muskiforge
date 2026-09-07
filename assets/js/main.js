@@ -138,10 +138,35 @@
     });
   }
 
+  /* The header sits borderless over the hero and picks up its hairline
+     border + shadow once you scroll away from the top (.is-scrolled, see
+     style.css). rAF-throttled so the scroll handler never does layout
+     work more than once a frame. */
+  function initHeaderScroll() {
+    var header = document.getElementById('siteHeader');
+    if (!header) return;
+
+    var ticking = false;
+
+    function apply() {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(apply);
+    }, { passive: true });
+
+    apply();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     initAjaxForms();
     initScrollReveal();
     initPortfolioFilter();
+    initHeaderScroll();
     initMobileNavToggle();
   });
 })();
