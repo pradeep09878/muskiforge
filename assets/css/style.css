@@ -412,7 +412,437 @@ body { overflow-x: clip; }
 /* =========================================================
    MOBILE BUTTON
    ========================================================= */
+/* =========================================================
+   MOBILE SERVICES MEGA MENU
+   ========================================================= */
 
+@media (max-width: 1199px) {
+
+    /* Mobile offcanvas */
+    .mobile-nav-panel {
+        width: min(380px, 92vw) !important;
+        max-width: 100vw;
+
+        background: #fff;
+
+        border: 0;
+    }
+
+    /* Header */
+    .mobile-nav-panel .offcanvas-header {
+        min-height: 64px;
+
+        padding: 14px 20px;
+
+        border-bottom: 1px solid var(--mf-border);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Body */
+    .mobile-nav-panel .offcanvas-body {
+        padding: 14px 16px 24px;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+
+    /* =====================================================
+       MOBILE NAV LIST
+       ===================================================== */
+
+    .mobile-nav-list {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+
+        gap: 4px;
+
+        margin: 0;
+        padding: 0;
+
+        list-style: none;
+    }
+
+
+    /* =====================================================
+       NORMAL MOBILE MENU ITEM
+       ===================================================== */
+
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        min-height: 46px;
+
+        padding: 11px 12px;
+
+        border: 0;
+        border-radius: 10px;
+
+        background: transparent;
+
+        color: var(--mf-navy);
+
+        font-size: 0.98rem;
+        font-weight: 500;
+
+        line-height: 1.3;
+
+        text-decoration: none;
+
+        text-align: left;
+
+        cursor: pointer;
+
+        transition:
+            background-color .15s ease,
+            color .15s ease;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+        background: var(--mf-border-soft);
+        color: var(--mf-navy);
+    }
+
+
+    /* =====================================================
+       SERVICES EXPAND BUTTON
+       ===================================================== */
+
+    .mobile-nav-expand {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+
+        min-height: 48px;
+
+        padding: 11px 12px;
+
+        border: 0;
+        border-radius: 10px;
+
+        background: transparent;
+
+        color: var(--mf-navy);
+
+        font-size: 0.98rem;
+        font-weight: 500;
+
+        text-align: left;
+
+        cursor: pointer;
+    }
+
+    .mobile-nav-expand:hover {
+        background: var(--mf-border-soft);
+    }
+
+    .mobile-nav-expand i {
+        margin-left: auto;
+
+        font-size: 0.75rem;
+
+        color: var(--mf-text-muted);
+
+        transition: transform .2s ease;
+    }
+
+    .mobile-nav-expand[aria-expanded="true"] {
+        background: var(--mf-border-soft);
+
+        font-weight: 600;
+    }
+
+    .mobile-nav-expand[aria-expanded="true"] i {
+        transform: rotate(180deg);
+    }
+
+
+    /* =====================================================
+       SERVICES MEGA MENU / ACCORDION
+       ===================================================== */
+
+    .mobile-mega-menu,
+    .mobile-nav-sublist {
+        width: 100%;
+
+        margin: 4px 0 8px;
+        padding: 8px;
+
+        background: #f8fafc;
+
+        border: 1px solid var(--mf-border-soft);
+        border-radius: 12px;
+    }
+
+
+    /* =====================================================
+       SERVICES CATEGORY
+       ===================================================== */
+
+    .mobile-mega-category {
+        width: 100%;
+
+        padding: 8px 8px 5px;
+
+        color: var(--mf-text-muted);
+
+        font-size: 0.70rem;
+        font-weight: 700;
+
+        line-height: 1.2;
+
+        letter-spacing: .06em;
+
+        text-transform: uppercase;
+    }
+
+
+    /* =====================================================
+       SERVICE ITEM
+       ===================================================== */
+
+    .mobile-mega-item {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+
+        min-height: 48px;
+
+        gap: 11px;
+
+        padding: 7px 8px;
+
+        border-radius: 9px;
+
+        color: var(--mf-navy);
+
+        font-size: 0.9rem;
+        font-weight: 500;
+
+        line-height: 1.25;
+
+        text-decoration: none;
+
+        transition: background-color .15s ease;
+    }
+
+    .mobile-mega-item:hover,
+    .mobile-mega-item:active {
+        background: #fff;
+    }
+
+
+    /* =====================================================
+       SERVICE ICON
+       ===================================================== */
+
+    .mobile-mega-icon {
+        width: 34px;
+        height: 34px;
+
+        flex: 0 0 34px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+
+        background: var(--mf-accent-light);
+        color: var(--mf-accent);
+
+        font-size: 0.82rem;
+    }
+
+    .mobile-mega-item:hover .mobile-mega-icon {
+        background: var(--mf-navy);
+        color: #fff;
+    }
+
+
+    /* =====================================================
+       SERVICE ITEM TEXT
+       ===================================================== */
+
+    .mobile-mega-item-content {
+        min-width: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 2px;
+    }
+
+    .mobile-mega-item-title {
+        color: var(--mf-navy);
+
+        font-size: 0.9rem;
+        font-weight: 600;
+
+        line-height: 1.25;
+    }
+
+    .mobile-mega-item-description {
+        color: var(--mf-text-muted);
+
+        font-size: 0.76rem;
+        font-weight: 400;
+
+        line-height: 1.3;
+    }
+
+
+    /* =====================================================
+       OLD SUBLIST COMPATIBILITY
+       ===================================================== */
+
+    .mobile-nav-sublist {
+        display: flex;
+        flex-direction: column;
+
+        gap: 2px;
+
+        padding-left: 8px;
+    }
+
+    .mobile-nav-sublist a {
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+
+        min-height: 42px;
+
+        padding: 9px 10px;
+
+        border-radius: 8px;
+
+        color: var(--mf-text-muted);
+
+        font-size: 0.88rem;
+        font-weight: 500;
+
+        text-decoration: none;
+    }
+
+    .mobile-nav-sublist a:hover {
+        background: #fff;
+
+        color: var(--mf-navy);
+    }
+
+
+    /* =====================================================
+       MOBILE MENU DIVIDER
+       ===================================================== */
+
+    .mobile-nav-divider {
+        width: 100%;
+
+        height: 1px;
+
+        margin: 8px 0;
+
+        background: var(--mf-border-soft);
+    }
+
+
+    /* =====================================================
+       MOBILE CTA
+       ===================================================== */
+
+    .mobile-nav-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+
+        min-height: 46px;
+
+        margin-top: 12px;
+
+        padding: 11px 18px;
+
+        border-radius: 999px;
+
+        background: var(--mf-navy);
+        color: #fff;
+
+        font-size: 0.9rem;
+        font-weight: 600;
+
+        text-decoration: none;
+    }
+
+    .mobile-nav-cta:hover {
+        background: #1e293b;
+        color: #fff;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575px) {
+
+    .mobile-nav-panel {
+        width: 92vw !important;
+    }
+
+    .mobile-nav-panel .offcanvas-header {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .mobile-nav-panel .offcanvas-body {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .mobile-nav-link,
+    .mobile-nav-expand {
+        font-size: 0.95rem;
+    }
+
+    .mobile-mega-item {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .mobile-nav-panel {
+        width: 95vw !important;
+    }
+
+    .mobile-mega-item-description {
+        display: none;
+    }
+
+    .mobile-mega-item {
+        min-height: 44px;
+    }
+}
+}
 
 /* The mega-menu is desktop-only (nav switches to the off-canvas mobile
    panel below lg — see .mobile-nav-panel), so it needs no mobile variant. */
