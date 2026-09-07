@@ -412,436 +412,223 @@ body { overflow-x: clip; }
 /* =========================================================
    MOBILE BUTTON
    ========================================================= */
-/* =========================================================
-   MOBILE SERVICES MEGA MENU
-   ========================================================= */
 
-@media (max-width: 1199px) {
+.mobile-menu-button {
+    display: none;
 
-    /* Mobile offcanvas */
-    .mobile-nav-panel {
-        width: min(380px, 92vw) !important;
-        max-width: 100vw;
+    width: 40px;
+    height: 40px;
 
-        background: #fff;
+    flex: 0 0 40px;
 
-        border: 0;
-    }
+    align-items: center;
+    justify-content: center;
 
-    /* Header */
-    .mobile-nav-panel .offcanvas-header {
-        min-height: 64px;
+    padding: 0;
 
-        padding: 14px 20px;
+    border: 1px solid var(--mf-border);
+    border-radius: 10px;
 
-        border-bottom: 1px solid var(--mf-border);
+    background: #fff;
+    color: var(--mf-navy);
 
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    cursor: pointer;
 
-    /* Body */
-    .mobile-nav-panel .offcanvas-body {
-        padding: 14px 16px 24px;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
 
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
+.mobile-menu-button:hover {
+    background: var(--mf-border-soft);
+}
 
-
-    /* =====================================================
-       MOBILE NAV LIST
-       ===================================================== */
-
-    .mobile-nav-list {
-        display: flex;
-        flex-direction: column;
-
-        width: 100%;
-
-        gap: 4px;
-
-        margin: 0;
-        padding: 0;
-
-        list-style: none;
-    }
-
-
-    /* =====================================================
-       NORMAL MOBILE MENU ITEM
-       ===================================================== */
-
-    .mobile-nav-link {
-        display: flex;
-        align-items: center;
-
-        width: 100%;
-        min-height: 46px;
-
-        padding: 11px 12px;
-
-        border: 0;
-        border-radius: 10px;
-
-        background: transparent;
-
-        color: var(--mf-navy);
-
-        font-size: 0.98rem;
-        font-weight: 500;
-
-        line-height: 1.3;
-
-        text-decoration: none;
-
-        text-align: left;
-
-        cursor: pointer;
-
-        transition:
-            background-color .15s ease,
-            color .15s ease;
-    }
-
-    .mobile-nav-link:hover,
-    .mobile-nav-link.active {
-        background: var(--mf-border-soft);
-        color: var(--mf-navy);
-    }
-
-
-    /* =====================================================
-       SERVICES EXPAND BUTTON
-       ===================================================== */
-
-    .mobile-nav-expand {
-        display: flex;
-        align-items: center;
-
-        width: 100%;
-
-        min-height: 48px;
-
-        padding: 11px 12px;
-
-        border: 0;
-        border-radius: 10px;
-
-        background: transparent;
-
-        color: var(--mf-navy);
-
-        font-size: 0.98rem;
-        font-weight: 500;
-
-        text-align: left;
-
-        cursor: pointer;
-    }
-
-    .mobile-nav-expand:hover {
-        background: var(--mf-border-soft);
-    }
-
-    .mobile-nav-expand i {
-        margin-left: auto;
-
-        font-size: 0.75rem;
-
-        color: var(--mf-text-muted);
-
-        transition: transform .2s ease;
-    }
-
-    .mobile-nav-expand[aria-expanded="true"] {
-        background: var(--mf-border-soft);
-
-        font-weight: 600;
-    }
-
-    .mobile-nav-expand[aria-expanded="true"] i {
-        transform: rotate(180deg);
-    }
-
-
-    /* =====================================================
-       SERVICES MEGA MENU / ACCORDION
-       ===================================================== */
-
-    .mobile-mega-menu,
-    .mobile-nav-sublist {
-        width: 100%;
-
-        margin: 4px 0 8px;
-        padding: 8px;
-
-        background: #f8fafc;
-
-        border: 1px solid var(--mf-border-soft);
-        border-radius: 12px;
-    }
-
-
-    /* =====================================================
-       SERVICES CATEGORY
-       ===================================================== */
-
-    .mobile-mega-category {
-        width: 100%;
-
-        padding: 8px 8px 5px;
-
-        color: var(--mf-text-muted);
-
-        font-size: 0.70rem;
-        font-weight: 700;
-
-        line-height: 1.2;
-
-        letter-spacing: .06em;
-
-        text-transform: uppercase;
-    }
-
-
-    /* =====================================================
-       SERVICE ITEM
-       ===================================================== */
-
-    .mobile-mega-item {
-        display: flex;
-        align-items: center;
-
-        width: 100%;
-
-        min-height: 48px;
-
-        gap: 11px;
-
-        padding: 7px 8px;
-
-        border-radius: 9px;
-
-        color: var(--mf-navy);
-
-        font-size: 0.9rem;
-        font-weight: 500;
-
-        line-height: 1.25;
-
-        text-decoration: none;
-
-        transition: background-color .15s ease;
-    }
-
-    .mobile-mega-item:hover,
-    .mobile-mega-item:active {
-        background: #fff;
-    }
-
-
-    /* =====================================================
-       SERVICE ICON
-       ===================================================== */
-
-    .mobile-mega-icon {
-        width: 34px;
-        height: 34px;
-
-        flex: 0 0 34px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 9px;
-
-        background: var(--mf-accent-light);
-        color: var(--mf-accent);
-
-        font-size: 0.82rem;
-    }
-
-    .mobile-mega-item:hover .mobile-mega-icon {
-        background: var(--mf-navy);
-        color: #fff;
-    }
-
-
-    /* =====================================================
-       SERVICE ITEM TEXT
-       ===================================================== */
-
-    .mobile-mega-item-content {
-        min-width: 0;
-
-        display: flex;
-        flex-direction: column;
-
-        gap: 2px;
-    }
-
-    .mobile-mega-item-title {
-        color: var(--mf-navy);
-
-        font-size: 0.9rem;
-        font-weight: 600;
-
-        line-height: 1.25;
-    }
-
-    .mobile-mega-item-description {
-        color: var(--mf-text-muted);
-
-        font-size: 0.76rem;
-        font-weight: 400;
-
-        line-height: 1.3;
-    }
-
-
-    /* =====================================================
-       OLD SUBLIST COMPATIBILITY
-       ===================================================== */
-
-    .mobile-nav-sublist {
-        display: flex;
-        flex-direction: column;
-
-        gap: 2px;
-
-        padding-left: 8px;
-    }
-
-    .mobile-nav-sublist a {
-        display: flex;
-        align-items: center;
-
-        width: 100%;
-
-        min-height: 42px;
-
-        padding: 9px 10px;
-
-        border-radius: 8px;
-
-        color: var(--mf-text-muted);
-
-        font-size: 0.88rem;
-        font-weight: 500;
-
-        text-decoration: none;
-    }
-
-    .mobile-nav-sublist a:hover {
-        background: #fff;
-
-        color: var(--mf-navy);
-    }
-
-
-    /* =====================================================
-       MOBILE MENU DIVIDER
-       ===================================================== */
-
-    .mobile-nav-divider {
-        width: 100%;
-
-        height: 1px;
-
-        margin: 8px 0;
-
-        background: var(--mf-border-soft);
-    }
-
-
-    /* =====================================================
-       MOBILE CTA
-       ===================================================== */
-
-    .mobile-nav-cta {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        width: 100%;
-
-        min-height: 46px;
-
-        margin-top: 12px;
-
-        padding: 11px 18px;
-
-        border-radius: 999px;
-
-        background: var(--mf-navy);
-        color: #fff;
-
-        font-size: 0.9rem;
-        font-weight: 600;
-
-        text-decoration: none;
-    }
-
-    .mobile-nav-cta:hover {
-        background: #1e293b;
-        color: #fff;
-    }
+.mobile-menu-button:focus-visible {
+    outline: 2px solid var(--mf-accent);
+    outline-offset: 2px;
 }
 
 
 /* =========================================================
-   SMALL MOBILE
+   MOBILE OFF-CANVAS PANEL
    ========================================================= */
 
-@media (max-width: 575px) {
+.mobile-nav-panel {
+    width: min(360px, 88vw);
+    max-width: 100vw;
 
-    .mobile-nav-panel {
-        width: 92vw !important;
-    }
+    background: #fff;
+}
 
-    .mobile-nav-panel .offcanvas-header {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
+.mobile-nav-panel .offcanvas-header {
+    padding: 16px 20px;
 
-    .mobile-nav-panel .offcanvas-body {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
+    border-bottom: 1px solid var(--mf-border);
+}
 
-    .mobile-nav-link,
-    .mobile-nav-expand {
-        font-size: 0.95rem;
-    }
+.mobile-nav-panel .offcanvas-body {
+    padding: 16px 20px;
 
-    .mobile-mega-item {
-        padding-left: 7px;
-        padding-right: 7px;
-    }
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 10px 12px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: transparent;
+    color: var(--mf-navy);
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    text-decoration: none;
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.mobile-nav-link:hover {
+    background: var(--mf-border-soft);
+}
+
+.mobile-nav-link.active {
+    color: var(--mf-accent);
+    background: var(--mf-accent-light);
+    font-weight: 600;
+}
+
+.mobile-nav-expand i {
+    margin-left: auto;
+
+    color: var(--mf-text-muted);
+    font-size: 0.8rem;
+
+    transition: transform 0.2s ease;
+}
+
+.mobile-nav-expand[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+.mobile-nav-sublist {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+
+    margin: 2px 0 8px;
+    padding: 0 0 0 12px;
+
+    list-style: none;
+}
+
+.mobile-nav-sublist a {
+    display: flex;
+    align-items: center;
+
+    min-height: 40px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    color: var(--mf-text-muted);
+
+    font-size: 0.88rem;
+    font-weight: 500;
+
+    text-decoration: none;
+}
+
+.mobile-nav-sublist a:hover {
+    background: var(--mf-border-soft);
+    color: var(--mf-navy);
 }
 
 
 /* =========================================================
-   VERY SMALL MOBILE
+   RESPONSIVE SWITCH
+   Below this, the grid/flex desktop nav (.navbar-nav-wrap, .navbar-cta)
+   hides and the off-canvas trigger (.mobile-menu-button) takes over.
+   1200px matches the "FIX: DESKTOP NAV MUST ALWAYS BE HORIZONTAL" band
+   further down this file, so the two breakpoints can't drift apart.
    ========================================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 1199.98px) {
 
-    .mobile-nav-panel {
-        width: 95vw !important;
+    .site-header,
+    .site-header-inner {
+        height: var(--header-height-mobile);
     }
 
-    .mobile-mega-item-description {
+    #main-content {
+        padding-top: var(--header-height-mobile);
+    }
+
+    #siteHeader .navbar-nav-wrap {
         display: none;
     }
 
-    .mobile-mega-item {
-        min-height: 44px;
+    .navbar-cta {
+        display: none;
+    }
+
+    .navbar-actions {
+        margin-left: auto;
+    }
+
+    .mobile-menu-button {
+        display: inline-flex;
     }
 }
+
+/* =========================================================
+   DESKTOP COMPRESSION BAND
+   Between the mobile switch above and the point where the nav has full
+   room, tighten padding/gap rather than letting 8 items + a dropdown run
+   at full size into a shrinking middle grid column — that mismatch (wrap
+   allowed to shrink, nav-items refusing to) is what overflowed onto the
+   logo and CTA in earlier drafts.
+   ========================================================= */
+
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+
+    .site-header-inner {
+        column-gap: 16px;
+    }
+
+    .site-header .nav-link {
+        padding: 0 7px;
+        font-size: 0.86rem;
+    }
+
+    .navbar-cta {
+        padding: 0 14px;
+        font-size: 0.8rem;
+    }
 }
 
 /* The mega-menu is desktop-only (nav switches to the off-canvas mobile
